@@ -1,36 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
   <head>
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
     <meta charset="utf-8">
+    <title>Fisheye</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name ="title" content="FishEye, page individuelle photographe">
+    <meta name="description" content="Site de photographes sécialisés dans de multiples domaine partout dans le monde, page individuelle photographe">
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <title>Fisheye - photographe </title>
+    <script src="https://kit.fontawesome.com/aa04c98466.js" crossorigin="anonymous"></script>
+    <link href="css/photographer.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <header>
-      <img src="assets/images/logo.png" class="logo" alt="Logo du site FishEye">
+      <a href="./index.html" class="logo-link" tabindex="0" aria-label="Lien retour vers page d'accueil">
+        <img src="assets/logos/logo.png" class="logo" alt="fisheye logo"/>
+      </a>
     </header>
     <main id="main">
       <div class="photograph-header">
+        <article class="'article-id">
+          <h2 class="name-id">Mimi Keel</h2>
+          <h3 class="location-id">London, UK</h3>
+          <p class="title-photographer-id">Voir le beau dans le quotidien</p>
+        </article>
         <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+        <span class ="container-img-id">
+          <img src="./assets/images/photographers/MimiKeel.webp" class="photographer-photography-id" alt="portrait de Mimi Keel">
+        </span>
       </div>
+      <div class="select-filter">
+        <p class ="label-collapse">Trier par 
+          <div class="select">
+            <p class="option">Popularité
+              <i class="fa-solid fa-chevron-down collapse-button" id="toggleCollapse"aria-hidden="true"></i>
+            </p>
+            <div class="collapse-content" id="collapsibleContent">
+              <p class="option">Date</p>
+              <p class="option">Titre</p>
+            </div>
+          </div>
+      </div>
+      <section class="gallery">
+        <div class="element-gallery">
+          <div class="box-image">     
+            <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
+          </div>
+          <div class="title-img">
+            <p class="'txt">Arc-en-ciel</p>
+            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
+          </div>
+        </div>
+        <div class="element-gallery">
+          <div class="box-image">     
+            <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
+          </div>
+          <div class="title-img">
+            <p class="'txt">Arc-en-ciel</p>
+            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
+          </div>
+        </div>
+        <div class="element-gallery">
+          <div class="box-image">     
+            <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
+          </div>
+          <div class="title-img">
+            <p class="'txt">Arc-en-ciel</p>
+            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
+          </div>
+        </div>
+        <div class="element-gallery">
+          <div class="box-image">     
+            <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
+          </div>
+          <div class="title-img">
+            <p class="'txt">Arc-en-ciel</p>
+            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
+          </div>
+        </div>
+        <div class="element-gallery">
+          <div class="box-image">     
+            <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
+          </div>
+          <div class="title-img">
+            <p class="'txt">Arc-en-ciel</p>
+            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
+          </div>
+        </div>
+        <div class="element-gallery">
+          <div class="box-image">     
+            <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
+          </div>
+          <div class="title-img">
+            <p class="'txt">Arc-en-ciel</p>
+            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
+          </div>
+        </div>
+      </section>
     </main>
-    <div id="contact_modal">
-			<div class="modal">
-				<header>
-          <h2>Contactez-moi</h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
-        </header>
-				<form>
-					<div>
-						<label>Prénom</label>
-						<input />
-					</div>
+    <!--modale-->
+    <div class="bground">
+      <div class="content">
+        <div class="modal-body">
+          <p class ="p-contact">Contactez-moi</br>Mimi Keel</p>
+          <img src="assets/icons/close.svg" onclick="closeModal()" alt="bouton de fermeture de la modale formulaire"/>
+<!--Structure des inputs-->              
+            <div class="formData">
+              <label for ="first">Prénom</label><br>
+              <input class="text-control" type="text" id="first" name="first" minlength="2" required><br>
+              <div id="error-first"></div>
+            </div>
+            <div class="formData">
+              <label for="last">Nom</label><br>
+              <input class="text-control" type="text" id="last" name="last" minlength="2" required><br>
+              <div id="error-last"></div>
+            </div>
+            <div class="formData">
+              <label for="email">E-mail</label><br>
+              <input class="text-control" autocomplete="off" type="email" id="email" name="email" required><br>
+              <div id="error-email"></div>
+            </div>
+            <div class="formData">
+              <label for="msg">Votre message</label><br>
+              <input class="text-control" type="text" id="msg" name="commentaires" required><br>
+              <div id="error-email"></div>
+            </div>         
+            <input class="btn-submit" type="submit" value="Envoyer">
+          </form>
+    </div> 
+    <!--<div id="contact_modal">
+      <div class="modal">
+        <form>
+          <div>
+            <label>Prénom</label>
+            <input />
+          </div>
           <button class="contact_button">Envoyer</button>
-				</form>
-			</div>
-		</div>
+        </form>
+    </div>
+		</div>-->
     <script src="/scripts/pages/photographer.js"></script>
     <script src="/scripts/utils/contactForm.js"></script>
   </body>
