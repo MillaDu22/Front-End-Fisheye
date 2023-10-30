@@ -14,7 +14,9 @@
   <body>
     <header>
       <a href="./index.html" class="logo-link" tabindex="0" aria-label="Lien retour vers page d'accueil">
-        <img src="assets/logos/logo.png" class="logo" alt="fisheye logo"/>
+        <H1>
+          <img src="assets/logos/logo.png" class="logo" alt="fisheye logo"/>
+        </H1>
       </a>
     </header>
     <main id="main">
@@ -24,30 +26,31 @@
           <h3 class="location-id">London, UK</h3>
           <p class="title-photographer-id">Voir le beau dans le quotidien</p>
         </article>
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+        <button class="contact_button" >Contactez-moi</button>
         <span class ="container-img-id">
           <img src="./assets/images/photographers/MimiKeel.webp" class="photographer-photography-id" alt="portrait de Mimi Keel">
         </span>
       </div>
+<!--Structure du filtre select-->
       <div class="select-filter">
-        <p class ="label-collapse">Trier par 
-          <div class="select">
-            <p class="option">Popularité
-              <i class="fa-solid fa-chevron-down collapse-button" id="toggleCollapse"aria-hidden="true"></i>
-            </p>
-            <div class="collapse-content" id="collapsibleContent">
-              <p class="option">Date</p>
-              <p class="option">Titre</p>
-            </div>
-          </div>
+        <p class ="label-collapse">Trier par</p>
+        <div id="dropdown-wrapper" class="dropdown-wrapper" tabindex="0">
+          <span class="selected"></span>
+          <ul class="dropdown-list">
+              <li><a href="#">Popularité</a></li>
+              <li><a href="#">Date</a></li>
+              <li><a href="#">Titre</a></li>
+          </ul>
+        </div>
       </div>
+<!--Structures gallery cards-->
       <section class="gallery">
         <div class="element-gallery">
           <div class="box-image">     
             <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
           </div>
           <div class="title-img">
-            <p class="'txt">Arc-en-ciel</p>
+            <h4 class="'txt">Arc-en-ciel</h4>
             <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
           </div>
         </div>
@@ -56,7 +59,7 @@
             <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
           </div>
           <div class="title-img">
-            <p class="'txt">Arc-en-ciel</p>
+            <h4 class="'txt">Arc-en-ciel</h4>
             <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
           </div>
         </div>
@@ -65,7 +68,7 @@
             <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
           </div>
           <div class="title-img">
-            <p class="'txt">Arc-en-ciel</p>
+            <h4 class="'txt">Arc-en-ciel</h4>
             <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
           </div>
         </div>
@@ -74,7 +77,7 @@
             <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
           </div>
           <div class="title-img">
-            <p class="'txt">Arc-en-ciel</p>
+            <h4 class="'txt">Arc-en-ciel</h4>
             <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
           </div>
         </div>
@@ -83,7 +86,7 @@
             <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
           </div>
           <div class="title-img">
-            <p class="'txt">Arc-en-ciel</p>
+            <h4 class="'txt">Arc-en-ciel</h4>
             <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
           </div>
         </div>
@@ -92,53 +95,46 @@
             <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel">
           </div>
           <div class="title-img">
-            <p class="'txt">Arc-en-ciel</p>
+            <h4 class="'txt">Arc-en-ciel</h4>
             <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
           </div>
         </div>
       </section>
     </main>
-    <!--modale-->
+<!--Structure modale formulaire contact-->
     <div class="bground">
       <div class="content">
         <div class="modal-body">
-          <p class ="p-contact">Contactez-moi</br>Mimi Keel</p>
-          <img src="assets/icons/close.svg" onclick="closeModal()" alt="bouton de fermeture de la modale formulaire"/>
-<!--Structure des inputs-->              
-            <div class="formData">
-              <label for ="first">Prénom</label><br>
-              <input class="text-control" type="text" id="first" name="first" minlength="2" required><br>
-              <div id="error-first"></div>
-            </div>
-            <div class="formData">
-              <label for="last">Nom</label><br>
-              <input class="text-control" type="text" id="last" name="last" minlength="2" required><br>
-              <div id="error-last"></div>
-            </div>
-            <div class="formData">
-              <label for="email">E-mail</label><br>
-              <input class="text-control" autocomplete="off" type="email" id="email" name="email" required><br>
-              <div id="error-email"></div>
-            </div>
-            <div class="formData">
-              <label for="msg">Votre message</label><br>
-              <input class="text-control" type="text" id="msg" name="commentaires" required><br>
-              <div id="error-email"></div>
-            </div>         
-            <input class="btn-submit" type="submit" value="Envoyer">
-          </form>
-    </div> 
-    <!--<div id="contact_modal">
-      <div class="modal">
-        <form>
-          <div>
-            <label>Prénom</label>
-            <input />
+          <span class="contact-me-close">
+            <h2 class ="p-contact">Contactez-moi</br>Mimi Keel</h2>
+            <img src="assets/icons/close.svg" alt="bouton de fermeture de la modale formulaire" class="x-close-modal-form"/>
+          </span>
+<!--Structure des inputs-->  
+        <form class="form-contact" name="reserve" action="index.html" method="get" novalidate>          
+          <div class="formData">
+            <label for ="first">Prénom</label><br>
+            <input class="text-control" type="text" id="first" name="first" minlength="2" required><br>
+            <div id="error-first"></div>
           </div>
-          <button class="contact_button">Envoyer</button>
+          <div class="formData">
+            <label for="last">Nom</label><br>
+            <input class="text-control" type="text" id="last" name="last" minlength="2" required><br>
+            <div id="error-last"></div>
+          </div>
+          <div class="formData">
+            <label for="email">E-mail</label><br>
+            <input class="text-control" autocomplete="off" type="email" id="email" name="email" required><br>
+            <div id="error-email"></div>
+          </div>
+          <div class="formData">
+            <label for="msg">Votre message</label><br>
+            <input class="text-control-msg" type="text" id="msg" name="commentaires" required><br>
+            <div id="error-msg"></div>
+          </div>         
+          <input class="btn-submit" type="submit" value="Envoyer">
         </form>
-    </div>
-		</div>-->
+      </div>
+<!--Structure modale lightbox-->
     <script src="/scripts/pages/photographer.js"></script>
     <script src="/scripts/utils/contactForm.js"></script>
   </body>
