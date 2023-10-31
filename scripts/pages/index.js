@@ -15,9 +15,9 @@ const getPhotographers = () => {
             const photographerPageLink = `./photographer.html?id=${photographer.id}`;
             sectionPhotographers.innerHTML += `
             <article class="photographer-container">
-                <a href="${photographerPageLink}" class="link-focus" aria-label="cette carte est un lien vers la page de ${photographer.name}" tabindex="0">
+                <a href="${photographerPageLink}" class="link-focus" aria-labelledby="page photographer" tabindex="0" role="link">
                     <span class="container-img">
-                        <img src="${imagePath}" class="photographer-photography" alt="portrait du photographe">
+                        <img src="${imagePath}" class="photographer-photography" alt="${photographer.alt}" >
                     </span>
                     <h2 class="name">${photographer.name}</h2>
                 </a>
