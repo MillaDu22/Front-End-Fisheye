@@ -1,4 +1,4 @@
-function photographerTemplate(data) {
+/*function photographerTemplate(data) {
     const { name, portrait } = data;
 
     const picture = `assets/photographers/${portrait}`;
@@ -14,4 +14,4 @@ function photographerTemplate(data) {
         return (article);
     }
     return { name, picture, getUserCardDOM }
-}
+}*/

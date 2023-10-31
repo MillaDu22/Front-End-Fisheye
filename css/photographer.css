@@ -110,7 +110,7 @@ h1 {
 #contact_modal {
     display: none;
 }
-/****************************Selecteur filtre******************************/
+/***************************************************Selecteur filtre**************************************************/
 .select-filter {
     background-color:white;
     display:flex;
@@ -256,8 +256,8 @@ h1 {
     padding-left:10px;
     color: #901C1C;
 }
-
-.bground {
+/********************************************* Modale formulaire ************************************************/
+.bg-form{
     display: none;
     position: fixed;
     z-index: 1;
@@ -293,6 +293,7 @@ h1 {
     justify-content: flex-start;
     min-height: 85vh;
 }
+
 .contact-me-close {
     display:flex;
     flex-direction:row;
@@ -300,17 +301,20 @@ h1 {
     justify-content: space-between;
     width:90%;
 }
+
 .x-close-modal-form {
     width:8%;
     height:45px;
     margin-top:20px;
 }
+
 .p-contact {
     margin-top:20px;
     font-size:3em;
     color:black;
     font-weight:400;
 }
+
 .form-contact {
     display:flex;
     flex-direction: column;
@@ -319,9 +323,11 @@ h1 {
     width:100%;
     height:100%;
 }
+
 .formData {
     width:90%;
 }
+
 label {
     width:100%;
     font-size:2em;
@@ -329,14 +335,17 @@ label {
     line-height:46px;
     color:#312E2E;
 }
+
 .text-control, .text-control-msg {
     margin-top:10px;
     width:99%;
     height:68px;
 }
+
 .text-control-msg {
     min-height: 170px;
 }
+
 .btn-submit {
     text-align:center;
     color:white;
@@ -346,60 +355,111 @@ label {
     padding:23px 50px 23px 50px;
     margin-top: 20px;
 }
+/************************************* LightBox *********************************************************************/
 
-/*.modal {
-    border-radius: 5px;
-    background-color: #DB8876;
-    width: 50%;
-    display: flex;
+#lightbox-bg {
+    display:none;
     flex-direction: column;
+	justify-content: center;
+	align-items: center;
+    background-color: rgba(26, 39, 156, 0.4);
+	width:100vw;
+	height:100vh;
+	top:0;
+	left:0;
+    position:fixed;
+	overflow-x: hidden;
+	overflow-y:hidden;
+	z-index:1055;
+	outline:0;
+}
+
+.box-X {
+    position: absolute;
+    margin-top:-40%;
+    display:flex;
+    flex-direction:row;
+    justify-content: flex-end;
     align-items: center;
-    justify-content: space-between;
-    padding: 35px;
-    margin: auto;
+    width:75%;
 }
 
-.modal header {
-    justify-content: space-between;
-    width: 100%;
+.x-lightbox {
+    color:black;
+    text-align: right;
+    font-size:50px;
+    margin-right: 10px;
+    color: #901C1C;
 }
 
-.modal header img {
-    cursor: pointer;
+.body-lightbox {
+    background-color: white;
+    overflow: hidden;
+    width:1042px;
+    height:652px;
+	display:flex;
+	justify-content: center;
+	border-radius:3px;
+	align-items: center;
+    margin-top:0;
+	z-index:2;
 }
 
-.modal header h2 {
-    font-size: 64px;
-    font-weight: normal;
-    text-align: center;
-}
-
-form {
-    display: flex;
-    width: 100%;
+.lightbox-image {
+	display:flex;
     flex-direction: column;
-    align-items: flex-start;
+	justify-content: center;
+	align-items: center;
+	width:100%;
+    height:600px;
+	position:absolute;
+	z-index:3;
 }
 
-form label {
-    color: #312E2E;
-    font-size: 36px;
+.img-modal {
+    position: relative;
+	box-sizing: border-box;
+	max-width:100%;
+	height:600px;
+	object-fit:cover;
+	display:block;
+	
 }
 
-form div {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: self-start;
-    margin-bottom: 26px;
+.arrows {
+	position:absolute;
+	display:flex;
+    flex-direction: row;
+    align-items: center;
+	justify-content: space-between;
+	width:75%;
+    padding-left:5%;
+    padding-right:5%;
+	z-index: 5;
+    margin: 0;
 }
 
-form input {
-    width: 100%;
-    height: 68px;
-    border: none;
-    border-radius: 5px;
-}*/
+.arrow-left, .arrow-right{
+	position:relative;
+	background:white;
+	font-size:85px;
+    color: #901C1C;
+}
+
+.arrow-left {
+	text-align:left;
+}
+
+.arrow-right {
+	text-align:right;
+}
+
+.title-img-lightbox {
+    font-size:1.5em;
+    color:#901C1C;
+    font-weight:400;
+    line-height:31px;
+}
 
 
 @media screen and (max-width:768px) {
