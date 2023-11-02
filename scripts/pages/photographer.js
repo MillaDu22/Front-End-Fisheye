@@ -1,4 +1,92 @@
 //Mettre le code JavaScript lié à la page photographer.html
+////////////////////////////////////////fetch page photographe//////////////////////////////////////////////////////
+document.addEventListener("DOMContentLoaded", function () {
+    const urlDatasPage = ("../../data/photographers.json");
+    const containerIdPhotographer = document.getElementById('photografer-header'); 
+    // Récupération de l'ID du photographe depuis l'URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const photographerId = urlParams.get("id"); // l'ID est passé en tant que paramètre "id" dans l'URL
+    const getPhotographerById = (photographerId) => {
+        fetch(urlDatasPage)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            const photographers = data.photographers;
+            // Recherche du photographe spécifique par son ID
+            const photographer = photographers.find(photographer => photographer.id === parseInt(photographerId));
+            if (photographer) {
+                containerIdPhotographer.innerHTML += `
+                    <article class="article-id">
+                        <h2 class="name-id">${photographer.name}</h2>
+                        <h3 class="location-id">${photographer.city}, ${photographer.country}</h3>
+                        <p class="title-photographer-id">${photographer.tagline}</p>
+                    </article>
+                    <button class="contact_button">Contactez-moi</button>
+                    <span class="container-img-id">
+                        <img src= "../../assets/images/photographers/${photographer.portrait}" class="photographer-photography-id" alt="Portrait de ${photographer.name}">
+                    </span>`;
+            } else {
+            // Si aucun photographe n'est trouvé
+            containerIdPhotographer.innerHTML = "Aucun photographe trouvé.";
+            }
+        })
+        .catch(function (error) {
+            console.error('Erreur du chargement des données :', error);
+        });
+    };
+getPhotographerById(photographerId);
+});
+
+//////////////////////////////////////////////////////fetch pour gallery medias////////////////////////////////////////
+const galleryContainer = document.getElementById('gallery-photografer');
+
+
+function loadPhotographerMedia(photographerId) {
+    fetch('../../data/photographers.json')
+    .then((response) => response.json())
+    .then((data) => {
+        const photographers = data.photographers;
+        const photographer = photographers.find(photographer => photographer.id === parseInt(photographerId));
+        const photographerMedia = data.media.filter((media) => media.photographerId == photographer.id);
+        photographerMedia.forEach((media, index) => {
+            galleryContainer.innerHTML += `
+            <div class="element-gallery">
+                <div class="box-image active">
+                    <img src="../../assets/images/gallery-id/${photographer.id}/${media.image}" class="img-gallery" alt="${media.title}" onclick="openModal();currentSlide(${index + 1})">
+                </div>
+                <div class="title-img">
+                    <h4 class="txt">${media.title}</h4>
+                    <span class="like">${media.likes}<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
+                </div>
+            </div>`;
+        });
+    })
+    .catch((error) => {
+        console.error('Erreur au chargement des médias :', error);
+    });
+}
+function getPhotographerIdFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idParam = urlParams.get('id');
+    
+    if (idParam) {
+        // Si le paramètre 'id' existe dans l'URL, ça retourne sa valeur sous forme de nombre
+        return parseInt(idParam);
+    } else {
+        // Si le paramètre 'id' n'existe pas ou n'est pas un nombre valide, ça retourne null
+        return null;
+    }
+}
+
+photographerId = getPhotographerIdFromURL();
+if (photographerId !== null) {
+    console.log('ID du photographe depuis URL :', photographerId);
+} else {
+    console.log('ID non trouvé ou invalide.');
+}
+loadPhotographerMedia(photographerId);
+
 
 /////////////////////////////////////////////////////// Select ////////////////////////////////////////////////////////////
 const dd = document.querySelector('#dropdown-wrapper');
@@ -15,15 +103,15 @@ links.forEach((element) => {
     })
 })
 ////////////////////////////////////////////////////////Formulaire de contact///////////////////////////////////////////////////
-// open modal 
-function openModalForm() {
+// open modal erreur console
+/*function openModalForm() {
     const modalbg = document.querySelector(".bg-form");
     const modalBtn = document.querySelector(".contact_button");
     modalBtn.addEventListener('click', function() {
         modalbg.style.display="flex";
     });
 }
-openModalForm();
+openModalForm();*/
 
 // Close modal form with X
 function closeModal() {
@@ -85,7 +173,7 @@ function showSlides(n) {
 }
 
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 
 

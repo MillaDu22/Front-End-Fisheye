@@ -20,16 +20,7 @@
       </a>
     </header>
     <main id="main">
-      <div class="photograph-header">
-        <article class="'article-id">
-          <h2 class="name-id">Mimi Keel</h2>
-          <h3 class="location-id">London, UK</h3>
-          <p class="title-photographer-id">Voir le beau dans le quotidien</p>
-        </article>
-        <button class="contact_button" >Contactez-moi</button>
-        <span class ="container-img-id">
-          <img src="./assets/images/photographers/MimiKeel.webp" class="photographer-photography-id" alt="portrait de Mimi Keel">
-        </span>
+      <div class="photograph-header" id = "photografer-header">
       </div>
 <!--Structure du filtre select-->
       <div class="select-filter">
@@ -44,89 +35,7 @@
         </div>
       </div>
 <!--Structures gallery cards-->
-      <section class="gallery">
-        <div class="element-gallery">
-          <div class="box-image active">  
-            <img src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" class="img-gallery" alt="oiseau arc-en-ciel" onclick="openModal();currentSlide(1)">
-          </div>
-          <div class="title-img">
-            <h4 class="'txt">Arc-en-ciel</h4>
-            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
-          </div>
-        </div>
-
-        <div class="element-gallery">
-          <div class="box-image active" active>     
-            <img src="./assets/images/gallery-id/Mimi/Event_BenevidesWedding.jpg" class="img-gallery" alt="oiseau arc-en-ciel" onclick="openModal();currentSlide(2)">
-          </div>
-          <div class="title-img">
-            <h4 class="'txt">Benevides Wedding</h4>
-            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
-          </div>
-        </div>
-        <div class="element-gallery">
-          <div class="box-image active">     
-            <img src="./assets/images/gallery-id/Mimi/Event_PintoWedding.jpg" class="img-gallery" alt="oiseau arc-en-ciel" onclick="openModal();currentSlide(3)">
-          </div>
-          <div class="title-img">
-            <h4 class="'txt">Pinto Wedding</h4>
-            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
-          </div>
-        </div>
-        <div class="element-gallery">
-          <div class="box-image active">     
-            <img src="./assets/images/gallery-id/Mimi/Event_SeasideWedding.jpg" class="img-gallery" alt="oiseau arc-en-ciel" onclick="openModal();currentSlide(4)">
-          </div>
-          <div class="title-img">
-            <h4 class="'txt">Sea side Wedding</h4>
-            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
-          </div>
-        </div>
-        <div class="element-gallery">
-          <div class="box-image active">     
-            <img src="./assets/images/gallery-id/Mimi/Portrait_Background.jpg" class="img-gallery" alt="oiseau arc-en-ciel" onclick="openModal();currentSlide(5)">
-          </div>
-          <div class="title-img">
-            <h4 class="'txt">Mariage à la mer</h4>
-            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
-          </div>
-        </div>
-        <div class="element-gallery">
-          <div class="box-image active">     
-            <img src="./assets/images/gallery-id/Mimi/Portrait_Nora.jpg" class="img-gallery" alt="oiseau arc-en-ciel" onclick="openModal();currentSlide(6)">
-          </div>
-          <div class="title-img">
-            <h4 class="'txt">Portrait de Nora</h4>
-            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
-          </div>
-        </div>
-        <div class="element-gallery">
-          <div class="box-image active">     
-            <img src="./assets/images/gallery-id/Mimi/Portrait_Wednesday.jpg" class="img-gallery" alt="oiseau arc-en-ciel" onclick="openModal();currentSlide(7)">
-          </div>
-          <div class="title-img">
-            <h4 class="'txt">Portrait Wednesday</h4>
-            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
-          </div>
-        </div>
-        <div class="element-gallery">
-          <div class="box-image active">     
-            <img src="./assets/images/gallery-id/Mimi/Travel_HillsideColor.jpg" class="img-gallery" alt="oiseau arc-en-ciel" onclick="openModal();currentSlide(8)">
-          </div>
-          <div class="title-img">
-            <h4 class="'txt">Travel Hillside Color</h4>
-            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
-          </div>
-        </div>
-        <div class="element-gallery">
-          <div class="box-image active">     
-            <img src="./assets/images/gallery-id/Mimi/Travel_Lonesome.jpg" class="img-gallery" alt="oiseau arc-en-ciel" onclick="openModal();currentSlide(9)">
-          </div>
-          <div class="title-img">
-            <h4 class="'txt">Solitude</h4>
-            <span class="like">12<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
-          </div>
-        </div>
+      <section class="gallery" id="gallery-photografer">
       </section>
     </main>
 <!--Structure modale formulaire contact-->
@@ -175,15 +84,15 @@
             <span class="arrow-right" aria-label="true" aria-label="Suivant" onclick="prevNext(1)" tabindex="0">></span>
           </div>
           <div class="lightbox-image" id="modale" role="document">
-            <img class="img-modal dots" aria-current="true" aria-label="Slide 1" src="./assets/images/gallery-id/Mimi/Animals_Rainbow.jpg" alt="Photo oiseau coloré" onclick="currentSlide(1)" tabindex="0">
-            <img class="img-modal dots" aria-current="true" aria-label="Slide 2" src="./assets/images/gallery-id/Mimi/Event_BenevidesWedding.jpg" alt="photo de mariage" onclick="currentSlide(2) "tabindex="0">
-            <img class="img-modal dots" aria-current="true" aria-label="Slide 3" src="./assets/images/gallery-id/Mimi/Event_PintoWedding.jpg" alt="Photo de jeunes mariés" onclick="currentSlide(3)" tabindex="0">
-            <img class="img-modal dots" aria-current="true" aria-label="Slide 4" src="./assets/images/gallery-id/Mimi/Event_SeasideWedding.jpg" alt="Une terrasse de restaurant" onclick="currentSlide(4)" tabindex="0">	
-            <img class="img-modal dots" aria-current="true" aria-label="Slide 5" src="./assets/images/gallery-id/Mimi/Portrait_Background.jpg" alt="portraits femme noir et blanc" onclick="currentSlide(5)" tabindex="0">
-            <img class="img-modal dots" aria-current="true" aria-label="Slide 6" src="./assets/images/gallery-id/Mimi/Portrait_Nora.jpg" alt="Portraits femme avec jeux de lumière" onclick="currentSlide(6)" tabindex="0">
-            <img class="img-modal dots" aria-current="true" aria-label="Slide 7" src="./assets/images/gallery-id/Mimi/Portrait_Wednesday.jpg" alt="portrait d'une enfant grimaçante" onclick="currentSlide(7)" tabindex="0">	
-            <img class="img-modal dots" aria-current="true" aria-label="Slide 8" src="./assets/images/gallery-id/Mimi/Travel_HillsideColor.jpg" alt="Le village sur flanc de falaise" onclick="currentSlide(8)" tabindex="0">	
-            <img class="img-modal dots" aria-current="true" aria-label="Slide 9" src="./assets/images/gallery-id/Mimi/Travel_Lonesome.jpg" alt="paysage de montagne" onclick="currentSlide(9)" tabindex="0"/>
+            <img class="img-modal dots" aria-current="true" aria-label="Slide 1" src="./assets/images/gallery-id/Mimi/Animals_Rainbow.webp" alt="Photo oiseau coloré" onclick="currentSlide(1)" tabindex="0">
+            <img class="img-modal dots" aria-current="true" aria-label="Slide 2" src="./assets/images/gallery-id/Mimi/Event_BenevidesWedding.webp" alt="photo de mariage" onclick="currentSlide(2) "tabindex="0">
+            <img class="img-modal dots" aria-current="true" aria-label="Slide 3" src="./assets/images/gallery-id/Mimi/Event_PintoWedding.webp" alt="Photo de jeunes mariés" onclick="currentSlide(3)" tabindex="0">
+            <img class="img-modal dots" aria-current="true" aria-label="Slide 4" src="./assets/images/gallery-id/Mimi/Event_SeasideWedding.webp" alt="Une terrasse de restaurant" onclick="currentSlide(4)" tabindex="0">	
+            <img class="img-modal dots" aria-current="true" aria-label="Slide 5" src="./assets/images/gallery-id/Mimi/Portrait_Background.webp" alt="portraits femme noir et blanc" onclick="currentSlide(5)" tabindex="0">
+            <img class="img-modal dots" aria-current="true" aria-label="Slide 6" src="./assets/images/gallery-id/Mimi/Portrait_Nora.webp" alt="Portraits femme avec jeux de lumière" onclick="currentSlide(6)" tabindex="0">
+            <img class="img-modal dots" aria-current="true" aria-label="Slide 7" src="./assets/images/gallery-id/Mimi/Portrait_Wednesday.webp" alt="portrait d'une enfant grimaçante" onclick="currentSlide(7)" tabindex="0">	
+            <img class="img-modal dots" aria-current="true" aria-label="Slide 8" src="./assets/images/gallery-id/Mimi/Travel_HillsideColor.webp" alt="Le village sur flanc de falaise" onclick="currentSlide(8)" tabindex="0">	
+            <img class="img-modal dots" aria-current="true" aria-label="Slide 9" src="./assets/images/gallery-id/Mimi/Travel_Lonesome.webp" alt="paysage de montagne" onclick="currentSlide(9)" tabindex="0"/>
             <span class = "title-img-lightbox">Arc-en-ciel</span>
           </div>
         </div>
