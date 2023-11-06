@@ -1,4 +1,4 @@
-/*************************************** Fetch datas photographers HomePage***********************************/
+/*************************************** Fetch datas photographers HomePage avec innerHTML***********************************/
 const urlDatas = ("../../data/photographers.json");
 const sectionPhotographers = document.getElementById("section-photographers");
 
