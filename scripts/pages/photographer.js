@@ -119,7 +119,7 @@ function getPhotographerIdFromURL() {
 // Si photographerID trouvé média affichés par popularité par défaut //
 const photographerId = getPhotographerIdFromURL();
 if (photographerId !== null) {
-    console.log('ID du photographe depuis URL :', photographerId);
+    //console.log('ID du photographe depuis URL :', photographerId);
     loadPhotographerData(photographerId)
         .then(() => {
             loadSortedPhotographerMedia('Popularité'); // Affichage par popularité par défaut

@@ -21,7 +21,7 @@ function photographerTemplate(data) {
     const img = document.createElement('img');
     img.classList.add('photographer-photography');
     img.src = imagePath;
-    img.alt = name;
+    img.alt = `Photographie de ${name}`;
 
     const h2 = document.createElement('h2');
     h2.classList.add('name');
@@ -49,14 +49,14 @@ function photographerTemplate(data) {
 
     return article;
 }
-// fetch pour obtenir les datas photographe dans le fichier json //
+// fetch pour obtenir les datas photogarphes dans le fichier json 
 function getPhotographers() {
     fetch(urlDatas)
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
+            //console.log(data);
             const photographers = data.photographers;
             photographers.forEach(function (photographer) {
                 const photographerElement = photographerTemplate(photographer);
