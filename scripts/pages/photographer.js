@@ -3,9 +3,15 @@
 document.addEventListener("DOMContentLoaded", function () {
     const urlDatasPage = ("../../data/photographers.json");
     const containerIdPhotographer = document.getElementById('photografer-header'); 
-    // Récupération de l'ID du photographe depuis l'URL
+    // Récupération de l'ID du photographe depuis l'URL //
     const urlParams = new URLSearchParams(window.location.search);
-    const photographerId = urlParams.get("id"); // l'ID est passé en tant que paramètre "id" dans l'URL
+    const photographerId = urlParams.get("id"); // l'ID est passé en tant que paramètre "id" dans l'URL //
+    
+    // Fonction pour effectuer la requête Fetch et insérer le nom du photographe dans le formulaire //
+    const insertPhotographerName = (photographer) => {
+        const h2Element = document.querySelector('.p-contact');
+        h2Element.innerHTML = `Contactez-moi</br> ${photographer.name}`;
+    };
     const getPhotographerById = (photographerId) => {
         fetch(urlDatasPage)
         .then(function (response) {
@@ -13,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(function (data) {
             const photographers = data.photographers;
-            // Recherche du photographe spécifique par son ID
+            // Recherche du photographe spécifique par son ID //
             const photographer = photographers.find(photographer => photographer.id === parseInt(photographerId));
             if (photographer) {
                 containerIdPhotographer.innerHTML += `
@@ -26,8 +32,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     <span class="container-img-id">
                         <img src= "../../assets/images/photographers/${photographer.portrait}" class="photographer-photography-id" alt="Portrait de ${photographer.name}">
                     </span>`;
+                    // Insére le nom du photographe dans le formulaire //
+                    insertPhotographerName(photographer);
             } else {
-            // Si aucun photographe n'est trouvé
+            // Si aucun photographe n'est trouvé //
             containerIdPhotographer.innerHTML = "Aucun photographe trouvé.";
             }
         })
@@ -46,6 +54,28 @@ const links = document.querySelectorAll('.dropdown-list a');
 const span = document.querySelector('.selected');
 let photographerMedia = [];
 
+// Calcul de la somme totale des likes pour un photographe //
+function calculateTotalLikesForPhotographer(photographerId, mediaData) {
+    const totalLikes = mediaData
+        .filter((media) => media.photographerId === photographerId)
+        .reduce((total, media) => total + media.likes, 0);
+    // Affiche le total des likes dans son container //
+    const totalLikesElement = document.getElementById('total-likes');
+    if (totalLikesElement) {
+        totalLikesElement.textContent = totalLikes;
+    } 
+}
+
+
+// Affiche le tarif journalier à partir des données JSON //
+function displayDailyRate(photographerId, photographerData) {
+    const photographer = photographerData.find((photographer) => photographer.id === photographerId);
+    if (photographer) {
+        const dailyRateElement = document.querySelector('.box-of-price');
+        dailyRateElement.innerHTML = `${photographer.price} € / jour`;
+    }
+}
+
 // Recherche datas photographerID //
 async function loadPhotographerData(photographerId) {
     try {
@@ -54,10 +84,16 @@ async function loadPhotographerData(photographerId) {
         const photographers = data.photographers;
         const photographer = photographers.find((photographer) => photographer.id === parseInt(photographerId));
         photographerMedia = data.media.filter((media) => media.photographerId == photographer.id);
+
+        const totalLikes = calculateTotalLikesForPhotographer(photographerId, photographerMedia);
+        displayDailyRate(photographerId, photographers);
+        loadSortedPhotographerMedia('Popularité');
+        
     } catch (error) {
         console.error('Erreur au chargement des données du photographe :', error);
     }
 }
+
 // Tri avec méthode sort //
 function loadSortedPhotographerMedia(option) {
     let sortedMedia = [...photographerMedia];
@@ -71,10 +107,10 @@ function loadSortedPhotographerMedia(option) {
         sortedMedia.sort((a, b) => a.title.localeCompare(b.title));
         // Tri par ordre alphabétique avec la méthode localeCompare qui détermine la façon dont les caractères sont triés //
     }
-    // Pour chaque media le HTML suivant//
+    // Pour chaque media le HTML suivant //
     galleryContainer.innerHTML = '';
     sortedMedia.forEach((media, index) => {
-        // Si c'est une video//
+        // Si c'est une video //
         if (media.video) {
             galleryContainer.innerHTML += `
                 <div class="element-gallery">
@@ -89,7 +125,7 @@ function loadSortedPhotographerMedia(option) {
                         <span class="like">${media.likes}<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
                     </div>
                 </div>`;
-        //Si c'est une image//        
+        //Si c'est une image //        
         } else if (media.image) {
             galleryContainer.innerHTML += `
                 <div class="element-gallery">
@@ -119,7 +155,7 @@ function getPhotographerIdFromURL() {
 // Si photographerID trouvé média affichés par popularité par défaut //
 const photographerId = getPhotographerIdFromURL();
 if (photographerId !== null) {
-    //console.log('ID du photographe depuis URL :', photographerId);
+    // Console.log('ID du photographe depuis URL :', photographerId); //
     loadPhotographerData(photographerId)
         .then(() => {
             loadSortedPhotographerMedia('Popularité'); // Affichage par popularité par défaut
@@ -131,7 +167,7 @@ if (photographerId !== null) {
     console.log('ID non trouvé ou invalide.');
 }
 
-// Gestionnaire d'événements pour le changement d'option de tri
+// Gestionnaire d'événements pour le changement d'option de tri //
 dropdownWrapper.addEventListener('click', function () {
     this.classList.toggle('is-active');
 });
