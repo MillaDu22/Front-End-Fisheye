@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <h3 class="location-id">${photographer.city}, ${photographer.country}</h3>
                         <p class="title-photographer-id">${photographer.tagline}</p>
                     </article>
-                    <button class="contact_button" onclick="openModalForm()">Contactez-moi</button>
+                    <button class="contact_button" tabindex="0" onclick="openModalForm()">Contactez-moi</button>
                     <span class="container-img-id">
                         <img src= "../../assets/images/photographers/${photographer.portrait}" class="photographer-photography-id" alt="Portrait de ${photographer.name}">
                     </span>`;
@@ -54,17 +54,50 @@ const links = document.querySelectorAll('.dropdown-list a');
 const span = document.querySelector('.selected');
 let photographerMedia = [];
 
-// Calcul de la somme totale des likes pour un photographe //
+// Calcul de la somme totale des likes pour chaque photographe //
+let totalLikesForPhotographer;
 function calculateTotalLikesForPhotographer(photographerId, mediaData) {
-    const totalLikes = mediaData
+    const likesForPhotographer = mediaData
         .filter((media) => media.photographerId === photographerId)
         .reduce((total, media) => total + media.likes, 0);
+
+    // Met à jour le compteur total //
+    totalLikesForPhotographer = likesForPhotographer;
+
     // Affiche le total des likes dans son container //
     const totalLikesElement = document.getElementById('total-likes');
     if (totalLikesElement) {
-        totalLikesElement.textContent = totalLikes;
-    } 
+        totalLikesElement.textContent = totalLikesForPhotographer;
+    }
 }
+
+galleryContainer.addEventListener('click', function (event) {
+    // closest méthode  pour rechercher élément ascendant (parent), vérifie si l'élément correspond au sélecteur et retourne l' élément. //
+    const likeIcon = event.target.closest('.fa-heart');
+    if (likeIcon) {
+        const mediaElement = likeIcon.closest('.element-gallery');
+        if (mediaElement) {
+            const mediaId = mediaElement.dataset.mediaId;
+            if (mediaId) {
+                // Met à jour le compteur individuel
+                const likeCountElement = mediaElement.querySelector('.like-count');
+                if (likeCountElement) {
+                    const currentLikes = parseInt(likeCountElement.textContent, 10);
+                    likeCountElement.textContent = currentLikes + 1;
+                }
+
+                // Met à jour le compteur total
+                totalLikesForPhotographer += 1;
+
+                // Affiche le compteur total dans son container //
+                const totalLikesElement = document.getElementById('total-likes');
+                if (totalLikesElement) {
+                    totalLikesElement.textContent = totalLikesForPhotographer;
+                }
+            }
+        }
+    }
+});
 
 
 // Affiche le tarif journalier à partir des données JSON //
@@ -85,7 +118,7 @@ async function loadPhotographerData(photographerId) {
         const photographer = photographers.find((photographer) => photographer.id === parseInt(photographerId));
         photographerMedia = data.media.filter((media) => media.photographerId == photographer.id);
 
-        const totalLikes = calculateTotalLikesForPhotographer(photographerId, photographerMedia);
+        totalLikes = calculateTotalLikesForPhotographer(photographerId, photographerMedia);
         displayDailyRate(photographerId, photographers);
         loadSortedPhotographerMedia('Popularité');
         
@@ -113,28 +146,28 @@ function loadSortedPhotographerMedia(option) {
         // Si c'est une video //
         if (media.video) {
             galleryContainer.innerHTML += `
-                <div class="element-gallery">
+                <div class="element-gallery" data-media-id="${media.id}">
                     <div class="box-video active">
                         <video class="video-gallery" controls>
-                            <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4">
+                            <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4" tabindex="0">
                             Votre navigateur ne supporte pas la lecture de la vidéo.
                         </video>
                     </div>
                     <div class="title-img">
                         <h4 class="txt">${media.title}</h4>
-                        <span class="like">${media.likes}<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
+                        <span class="like like-count">${media.likes}<i class="fa-solid fa-heart" aria-hidden="false" tabindex="0"></i></span>
                     </div>
                 </div>`;
         //Si c'est une image //        
         } else if (media.image) {
             galleryContainer.innerHTML += `
-                <div class="element-gallery">
+                <div class="element-gallery" data-media-id="${media.id}">
                     <div class "box-image active">
-                        <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-gallery" alt="${media.title}" onclick="openModal();currentSlide(${index + 1})">
+                        <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-gallery" alt="${media.title}" onclick="openModal();currentSlide(${index + 1})" tabindex="0">
                     </div>
                     <div class="title-img">
                         <h4 class="txt">${media.title}</h4>
-                        <span class="like">${media.likes}<i class="fa-solid fa-heart" aria-hidden="true"></i></span>
+                        <span class="like like-count">${media.likes}<i class="fa-solid fa-heart" aria-hidden="false" tabindex="0"></i></span>
                     </div>
                 </div>`;
         }
@@ -182,12 +215,12 @@ links.forEach((element) => {
 /////////////////////////////////////////////////////////// LightBox /////////////////////////////////////////////////////////
 const slides = document.querySelector('.lightbox-image');
 
-/* Open*/
+// Open //
 function openModal() {
     document.getElementById("lightbox-bg").style.display = "flex";
 }
 
-/*Close*/
+// Close //
 function closeModalLightBox() {
     const X = document.querySelector(".x-lightbox");
     X.addEventListener('click', function() {
@@ -196,14 +229,14 @@ function closeModalLightBox() {
 }
 closeModalLightBox();
 
-/*Function slide*/
+// Function slide //
 let slideIndex = 1;
 showSlides(slideIndex);
-/*Précédent et suivant*/
+// Précédent et suivant //
 function prevNext(n) {
     showSlides(slideIndex += n);
 }
-/*actualisation*/
+// actualisation //
 function currentSlide(n) {
     showSlides(slideIndex = n);
 }
@@ -227,4 +260,3 @@ function showSlides(n) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-

@@ -26,11 +26,11 @@
       <div class="select-filter">
         <p class ="label-collapse">Trier par</p>
         <div id="dropdown-wrapper" class="dropdown-wrapper" tabindex="0">
-          <span class="selected">Popularité</span>
+          <span class="selected" tabindex="0" aria-label="Option popularité par défaut">Popularité</span>
           <ul class="dropdown-list">
-              <li><a href="#">Popularité</a></li>
-              <li><a href="#">Date</a></li>
-              <li><a href="#">Titre</a></li>
+              <li><a href="#" tabindex="0" aria-label="Option popularité du sélecteur">Popularité</a></li>
+              <li><a href="#" tabindex="0" aria-label="Option date du sélecteur ">Date</a></li>
+              <li><a href="#"tabindex="0" aria-label="Option Titre du sékecteur">Titre</a></li>
           </ul>
         </div>
       </div>
@@ -44,31 +44,31 @@
         <div class="modal-body">
           <span class="contact-me-close">
             <h2 class ="p-contact"></h2>
-            <img src="assets/icons/close.svg" alt="bouton de fermeture de la modale formulaire" class="x-close-modal-form"/>
+            <img src="assets/icons/close.svg" alt="bouton de fermeture de la modale formulaire" class="x-close-modal-form" tabindex="0"/>
           </span>
 <!--Structure des inputs-->  
         <form class="form-contact" name="formmsg" action="index.html" method="get" novalidate>          
           <div class="formData">
             <label for ="first">Prénom</label><br>
-            <input class="text-control" type="text" id="first" name="first" minlength="2" required><br>
+            <input class="text-control" type="text" tabindex="0" id="first" name="first" minlength="2" required><br>
             <div id="error-first"></div>
           </div>
           <div class="formData">
             <label for="last">Nom</label><br>
-            <input class="text-control" type="text" id="last" name="last" minlength="2" required><br>
+            <input class="text-control" type="text" tabindex="0" id="last" name="last" minlength="2" required><br>
             <div id="error-last"></div>
           </div>
           <div class="formData">
             <label for="email">E-mail</label><br>
-            <input class="text-control" autocomplete="off" type="email" id="email" name="email" required><br>
+            <input class="text-control" autocomplete="off" type="email" tabindex="0" id="email" name="email" required><br>
             <div id="error-email"></div>
           </div>
           <div class="formData">
             <label for="msg">Votre message</label><br>
-            <input class="text-control-msg" type="text" id="msg" name="commentaires" minlength="2" required><br>
+            <input class="text-control-msg" type="text" tabindex="0" id="msg" name="commentaires" minlength="2" required><br>
             <div id="error-msg"></div>
           </div>         
-          <input class="btn-submit" type="submit" value="Envoyer">
+          <input class="btn-submit" type="submit" tabindex="0" value="Envoyer">
         </form>
       </div>
     </div>

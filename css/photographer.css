@@ -232,7 +232,7 @@ h1 {
     align-items: center;
 }
 .element-gallery {
-    width:30%;
+    width:32%;
     height:360px;
     display:flex;
     flex-direction:column;
@@ -260,13 +260,24 @@ h1 {
     padding-left:5%;
     padding-right:5%;
     font-weight:400;
-    font-size:24px;
-    line-height: 31px;
+    font: size 2em;
+    line-height: 24px;
     color:#901C1C;
 }
-
+.txt {
+    width:70%;
+}
+.like-count {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width:12%;
+}
 .fa-heart {
     padding-left:10px;
+    font-size:1em;
+    line-height:24px;
+    position:relative;
     color: #901C1C;
 }
 
@@ -399,6 +410,7 @@ label {
 /************************************* LightBox *********************************************************************/
 
 #lightbox-bg {
+    min-width: 320px;
     display:none;
     flex-direction: column;
 	justify-content: center;
@@ -416,8 +428,9 @@ label {
 }
 
 .box-X {
+    min-width: 320px;
     position: absolute;
-    margin-top:-40%;
+    margin-top:-555px;
     display:flex;
     flex-direction:row;
     justify-content: flex-end;
@@ -426,17 +439,20 @@ label {
 }
 
 .x-lightbox {
+    position:relative;
     color:black;
     text-align: right;
     font-size:50px;
     margin-right: 10px;
     color: #901C1C;
+    z-index:45;
 }
 
 .body-lightbox {
+    min-width: 320px;
     background-color: white;
     overflow: hidden;
-    width:1042px;
+    width:78%;
     height:652px;
 	display:flex;
 	justify-content: center;
@@ -447,6 +463,7 @@ label {
 }
 
 .lightbox-image {
+    min-width: 320px;
 	display:flex;
     flex-direction: column;
 	justify-content: center;
@@ -458,6 +475,7 @@ label {
 }
 
 .img-modal {
+    min-width:320px;
     position: relative;
 	box-sizing: border-box;
 	max-width:100%;
@@ -482,7 +500,6 @@ label {
 
 .arrow-left, .arrow-right{
 	position:relative;
-	background:white;
 	font-size:85px;
     color: #901C1C;
 }
@@ -503,15 +520,16 @@ label {
 }
 /*********************************** Compteur likes *************************************/
 .back-total {
+    max-width: 1440px;
     min-width: 320px;
     position:fixed;
     display:flex;
     flex-direction: row;
     justify-content: flex-end;
-    width:97%;
+    width:100%;
     height:89px;
     bottom:0;
-	left:0;
+	left:0px;
     position:fixed;
 	overflow-x: hidden;
 	overflow-y:hidden;
@@ -519,9 +537,10 @@ label {
 
 }
 .all-likes-price {
-    margin:0 auto;
-    min-width: 371px;
+    margin:0;
+    min-width: 320px;
     position:absolute;
+    margin-right:80px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -532,10 +551,12 @@ label {
     width:27%;
     height:89px;
 }
+
 .total-icon {
     padding-left:30px;
     width:40%;
 }
+
 #total-likes {
     font-weight:500;
     font-size:24px;
@@ -619,6 +640,22 @@ label {
         box-sizing: border-box;
         min-width: 320px;
         justify-content: center;
+        width:100%;
+    }
+
+    #lightbox-bg {
+        min-width: 320px;
+        width:100%;
+    }
+    .box-X {
+        margin-top:-535px;
+    }
+    .lightbox-image {
+        min-width: 320px;
+        width:100%;
+    }
+    .body-lightbox {
+        min-width: 320px;
         width:100%;
     }
 }
