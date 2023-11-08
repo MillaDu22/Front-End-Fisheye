@@ -54,6 +54,7 @@ const links = document.querySelectorAll('.dropdown-list a');
 const span = document.querySelector('.selected');
 let photographerMedia = [];
 
+
 // Calcul de la somme totale des likes pour chaque photographe //
 let totalLikesForPhotographer;
 function calculateTotalLikesForPhotographer(photographerId, mediaData) {
@@ -70,7 +71,6 @@ function calculateTotalLikesForPhotographer(photographerId, mediaData) {
         totalLikesElement.textContent = totalLikesForPhotographer;
     }
 }
-
 galleryContainer.addEventListener('click', function (event) {
     // closest méthode  pour rechercher élément ascendant (parent), vérifie si l'élément correspond au sélecteur et retourne l' élément. //
     const likeIcon = event.target.closest('.fa-heart');
@@ -148,7 +148,7 @@ function loadSortedPhotographerMedia(option) {
             galleryContainer.innerHTML += `
                 <div class="element-gallery" data-media-id="${media.id}">
                     <div class="box-video active">
-                        <video class="video-gallery" controls>
+                        <video class="video-gallery" controls onclick= "openModal();currentSlide(${index + 1})">
                             <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4" tabindex="0">
                             Votre navigateur ne supporte pas la lecture de la vidéo.
                         </video>
@@ -163,7 +163,7 @@ function loadSortedPhotographerMedia(option) {
             galleryContainer.innerHTML += `
                 <div class="element-gallery" data-media-id="${media.id}">
                     <div class "box-image active">
-                        <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-gallery" alt="${media.title}" onclick="openModal();currentSlide(${index + 1})" tabindex="0">
+                        <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-gallery" alt="${media.title}" onclick ="openModal();currentSlide(${index + 1})" tabindex="0">
                     </div>
                     <div class="title-img">
                         <h4 class="txt">${media.title}</h4>
@@ -173,6 +173,7 @@ function loadSortedPhotographerMedia(option) {
         }
     });
 }
+
 
 function getPhotographerIdFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -212,51 +213,80 @@ links.forEach((element) => {
     });
 });
 
-/////////////////////////////////////////////////////////// LightBox /////////////////////////////////////////////////////////
-const slides = document.querySelector('.lightbox-image');
+/////////////////////////////////////////// LightBox /////////////////////////////////////////////////////////
 
-// Open //
 function openModal() {
-    document.getElementById("lightbox-bg").style.display = "flex";
+    const lightboxBg = document.getElementById('lightbox-bg');
+    const lightboxImage = document.getElementById('modale');
+    lightboxBg.style.display = 'block';
+    lightboxImage.innerHTML = event.target.outerHTML;
+
+            // Si l'élément cliqué est une vidéo
+            if (media.video) {
+                lightboxImage.innerHTML = `
+                    <video class="video-modal" controls>
+                        <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture de la vidéo.
+                    </video>
+                `;
+            } else if (media.image) {
+                lightboxImage.innerHTML = `
+                    <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-modal" alt="${media.title}">
+                `;
+            }
+    }
+
+function closeModal() {
+    const lightboxBg = document.getElementById('lightbox-bg');
+    lightboxBg.style.display = 'none';
 }
 
-// Close //
-function closeModalLightBox() {
-    const X = document.querySelector(".x-lightbox");
-    X.addEventListener('click', function() {
-        document.getElementById("lightbox-bg").style.display = "none";
-    });
-}
-closeModalLightBox();
-
-// Function slide //
-let slideIndex = 1;
-showSlides(slideIndex);
-// Précédent et suivant //
-function prevNext(n) {
-    showSlides(slideIndex += n);
-}
-// actualisation //
+// Affiche une image spécifique dans la lightbox. Avec argument n qui représente le numéro de l'image //
 function currentSlide(n) {
-    showSlides(slideIndex = n);
+    const lightboxImage = document.getElementById('modale');
+    const images = document.querySelectorAll('.element-gallery img');
+    if (n >= 1 && n <= images.length) {
+        lightboxImage.innerHTML = images[n - 1].outerHTML;
+
+
+    }
 }
 
-function showSlides(n) {
-    var i;
-    var tltleImg =document.getElementsByClassName('title-img-lightbox');
-    var slides = document.getElementsByClassName("img-modal");
-    var dots = document.getElementsByClassName("dots");
-    if (n > slides.length) {slideIndex = 1}
-    if (n < 1) {slideIndex = slides.length}
-    for (i = 0; i < slides.length; i++) { 
-        slides[i].style.display = "none";
+// précédent et suivant //
+function prevNext(n) {
+    const lightboxImage = document.getElementById('modale');
+    const images = document.querySelectorAll('.element-gallery img, .element-gallery video ');
+    let currentImageIndex;
+
+    // Trouve l'index de l'image actuelle //
+    images.forEach((img, index) => {
+        if (img.outerHTML === lightboxImage.innerHTML) {
+            currentImageIndex = index;
+        }
+    });
+
+    // Calcul de l'index de l'image suivante //
+    let nextIndex = currentImageIndex + n;
+
+    // Si on atteint le dernier ou le premier, revenir au premier ou au dernier //
+    if (nextIndex >= images.length) {
+        nextIndex = 0;
+    } else if (nextIndex < 0) {
+        nextIndex = images.length - 1;
     }
-    for (i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" active", "");
-    }
-    slides[slideIndex-1].style.display = "block";
-    dots[slideIndex-1].className += " active";
-    tltleImg[slideIndex-1].style.display ="flex";
+
+    // Affiche l'image suivante //
+    lightboxImage.innerHTML = images[nextIndex].outerHTML;
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////
+// Ajout du gestionnaire d'événements pour le bouton de fermeture //
+document.querySelector('.x-lightbox').addEventListener('click', closeModal);
+
+// Ajout du gestionnaire d'événements pour les flèches de navigation //
+document.querySelector('.arrow-left').addEventListener('click', () => prevNext(-1));
+document.querySelector('.arrow-right').addEventListener('click', () => prevNext(1));
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
