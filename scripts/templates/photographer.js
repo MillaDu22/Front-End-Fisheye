@@ -1,6 +1,19 @@
 const urlDatas = "../../data/photographers.json";
 const sectionPhotographers = document.getElementById("section-photographers");
 
+// Factory pour créer les objets Photographer //
+function createPhotographer(id, name, city, country, tagline, price, portrait) {
+    return {
+        id,
+        name,
+        city,
+        country,
+        tagline,
+        price,
+        portrait,
+    };
+}
+
 function photographerTemplate(data) {
     const { name, portrait, id, city, country, tagline, price } = data;
 
@@ -49,20 +62,22 @@ function photographerTemplate(data) {
 
     return article;
 }
-// fetch pour obtenir les datas photogarphes dans le fichier json 
+// fetch pour obtenir les datas photographes dans le fichier json //
 function getPhotographers() {
     fetch(urlDatas)
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            //console.log(data);
-            const photographers = data.photographers;
-            photographers.forEach(function (photographer) {
-                const photographerElement = photographerTemplate(photographer);
-                sectionPhotographers.appendChild(photographerElement);
-            });
-        });
+    .then(function (response) {
+        return response.json();
+    })
+    .then(function (data) {
+        //console.log(data);
+        const photographers = data.photographers;
+        //console.log(photographers);
+        for (let i = 0; i < photographers.length; i++) {
+            const photographer = photographers[i];
+            const photographerElement = photographerTemplate(photographer);
+            sectionPhotographers.appendChild(photographerElement);
+        };
+    });
 }
 
 getPhotographers();

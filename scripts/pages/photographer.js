@@ -1,5 +1,17 @@
 //Mettre le code JavaScript lié à la page photographer.html
+
 ////////////////////////////////////////fetch page photographe//////////////////////////////////////////////////////
+// Factory pour créer des objets Photographer
+function createPhotographer(id, name, city, country, tagline, portrait) {
+    return {
+        id,
+        name,
+        city,
+        country,
+        tagline,
+        portrait,
+    };
+}
 document.addEventListener("DOMContentLoaded", function () {
     const urlDatasPage = ("../../data/photographers.json");
     const containerIdPhotographer = document.getElementById('photografer-header'); 
@@ -19,6 +31,21 @@ document.addEventListener("DOMContentLoaded", function () {
         })
         .then(function (data) {
             const photographers = data.photographers;
+
+
+            // Création d'un tableau pour stocker les objets Photographer factory //
+            const photographerObjects = [];
+            // Utilisation d'une boucle for pour créer les objets Photographer
+            for (let i = 0; i < photographers.length; i++) {
+                const photographer = photographers[i];
+                const photographerObject = createPhotographer(photographer.id, photographer.name, photographer.city, photographer.country, photographer.tagline, photographer.portrait);
+                photographerObjects.push(photographerObject);
+            }
+            // Afficher les objets Photographer dans la console
+            for (let i = 0; i < photographerObjects.length; i++) {
+                //console.log(photographerObjects[i]);
+            }
+
             // Recherche du photographe spécifique par son ID //
             const photographer = photographers.find(photographer => photographer.id === parseInt(photographerId));
             if (photographer) {
@@ -71,10 +98,11 @@ function calculateTotalLikesForPhotographer(photographerId, mediaData) {
         totalLikesElement.textContent = totalLikesForPhotographer;
     }
 }
+
 galleryContainer.addEventListener('click', function (event) {
     // closest méthode  pour rechercher élément ascendant (parent), vérifie si l'élément correspond au sélecteur et retourne l' élément. //
-    const likeIcon = event.target.closest('.fa-heart');
-    if (likeIcon) {
+    const likeIcon = event.target.closest('.fa-regular');
+        if (likeIcon) {
         const mediaElement = likeIcon.closest('.element-gallery');
         if (mediaElement) {
             const mediaId = mediaElement.dataset.mediaId;
@@ -88,6 +116,7 @@ galleryContainer.addEventListener('click', function (event) {
 
                 // Met à jour le compteur total
                 totalLikesForPhotographer += 1;
+
 
                 // Affiche le compteur total dans son container //
                 const totalLikesElement = document.getElementById('total-likes');
@@ -109,6 +138,21 @@ function displayDailyRate(photographerId, photographerData) {
     }
 }
 
+
+// Factory pour créer des objets Media //
+function createMedia(id, photographerId, title, image, video, likes, date) {
+    return {
+        id,
+        photographerId,
+        title,
+        image,
+        video,
+        likes,
+        date,
+    };
+}
+
+
 // Recherche datas photographerID //
 async function loadPhotographerData(photographerId) {
     try {
@@ -121,8 +165,24 @@ async function loadPhotographerData(photographerId) {
         totalLikes = calculateTotalLikesForPhotographer(photographerId, photographerMedia);
         displayDailyRate(photographerId, photographers);
         loadSortedPhotographerMedia('Popularité');
-        
-    } catch (error) {
+
+        // tableau medaia factory //
+        const mediaArray = [];
+        for (const media of photographerMedia) {
+            const newMedia = createMedia(
+                media.id,
+                media.photographerId,
+                media.title,
+                media.image,
+                media.video,
+                media.likes,
+                media.date
+            );
+            mediaArray.push(newMedia);
+        }
+        //console.log(mediaArray);
+    } 
+    catch (error) {
         console.error('Erreur au chargement des données du photographe :', error);
     }
 }
@@ -155,7 +215,7 @@ function loadSortedPhotographerMedia(option) {
                     </div>
                     <div class="title-img">
                         <h4 class="txt">${media.title}</h4>
-                        <span class="like like-count">${media.likes}<i class="fa-solid fa-heart" aria-hidden="false" tabindex="0"></i></span>
+                        <span class="like like-count">${media.likes}<i class="fa-regular fa-heart" aria-hidden="false" tabindex="0"></i></span>
                     </div>
                 </div>`;
         //Si c'est une image //        
@@ -167,7 +227,7 @@ function loadSortedPhotographerMedia(option) {
                     </div>
                     <div class="title-img">
                         <h4 class="txt">${media.title}</h4>
-                        <span class="like like-count">${media.likes}<i class="fa-solid fa-heart" aria-hidden="false" tabindex="0"></i></span>
+                        <span class="like like-count">${media.likes}<i class="fa-regular fa-heart" aria-hidden="false" tabindex="0"></i></span>
                     </div>
                 </div>`;
         }
@@ -215,27 +275,22 @@ links.forEach((element) => {
 
 /////////////////////////////////////////// LightBox /////////////////////////////////////////////////////////
 
-function openModal() {
+function openModal(media) {
     const lightboxBg = document.getElementById('lightbox-bg');
     const lightboxImage = document.getElementById('modale');
     lightboxBg.style.display = 'block';
     lightboxImage.innerHTML = event.target.outerHTML;
 
-            // Si l'élément cliqué est une vidéo
-            if (media.video) {
-                lightboxImage.innerHTML = `
-                    <video class="video-modal" controls>
-                        <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4">
-                        Votre navigateur ne supporte pas la lecture de la vidéo.
-                    </video>
-                `;
-            } else if (media.image) {
-                lightboxImage.innerHTML = `
-                    <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-modal" alt="${media.title}">
-                `;
-            }
-    }
-
+    // Si l'élément cliqué est une vidéo
+    if (media.video) {
+        lightboxImage.innerHTML = `
+            <video class="video-modal" controls>
+                <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4">
+                Votre navigateur ne supporte pas la lecture de la vidéo.
+            </video>
+            <div class="media-title">${media.title}</div>`;
+    } 
+}
 function closeModal() {
     const lightboxBg = document.getElementById('lightbox-bg');
     lightboxBg.style.display = 'none';

@@ -249,6 +249,9 @@ h1 {
     height:300px;
     object-fit: cover;
 }
+.img-gallery:hover {
+    cursor:pointer;
+}
 
 .title-img {
     width:90%;
@@ -271,14 +274,26 @@ h1 {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width:12%;
+    width:20%;
 }
-.fa-heart {
+
+.fa-regular.fa-heart {
     padding-left:10px;
+    padding-right: 10px;
     font-size:1em;
     line-height:24px;
     position:relative;
     color: #901C1C;
+    margin-right: 0;
+}
+
+.fa-regular.fa-heart:hover {
+    cursor: pointer;
+    font-weight: bold;
+    background: #901C1C;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: #901C1C;
 }
 
 /* Lecteur vidéo */
@@ -528,7 +543,8 @@ label {
 	text-align:right;
 }
 
-.title-img-lightbox {
+.media-title-lightbox {
+    position: relative;
     font-size:1.5em;
     color:#901C1C;
     font-weight:400;
@@ -588,7 +604,7 @@ label {
     line-height:32px;
     color:black;
 }
-.all-likes {
+.total-icon .fa-solid  {
     font-size:24px;
     line-height:32px;
     color:black;
