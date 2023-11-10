@@ -2,6 +2,7 @@ const urlDatas = "../../data/photographers.json";
 const sectionPhotographers = document.getElementById("section-photographers");
 
 // Factory pour créer les objets Photographer //
+// eslint-disable-next-line no-unused-vars
 function createPhotographer(id, name, city, country, tagline, price, portrait) {
     return {
         id,
@@ -76,7 +77,7 @@ function getPhotographers() {
             const photographer = photographers[i];
             const photographerElement = photographerTemplate(photographer);
             sectionPhotographers.appendChild(photographerElement);
-        };
+        }
     });
 }
 

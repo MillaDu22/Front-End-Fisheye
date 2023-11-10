@@ -37,6 +37,8 @@ function openModalForm() {
     resetForm()
     document.getElementById("form-bg").style.display = "flex";
 }
+openModalForm
+
 // Close modal form with X
 function closeModal() {
     const modalbg = document.querySelector(".bg-form");

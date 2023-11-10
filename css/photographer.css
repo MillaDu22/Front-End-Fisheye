@@ -263,12 +263,16 @@ h1 {
     padding-left:5%;
     padding-right:5%;
     font-weight:400;
-    font: size 2em;
+    font-size: 1em;
     line-height: 24px;
     color:#901C1C;
 }
-.txt {
+.txt, .txt-video {
     width:70%;
+    font-weight:400;
+    font-size: 1em;
+    line-height: 24px;
+    color:#901C1C;
 }
 .like-count {
     display: flex;
@@ -586,8 +590,12 @@ label {
 }
 
 .total-icon {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     padding-left:30px;
-    width:40%;
+    width:23%;
 }
 
 #total-likes {
@@ -605,7 +613,7 @@ label {
     color:black;
 }
 .total-icon .fa-solid  {
-    font-size:24px;
+    font-size:1.5em;
     line-height:32px;
     color:black;
 }

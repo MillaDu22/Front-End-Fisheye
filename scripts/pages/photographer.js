@@ -51,8 +51,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (photographer) {
                 containerIdPhotographer.innerHTML += `
                     <article class="article-id">
-                        <h2 class="name-id">${photographer.name}</h2>
-                        <h3 class="location-id">${photographer.city}, ${photographer.country}</h3>
+                        <h1 class="name-id">${photographer.name}</h1>
+                        <h2 class="location-id">${photographer.city}, ${photographer.country}</h2>
                         <p class="title-photographer-id">${photographer.tagline}</p>
                     </article>
                     <button class="contact_button" tabindex="0" onclick="openModalForm()">Contactez-moi</button>
@@ -162,6 +162,7 @@ async function loadPhotographerData(photographerId) {
         const photographer = photographers.find((photographer) => photographer.id === parseInt(photographerId));
         photographerMedia = data.media.filter((media) => media.photographerId == photographer.id);
 
+        // eslint-disable-next-line no-undef
         totalLikes = calculateTotalLikesForPhotographer(photographerId, photographerMedia);
         displayDailyRate(photographerId, photographers);
         loadSortedPhotographerMedia('Popularité');
@@ -207,14 +208,14 @@ function loadSortedPhotographerMedia(option) {
         if (media.video) {
             galleryContainer.innerHTML += `
                 <div class="element-gallery" data-media-id="${media.id}">
-                    <div class="box-video active">
-                        <video class="video-gallery" controls onclick= "openModal();currentSlide(${index + 1})">
+                    <div class="box-video active" role="group" aria-label="Video Player">
+                        <video class="video-gallery" id="myVideo" controls currentSlide(${index + 1})">
                             <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4" tabindex="0">
-                            Votre navigateur ne supporte pas la lecture de la vidéo.
+                                Votre navigateur ne supporte pas la lecture de la vidéo.
                         </video>
                     </div>
                     <div class="title-img">
-                        <h4 class="txt">${media.title}</h4>
+                        <h3 class="txt-video">${media.title}</h3>
                         <span class="like like-count">${media.likes}<i class="fa-regular fa-heart" aria-hidden="false" tabindex="0"></i></span>
                     </div>
                 </div>`;
@@ -231,7 +232,10 @@ function loadSortedPhotographerMedia(option) {
                     </div>
                 </div>`;
         }
-    });
+        document.getElementById("myVideo").addEventListener("click", function() {
+            openModal();
+        });
+    })
 }
 
 
@@ -297,15 +301,13 @@ function closeModal() {
 }
 
 // Affiche une image spécifique dans la lightbox. Avec argument n qui représente le numéro de l'image //
-function currentSlide(n) {
+/*function currentSlide(n) {
     const lightboxImage = document.getElementById('modale');
     const images = document.querySelectorAll('.element-gallery img');
     if (n >= 1 && n <= images.length) {
         lightboxImage.innerHTML = images[n - 1].outerHTML;
-
-
     }
-}
+}*/
 
 // précédent et suivant //
 function prevNext(n) {
