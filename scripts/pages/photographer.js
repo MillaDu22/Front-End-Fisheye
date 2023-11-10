@@ -21,8 +21,8 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Fonction pour effectuer la requête Fetch et insérer le nom du photographe dans le formulaire //
     const insertPhotographerName = (photographer) => {
-        const h2Element = document.querySelector('.p-contact');
-        h2Element.innerHTML = `Contactez-moi</br> ${photographer.name}`;
+        const h1Element = document.querySelector('.p-contact');
+        h1Element.innerHTML = `Contactez-moi</br> ${photographer.name}`;
     };
     const getPhotographerById = (photographerId) => {
         fetch(urlDatasPage)
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <h2 class="location-id">${photographer.city}, ${photographer.country}</h2>
                         <p class="title-photographer-id">${photographer.tagline}</p>
                     </article>
-                    <button class="contact_button" tabindex="0" onclick="openModalForm()">Contactez-moi</button>
+                    <button class="contact_button " tabindex="0" onclick="openModalForm()" name="Contact Me">Contactez-moi</button>
                     <span class="container-img-id">
                         <img src= "../../assets/images/photographers/${photographer.portrait}" class="photographer-photography-id" alt="Portrait de ${photographer.name}">
                     </span>`;
@@ -209,14 +209,14 @@ function loadSortedPhotographerMedia(option) {
             galleryContainer.innerHTML += `
                 <div class="element-gallery" data-media-id="${media.id}">
                     <div class="box-video active" role="group" aria-label="Video Player">
-                        <video class="video-gallery" id="myVideo" controls currentSlide(${index + 1})">
+                        <video class="video-gallery" id="myVideo" controls onclick ="openModal();currentSlide(${index + 1})">
                             <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4" tabindex="0">
                                 Votre navigateur ne supporte pas la lecture de la vidéo.
                         </video>
                     </div>
                     <div class="title-img">
                         <h3 class="txt-video">${media.title}</h3>
-                        <span class="like like-count">${media.likes}<i class="fa-regular fa-heart" aria-hidden="false" tabindex="0"></i></span>
+                        <span class="like like-count">${media.likes}<i class="fa-regular fa-heart" aria-hidden="false" aria-label="Vous pouvez ajouter un j'aime à la video" tabindex="0"></i></span>
                     </div>
                 </div>`;
         //Si c'est une image //        
@@ -228,13 +228,13 @@ function loadSortedPhotographerMedia(option) {
                     </div>
                     <div class="title-img">
                         <h4 class="txt">${media.title}</h4>
-                        <span class="like like-count">${media.likes}<i class="fa-regular fa-heart" aria-hidden="false" tabindex="0"></i></span>
+                        <span class="like like-count">${media.likes}<i class="fa-regular fa-heart" aria-hidden="false"  aria-label="Vous pouvez ajouter un j'aime à la photographie" tabindex="0"></i></span>
                     </div>
                 </div>`;
         }
-        document.getElementById("myVideo").addEventListener("click", function() {
+        /*document.getElementById("myVideo").addEventListener("click", function() {
             openModal();
-        });
+        });*/
     })
 }
 
@@ -299,6 +299,7 @@ function closeModal() {
     const lightboxBg = document.getElementById('lightbox-bg');
     lightboxBg.style.display = 'none';
 }
+openModal;
 
 // Affiche une image spécifique dans la lightbox. Avec argument n qui représente le numéro de l'image //
 /*function currentSlide(n) {

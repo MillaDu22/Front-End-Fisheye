@@ -10,6 +10,17 @@ html {
     padding:0;
 }
 
+a:focus, 
+button:focus, 
+.selected:focus, 
+img:focus, video:focus, 
+.fa-regular:focus, input:focus, 
+.x-lightbox:focus, 
+.arrow-left:focus, 
+.arrow-right:focus {
+outline: 2px solid #D3573C;
+}
+
 body {
     font-family: "DM Sans", sans-serif;
     width:100%;

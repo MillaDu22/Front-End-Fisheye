@@ -8,7 +8,7 @@ const formFields = document.querySelectorAll('input[type="text"], input[type="em
 // Rajout d'un gestionnaire d'événement "keydown" à chaque champ du formulaire
 formFields.forEach((field, index) => {
     field.addEventListener('keydown', (event) => {
-    if (event.key === 'Tab' || event.keyCode === 9) {
+    if (event.key === 'Tab' || event.keyCode === 9   ) { 
         // Pour passer au champ suivant ou au premier champ si c'est le dernier
         const nextIndex = (index) % formFields.length;
         formFields[nextIndex].focus();
@@ -38,6 +38,7 @@ function openModalForm() {
     document.getElementById("form-bg").style.display = "flex";
 }
 openModalForm
+
 
 // Close modal form with X
 function closeModal() {
@@ -134,5 +135,9 @@ function isValidEmail(email) {
     //méthode test() renvoie true si la correspondance est trouvée
     return emailRegex.test(email);
 }
+
+
+
+
 
 
