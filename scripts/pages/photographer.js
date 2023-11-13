@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <h2 class="location-id">${photographer.city}, ${photographer.country}</h2>
                         <p class="title-photographer-id">${photographer.tagline}</p>
                     </article>
-                    <button class="contact_button " tabindex="0" onclick="openModalForm()" name="Contact Me">Contactez-moi</button>
+                    <button class="contact_button type="button" tabindex="0 " onclick="openModalForm()" name="Contact Me">Contactez-moi</button>
                     <span class="container-img-id">
                         <img src= "../../assets/images/photographers/${photographer.portrait}" class="photographer-photography-id" alt="Portrait de ${photographer.name}">
                     </span>`;
@@ -101,7 +101,7 @@ function calculateTotalLikesForPhotographer(photographerId, mediaData) {
 
 galleryContainer.addEventListener('click', function (event) {
     // closest méthode  pour rechercher élément ascendant (parent), vérifie si l'élément correspond au sélecteur et retourne l' élément. //
-    const likeIcon = event.target.closest('.fa-regular');
+    const likeIcon = event.target.closest('.link-heart');
         if (likeIcon) {
         const mediaElement = likeIcon.closest('.element-gallery');
         if (mediaElement) {
@@ -201,40 +201,45 @@ function loadSortedPhotographerMedia(option) {
         sortedMedia.sort((a, b) => a.title.localeCompare(b.title));
         // Tri par ordre alphabétique avec la méthode localeCompare qui détermine la façon dont les caractères sont triés //
     }
+
+    // Gestion Tabindex //
+    let tabindexCounter = 0; 
+    // Initialisation du compteur avec la valeur initiale //
+
     // Pour chaque media le HTML suivant //
     galleryContainer.innerHTML = '';
     sortedMedia.forEach((media, index) => {
+
+        let tabindex = tabindexCounter;
         // Si c'est une video //
         if (media.video) {
             galleryContainer.innerHTML += `
                 <div class="element-gallery" data-media-id="${media.id}">
-                    <div class="box-video active" role="group" aria-label="Video Player">
-                        <video class="video-gallery" id="myVideo" controls onclick ="openModal();currentSlide(${index + 1})">
-                            <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4" tabindex="0">
+                    <a href="#" class="box-video active"  aria-label="Video Player" tabindex="${tabindex}" onclick="openModal(event);currentSlide(${index + 1})" >
+                        <video class="video-gallery" id="myVideo" controls onclick="openModal(event);currentSlide(${index + 1})">
+                            <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4">
                                 Votre navigateur ne supporte pas la lecture de la vidéo.
                         </video>
-                    </div>
+                    </a>
                     <div class="title-img">
                         <h3 class="txt-video">${media.title}</h3>
-                        <span class="like like-count">${media.likes}<i class="fa-regular fa-heart" aria-hidden="false" aria-label="Vous pouvez ajouter un j'aime à la video" tabindex="0"></i></span>
+                        <span class="like like-count">${media.likes}<a href="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}"><i class="fa-regular fa-heart" aria-hidden="false" aria-label="Vous pouvez ajouter un j'aime à la video"></i></a></span>
                     </div>
                 </div>`;
+
         //Si c'est une image //        
         } else if (media.image) {
             galleryContainer.innerHTML += `
                 <div class="element-gallery" data-media-id="${media.id}">
-                    <div class "box-image active">
-                        <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-gallery" alt="${media.title}" onclick ="openModal();currentSlide(${index + 1})" tabindex="0">
-                    </div>
+                    <a href="#" class "box-image active" tabindex="${tabindex}" onclick="openModal(event);currentSlide(${index + 1})">
+                        <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-gallery" alt="${media.title}">
+                    </a>
                     <div class="title-img">
                         <h4 class="txt">${media.title}</h4>
-                        <span class="like like-count">${media.likes}<i class="fa-regular fa-heart" aria-hidden="false"  aria-label="Vous pouvez ajouter un j'aime à la photographie" tabindex="0"></i></span>
+                        <span class="like like-count">${media.likes}<a href ="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}"><i class="fa-regular fa-heart" aria-hidden="false" aria-label="Vous pouvez ajouter un j'aime à la photographie"></i></a></span>
                     </div>
                 </div>`;
         }
-        /*document.getElementById("myVideo").addEventListener("click", function() {
-            openModal();
-        });*/
     })
 }
 
@@ -256,7 +261,7 @@ if (photographerId !== null) {
     // Console.log('ID du photographe depuis URL :', photographerId); //
     loadPhotographerData(photographerId)
         .then(() => {
-            loadSortedPhotographerMedia('Popularité'); // Affichage par popularité par défaut
+            loadSortedPhotographerMedia('Popularité'); // Affichage par popularité par défaut //
         })
         .catch((error) => {
             console.error('Erreur au chargement des médias du photographe :', error);
@@ -278,37 +283,52 @@ links.forEach((element) => {
 });
 
 /////////////////////////////////////////// LightBox /////////////////////////////////////////////////////////
-
-function openModal(media) {
+const arrowLeft = document.querySelector('.arrow-left');
+function openModal(event) {
     const lightboxBg = document.getElementById('lightbox-bg');
     const lightboxImage = document.getElementById('modale');
     lightboxBg.style.display = 'block';
     lightboxImage.innerHTML = event.target.outerHTML;
+    // Vérification si événement déclenché par un élément interactif (avec tabindex) //
+    const isInteractiveElement = event.target.getAttribute('tabindex') !== null;
 
-    // Si l'élément cliqué est une vidéo
-    if (media.video) {
-        lightboxImage.innerHTML = `
-            <video class="video-modal" controls>
-                <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4">
-                Votre navigateur ne supporte pas la lecture de la vidéo.
-            </video>
-            <div class="media-title">${media.title}</div>`;
-    } 
+    if (isInteractiveElement) {
+        // Ouvrir la modal uniquement si l'événement provient d'un élément avec tabindex //
+        lightboxBg.style.display = 'block';
+        lightboxImage.innerHTML = event.target.outerHTML;
+        // Focus sur previous à l'ouverture de la modale //
+        setTimeout(function() {
+            arrowLeft.focus();
+            }, 100);
+            // Tabindex pour les éléments de la lightbox //
+            lightboxImage.querySelectorAll('[tabindex]').forEach((element, index) => {
+                element.setAttribute('tabindex', index + 1);
+        });
+    }
 }
+openModal;
+
 function closeModal() {
     const lightboxBg = document.getElementById('lightbox-bg');
     lightboxBg.style.display = 'none';
 }
-openModal;
 
-// Affiche une image spécifique dans la lightbox. Avec argument n qui représente le numéro de l'image //
-/*function currentSlide(n) {
+// Ajout gestionnaire d'événements pour la touche "Escape" pour fermer la lightbox //
+document.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        closeModal();
+    }
+});
+
+// Affichage image spécifique dans la lightbox. L'argument n représente le numéro de l'image //
+// eslint-disable-next-line no-unused-vars
+function currentSlide(n) {
     const lightboxImage = document.getElementById('modale');
-    const images = document.querySelectorAll('.element-gallery img');
+    const images = document.querySelectorAll('.element-gallery img, .element-gallery video');
     if (n >= 1 && n <= images.length) {
         lightboxImage.innerHTML = images[n - 1].outerHTML;
     }
-}*/
+}
 
 // précédent et suivant //
 function prevNext(n) {
@@ -344,7 +364,7 @@ document.querySelector('.x-lightbox').addEventListener('click', closeModal);
 document.querySelector('.arrow-left').addEventListener('click', () => prevNext(-1));
 document.querySelector('.arrow-right').addEventListener('click', () => prevNext(1));
 
+
+
 ////////////////////////////////////////////////////////////////////////////////////////////
-
-
 

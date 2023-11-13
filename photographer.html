@@ -25,8 +25,8 @@
 <!--Structure du filtre select-->
       <div class="select-filter">
         <p class ="label-collapse">Trier par</p>
-        <div id="dropdown-wrapper" class="dropdown-wrapper" role="group" aria-label="Tri par popularité, dates, titres" tabindex="0">
-          <span class="selected" tabindex="0">Popularité</span>   
+        <div id="dropdown-wrapper" class="dropdown-wrapper" tabindex="0">
+          <span class="selected">Popularité</span>   
           <ul class="dropdown-list">
               <li><a href="#" tabindex="0" aria-label="Option popularité du sélecteur">Popularité</a></li>
               <li><a href="#" tabindex="0" aria-label="Option date du sélecteur ">Date</a></li>
@@ -44,31 +44,34 @@
         <div class="modal-body">
           <span class="contact-me-close">
             <span class ="p-contact"></span>
-            <img src="assets/icons/close.svg" alt="bouton de fermeture de la modale formulaire" class="x-close-modal-form" tabindex="0">
-          </span>
+              <a href="#" class="x-close-modal-form" id="close-button">
+                <img src="assets/icons/close.svg" alt="bouton de fermeture de la modale formulaire" class ="Xform">
+              </a>
+            </span>
+    
 <!--Structure des inputs-->  
         <form class="form-contact" name="formmsg" action="index.html" method="get" novalidate>          
           <div class="formData">
             <label for ="first">Prénom</label><br>
-            <input class="text-control" type="text" aria-label="Veuillez saisir votre prénom" tabindex="0" id="first" name="first" minlength="2" required><br>
+            <input class="text-control" type="text" aria-label="Veuillez saisir votre prénom" id="first" name="first" minlength="2" required><br>
             <div id="error-first"></div>
           </div>
           <div class="formData">
             <label for="last">Nom</label><br>
-            <input class="text-control" type="text" aria-label="Veuillez saisir votre nom" tabindex="0" id="last" name="last" minlength="2" required><br>
+            <input class="text-control" type="text" aria-label="Veuillez saisir votre nom" id="last" name="last" minlength="2" required><br>
             <div id="error-last"></div>
           </div>
           <div class="formData">
             <label for="email">E-mail</label><br>
-            <input class="text-control" autocomplete="off" type="email" aria-label="Veuillez saisir votre email" tabindex="0" id="email" name="email" required><br>
+            <input class="text-control" autocomplete="off" type="email" aria-label="Veuillez saisir votre email" id="email" name="email" required><br>
             <div id="error-email"></div>
           </div>
           <div class="formData">
             <label for="msg">Votre message</label><br>
-            <input class="text-control-msg" type="text" aria-label="Veuillez saisir votre message" tabindex="0" id="msg" name="commentaires" minlength="2" required><br>
+            <input class="text-control-msg" type="text" aria-label="Veuillez saisir votre message" id="msg" name="commentaires" minlength="2" required><br>
             <div id="error-msg"></div>
           </div>         
-          <input class="btn-submit" type="submit" aria-label="Veuillez valider votre formulaire" tabindex="0" value="Envoyer">
+          <input class="btn-submit" type="submit" aria-label="Veuillez valider votre formulaire" value="Envoyer">
         </form>
       </div>
     </div>
@@ -77,11 +80,11 @@
       <div class="lightbox" id="lightbox-bg">
         <div class="body-lightbox" role ="dialog"  aria-label="image closeup view">
           <div class ="box-X">
-            <span class="x-lightbox" aria-hidden="true" tabindex="0">X</span>
+            <a href="#" class="x-lightbox" aria-hidden="true" tabindex="0">X</a>
           </div>
           <div class="arrows">
-            <span class="arrow-left" onclick="prevNext(-1)" tabindex="0"> &lt; </span>
-            <span class="arrow-right" onclick="prevNext(1)" tabindex="0"> > </span>
+            <a href="#" class="arrow-left" onclick="prevNext(-1)" tabindex="0"> &lt; </a>
+            <a href="#" class="arrow-right" onclick="prevNext(1)" tabindex="0">&gt;</a>
           </div>
           <div class="lightbox-image" id="modale" role="document"></div>
         </div>

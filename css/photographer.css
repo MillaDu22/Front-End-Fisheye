@@ -12,6 +12,7 @@ html {
 
 a:focus, 
 button:focus, 
+.dropdown-wrapper:focus,
 .selected:focus, 
 img:focus, video:focus, 
 .fa-regular:focus, input:focus, 
@@ -376,6 +377,10 @@ h1 {
     height:45px;
     margin-top:20px;
 }
+.Xform {
+    width:100%;
+    height:100%;
+}
 
 .p-contact {
     margin-top:20px;
@@ -479,6 +484,7 @@ label {
     margin-right: 10px;
     color: #901C1C;
     z-index:45;
+    text-decoration: none;
 }
 
 .body-lightbox {
@@ -548,6 +554,7 @@ label {
 	position:relative;
 	font-size:85px;
     color: #901C1C;
+    text-decoration: none;
 }
 
 .arrow-left {

@@ -3,15 +3,17 @@
 /************************************Gestion clavier remplissage des champs***************************** */
 
 // Récupération des champs du formulaire dans un tableau
-const formFields = document.querySelectorAll('input[type="text"], input[type="email"]');
+const formFields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="submit"], button[type="submit"');
+const textFields = Array.from(formFields).filter(field => field.type !== 'submit');
 
 // Rajout d'un gestionnaire d'événement "keydown" à chaque champ du formulaire
-formFields.forEach((field, index) => {
+textFields.forEach((field, index) => {
     field.addEventListener('keydown', (event) => {
-    if (event.key === 'Tab' || event.keyCode === 9   ) { 
+    if (event.key === 'Enter' || event.keyCode === 13   ) { 
         // Pour passer au champ suivant ou au premier champ si c'est le dernier
         const nextIndex = (index) % formFields.length;
-        formFields[nextIndex].focus();
+        formFields[nextIndex+1].focus();
+        event.preventDefault();
         }
     });
 });
@@ -33,9 +35,15 @@ function resetErrors() {
 }
 
 // Fonction open modal
+const firstInput = document.getElementById('first');
 function openModalForm() {
     resetForm()
     document.getElementById("form-bg").style.display = "flex";
+// Mise en place du focus sur le premier champs //
+    setTimeout(function() {
+        firstInput.focus();
+        },
+    100);
 }
 openModalForm
 
@@ -122,6 +130,11 @@ function validateForm(event) {
         console.log('Adresse electronique : ' + email);
         console.log('Message : ' + message);
     } 
+    // Pour retourner sur le bouton de fermeture après validation du formulaire //
+    const closeButton = document.getElementById('close-button');
+    if (closeButton) {
+        closeButton.focus();
+    }
 }
 
 document.querySelector('form[name="formmsg"]').addEventListener('submit', function(event) {
