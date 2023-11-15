@@ -50,17 +50,17 @@ document.addEventListener("DOMContentLoaded", function () {
             const photographer = photographers.find(photographer => photographer.id === parseInt(photographerId));
             if (photographer) {
                 containerIdPhotographer.innerHTML += `
-                    <article class="article-id">
-                        <h1 class="name-id">${photographer.name}</h1>
-                        <h2 class="location-id">${photographer.city}, ${photographer.country}</h2>
-                        <p class="title-photographer-id">${photographer.tagline}</p>
-                    </article>
-                    <button class="contact_button type="button" tabindex="0 " onclick="openModalForm()" name="Contact Me">Contactez-moi</button>
-                    <span class="container-img-id">
-                        <img src= "../../assets/images/photographers/${photographer.portrait}" class="photographer-photography-id" alt="Portrait de ${photographer.name}">
-                    </span>`;
-                    // Insére le nom du photographe dans le formulaire //
-                    insertPhotographerName(photographer);
+                <article class="article-id">
+                    <h1 class="name-id">${photographer.name}</h1>
+                    <h2 class="location-id">${photographer.city}, ${photographer.country}</h2>
+                    <p class="title-photographer-id">${photographer.tagline}</p>
+                </article>
+                <button class="contact_button type="button" tabindex="0 " onclick="openModalForm()" name="Contact Me">Contactez-moi</button>
+                <span class="container-img-id">
+                    <img src= "../../assets/images/photographers/${photographer.portrait}" class="photographer-photography-id" alt="Portrait de ${photographer.name}">
+                </span>`;
+                // Insére le nom du photographe dans le formulaire //
+                insertPhotographerName(photographer);
             } else {
             // Si aucun photographe n'est trouvé //
             containerIdPhotographer.innerHTML = "Aucun photographe trouvé.";
@@ -102,21 +102,33 @@ function calculateTotalLikesForPhotographer(photographerId, mediaData) {
 galleryContainer.addEventListener('click', function (event) {
     // closest méthode  pour rechercher élément ascendant (parent), vérifie si l'élément correspond au sélecteur et retourne l' élément. //
     const likeIcon = event.target.closest('.link-heart');
-        if (likeIcon) {
+    // console.log('Like Icon Clicked:', likeIcon);
+
+    if (likeIcon) {
+        event.preventDefault();
+        event.stopPropagation();
         const mediaElement = likeIcon.closest('.element-gallery');
+        // console.log('Media Element:', mediaElement);
         if (mediaElement) {
             const mediaId = mediaElement.dataset.mediaId;
+            // console.log('Media ID:', mediaId);
             if (mediaId) {
                 // Met à jour le compteur individuel
-                const likeCountElement = mediaElement.querySelector('.like-count');
+                const likeCountElement = mediaElement.querySelector('.like-count');/// Ici display when code is comment///
+                const liked = true; // Remplacez cela par votre logique pour déterminer si c'est aimé ou non
+
                 if (likeCountElement) {
                     const currentLikes = parseInt(likeCountElement.textContent, 10);
-                    likeCountElement.textContent = currentLikes + 1;
+                    // Définition icone solid si liked //
+                    const heartIconClass = liked ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+                    // Création chaîne avec nombre de likes et l'icône //
+                    const likesWithIcon = `${currentLikes + 1} <i class="${heartIconClass}"></i>`;
+                    // Mise à jour le contenu de likeCountElement avec la chaîne //
+                    likeCountElement.innerHTML = likesWithIcon;
                 }
-
                 // Met à jour le compteur total
                 totalLikesForPhotographer += 1;
-
+                //console.log('Total Likes:', totalLikesForPhotographer);
 
                 // Affiche le compteur total dans son container //
                 const totalLikesElement = document.getElementById('total-likes');
@@ -126,8 +138,7 @@ galleryContainer.addEventListener('click', function (event) {
             }
         }
     }
-});
-
+});    
 
 // Affiche le tarif journalier à partir des données JSON //
 function displayDailyRate(photographerId, photographerData) {
@@ -137,7 +148,6 @@ function displayDailyRate(photographerId, photographerData) {
         dailyRateElement.innerHTML = `${photographer.price} € / jour`;
     }
 }
-
 
 // Factory pour créer des objets Media //
 function createMedia(id, photographerId, title, image, video, likes, date) {
@@ -162,9 +172,12 @@ async function loadPhotographerData(photographerId) {
         const photographer = photographers.find((photographer) => photographer.id === parseInt(photographerId));
         photographerMedia = data.media.filter((media) => media.photographerId == photographer.id);
 
+        // Calcul du total des likes pour le photographe
         // eslint-disable-next-line no-undef
         totalLikes = calculateTotalLikesForPhotographer(photographerId, photographerMedia);
+        // Affichage du tarif journalier
         displayDailyRate(photographerId, photographers);
+        // Chargement des médias du photographe triés par popularité
         loadSortedPhotographerMedia('Popularité');
 
         // tableau medaia factory //
@@ -187,7 +200,6 @@ async function loadPhotographerData(photographerId) {
         console.error('Erreur au chargement des données du photographe :', error);
     }
 }
-
 // Tri avec méthode sort //
 function loadSortedPhotographerMedia(option) {
     let sortedMedia = [...photographerMedia];
@@ -201,44 +213,49 @@ function loadSortedPhotographerMedia(option) {
         sortedMedia.sort((a, b) => a.title.localeCompare(b.title));
         // Tri par ordre alphabétique avec la méthode localeCompare qui détermine la façon dont les caractères sont triés //
     }
-
-    // Gestion Tabindex //
     let tabindexCounter = 0; 
     // Initialisation du compteur avec la valeur initiale //
 
     // Pour chaque media le HTML suivant //
     galleryContainer.innerHTML = '';
     sortedMedia.forEach((media, index) => {
-
         let tabindex = tabindexCounter;
+
         // Si c'est une video //
         if (media.video) {
             galleryContainer.innerHTML += `
-                <div class="element-gallery" data-media-id="${media.id}">
-                    <a href="#" class="box-video active"  aria-label="Video Player" tabindex="${tabindex}" onclick="openModal(event);currentSlide(${index + 1})" >
-                        <video class="video-gallery" id="myVideo" controls onclick="openModal(event);currentSlide(${index + 1})">
-                            <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4">
-                                Votre navigateur ne supporte pas la lecture de la vidéo.
-                        </video>
-                    </a>
-                    <div class="title-img">
-                        <h3 class="txt-video">${media.title}</h3>
-                        <span class="like like-count">${media.likes}<a href="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}"><i class="fa-regular fa-heart" aria-hidden="false" aria-label="Vous pouvez ajouter un j'aime à la video"></i></a></span>
-                    </div>
-                </div>`;
-
+            <div class="element-gallery" data-media-id="${media.id}" data-index="${index}">
+                <a href="#" class="box-video active"  aria-label="Video Player" tabindex="${tabindex}" onclick="openModal(event);currentSlide(${index + 1})" >
+                    <video class="video-gallery" id="myVideo" controls onclick="openModal(event);currentSlide(${index + 1})">
+                        <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4">
+                            Votre navigateur ne supporte pas la lecture de la vidéo.
+                    </video>
+                </a>
+                <div class="title-img">
+                    <h3 class="txt-video">${media.title}</h3>
+                    <span class="like like-count" data-likes="0">${media.likes}
+                        <a href="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}">
+                            <i class="fa-regular fa-heart" aria-label="Vous pouvez ajouter un j'aime à la video"></i>
+                        </a>
+                    </span>
+                </div>
+            </div>`;
         //Si c'est une image //        
         } else if (media.image) {
             galleryContainer.innerHTML += `
-                <div class="element-gallery" data-media-id="${media.id}">
-                    <a href="#" class "box-image active" tabindex="${tabindex}" onclick="openModal(event);currentSlide(${index + 1})">
-                        <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-gallery" alt="${media.title}">
-                    </a>
-                    <div class="title-img">
-                        <h4 class="txt">${media.title}</h4>
-                        <span class="like like-count">${media.likes}<a href ="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}"><i class="fa-regular fa-heart" aria-hidden="false" aria-label="Vous pouvez ajouter un j'aime à la photographie"></i></a></span>
-                    </div>
-                </div>`;
+            <div class="element-gallery" data-media-id="${media.id}" data-index="${index}">
+                <a href="#" class "box-image active" tabindex="${tabindex}" onclick="openModal(event);currentSlide(${index + 1})">
+                    <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-gallery" alt="${media.title}">
+                </a>
+                <div class="title-img">
+                    <h4 class="txt">${media.title}</h4>
+                    <span class="like like-count" data-likes="0">${media.likes}
+                        <a href ="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}">
+                            <i class="fa-regular fa-heart" aria-label="Vous pouvez ajouter un j'aime à la photographie"></i>
+                        </a>
+                    </span>
+                </div>
+            </div>`;
         }
     })
 }
@@ -284,6 +301,7 @@ links.forEach((element) => {
 
 /////////////////////////////////////////// LightBox /////////////////////////////////////////////////////////
 const arrowLeft = document.querySelector('.arrow-left');
+
 function openModal(event) {
     const lightboxBg = document.getElementById('lightbox-bg');
     const lightboxImage = document.getElementById('modale');
@@ -296,6 +314,7 @@ function openModal(event) {
         // Ouvrir la modal uniquement si l'événement provient d'un élément avec tabindex //
         lightboxBg.style.display = 'block';
         lightboxImage.innerHTML = event.target.outerHTML;
+
         // Focus sur previous à l'ouverture de la modale //
         setTimeout(function() {
             arrowLeft.focus();
@@ -325,8 +344,10 @@ document.addEventListener('keydown', function (event) {
 function currentSlide(n) {
     const lightboxImage = document.getElementById('modale');
     const images = document.querySelectorAll('.element-gallery img, .element-gallery video');
+
     if (n >= 1 && n <= images.length) {
         lightboxImage.innerHTML = images[n - 1].outerHTML;
+        
     }
 }
 
@@ -336,8 +357,9 @@ function prevNext(n) {
     const images = document.querySelectorAll('.element-gallery img, .element-gallery video ');
     let currentImageIndex;
 
-    // Trouve l'index de l'image actuelle //
-    images.forEach((img, index) => {
+
+     // Trouve l'index de l'image actuelle //
+        images.forEach((img, index) => {
         if (img.outerHTML === lightboxImage.innerHTML) {
             currentImageIndex = index;
         }
@@ -353,7 +375,7 @@ function prevNext(n) {
         nextIndex = images.length - 1;
     }
 
-    // Affiche l'image suivante //
+
     lightboxImage.innerHTML = images[nextIndex].outerHTML;
 }
 
@@ -367,4 +389,6 @@ document.querySelector('.arrow-right').addEventListener('click', () => prevNext(
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
