@@ -1,4 +1,34 @@
-/* Fetch datas photographers HomePage avec innerHTML*/
+import PhotographerFactory from '../factories/photographersFactory.js'
+import PhotographerCard from '../templates/homePhotographer.js'
+export default class App {
+    constructor() {
+        this.sectionPhotographers = document.getElementById('section-photographers');
+        this.photographerApi = new this.photographerApi('/data/photographers.json')
+    }
+    async main() {
+        const DataPhotographer = await this.photographerApi.getPhotographer()
+        const Photographer = DataPhotographer.map(photographer => new PhotographerFactory(photographer, 'photographerApi'))
+
+        DataPhotographer
+        // Ici, je transforme mon tableau de données en un tableau de class Photographer
+        .map(photographer => new  Photographer(photographer))
+        .forEach(photographer => {
+            const Template = new PhotographerCard(photographer)
+            this.sectionPhotographers.appendChild(
+                Template.createPhotographerCard()
+            )
+        })
+    }
+}
+const app = new App()
+app.main()
+
+
+
+/*
+//// Version innerHTML /////
+
+// Fetch datas photographers HomePage avec innerHTML //
 const urlDatas = ('../../data/photographers.json');
 const sectionPhotographers = document.getElementById('section-photographers');
 
@@ -36,5 +66,6 @@ const getPhotographers = () => {
     });
 };
 getPhotographers();
+*/
 
 

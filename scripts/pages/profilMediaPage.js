@@ -1,78 +1,5 @@
 //Mettre le code JavaScript lié à la page photographer.html
 
-////////////////////////////////////////fetch page photographe//////////////////////////////////////////////////////
-// Factory pour créer des objets Photographer
-function createPhotographer(id, name, city, country, tagline, portrait) {
-    return {
-        id,
-        name,
-        city,
-        country,
-        tagline,
-        portrait,
-    };
-}
-document.addEventListener("DOMContentLoaded", function () {
-    const urlDatasPage = ("../../data/photographers.json");
-    const containerIdPhotographer = document.getElementById('photografer-header'); 
-    // Récupération de l'ID du photographe depuis l'URL //
-    const urlParams = new URLSearchParams(window.location.search);
-    const photographerId = urlParams.get("id"); // l'ID est passé en tant que paramètre "id" dans l'URL //
-    
-    // Fonction pour effectuer la requête Fetch et insérer le nom du photographe dans le formulaire //
-    const insertPhotographerName = (photographer) => {
-        const h1Element = document.querySelector('.p-contact');
-        h1Element.innerHTML = `Contactez-moi</br> ${photographer.name}`;
-    };
-    const getPhotographerById = (photographerId) => {
-        fetch(urlDatasPage)
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            const photographers = data.photographers;
-
-
-            // Création d'un tableau pour stocker les objets Photographer factory //
-            const photographerObjects = [];
-            // Utilisation d'une boucle for pour créer les objets Photographer
-            for (let i = 0; i < photographers.length; i++) {
-                const photographer = photographers[i];
-                const photographerObject = createPhotographer(photographer.id, photographer.name, photographer.city, photographer.country, photographer.tagline, photographer.portrait);
-                photographerObjects.push(photographerObject);
-            }
-            // Afficher les objets Photographer dans la console
-            for (let i = 0; i < photographerObjects.length; i++) {
-                //console.log(photographerObjects[i]);
-            }
-
-            // Recherche du photographe spécifique par son ID //
-            const photographer = photographers.find(photographer => photographer.id === parseInt(photographerId));
-            if (photographer) {
-                containerIdPhotographer.innerHTML += `
-                <article class="article-id">
-                    <h1 class="name-id">${photographer.name}</h1>
-                    <h2 class="location-id">${photographer.city}, ${photographer.country}</h2>
-                    <p class="title-photographer-id">${photographer.tagline}</p>
-                </article>
-                <button class="contact_button type="button" tabindex="0 " onclick="openModalForm()" name="Contact Me">Contactez-moi</button>
-                <span class="container-img-id">
-                    <img src= "../../assets/images/photographers/${photographer.portrait}" class="photographer-photography-id" alt="Portrait de ${photographer.name}">
-                </span>`;
-                // Insére le nom du photographe dans le formulaire //
-                insertPhotographerName(photographer);
-            } else {
-            // Si aucun photographe n'est trouvé //
-            containerIdPhotographer.innerHTML = "Aucun photographe trouvé.";
-            }
-        })
-        .catch(function (error) {
-            console.error('Erreur du chargement des données :', error);
-        });
-    };
-getPhotographerById(photographerId);
-});
-
 //////////////////////////////////////////////////////fetch pour gallery medias + select////////////////////////////////////////
 
 const galleryContainer = document.getElementById('gallery-photografer');
@@ -113,9 +40,9 @@ galleryContainer.addEventListener('click', function (event) {
             const mediaId = mediaElement.dataset.mediaId;
             // console.log('Media ID:', mediaId);
             if (mediaId) {
-                // Met à jour le compteur individuel
-                const likeCountElement = mediaElement.querySelector('.like-count');/// Ici display when code is comment///
-                const liked = true; // Remplacez cela par votre logique pour déterminer si c'est aimé ou non
+                // Met à jour le compteur individuel //
+                const likeCountElement = mediaElement.querySelector('.like-count');
+                const liked = true;
 
                 if (likeCountElement) {
                     const currentLikes = parseInt(likeCountElement.textContent, 10);
@@ -200,6 +127,7 @@ async function loadPhotographerData(photographerId) {
         console.error('Erreur au chargement des données du photographe :', error);
     }
 }
+
 // Tri avec méthode sort //
 function loadSortedPhotographerMedia(option) {
     let sortedMedia = [...photographerMedia];
@@ -224,15 +152,15 @@ function loadSortedPhotographerMedia(option) {
         // Si c'est une video //
         if (media.video) {
             galleryContainer.innerHTML += `
-            <div class="element-gallery" data-media-id="${media.id}" data-index="${index}">
-                <a href="#" class="box-video active"  aria-label="Video Player" tabindex="${tabindex}" onclick="openModal(event);currentSlide(${index + 1})" >
-                    <video class="video-gallery" id="myVideo" controls onclick="openModal(event);currentSlide(${index + 1})">
+            <div class="element-gallery" data-media-id="${media.id}">
+                <a href="#" class="box-video active"  aria-label="Video Player" tabindex="${tabindex}"  onclick="openModal(event);currentSlide(${index + 1})" >
+                    <video class="video-gallery" id="myVideo" controls data-index="${index}" >
                         <source src="../../assets/images/gallery-id/${photographerId}/${media.video}" type="video/mp4">
                             Votre navigateur ne supporte pas la lecture de la vidéo.
                     </video>
                 </a>
                 <div class="title-img">
-                    <h3 class="txt-video">${media.title}</h3>
+                    <h3 class="txt-video" data-media-title="${media.title}">${media.title}</h3>
                     <span class="like like-count" data-likes="0">${media.likes}
                         <a href="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}">
                             <i class="fa-regular fa-heart" aria-label="Vous pouvez ajouter un j'aime à la video"></i>
@@ -243,12 +171,12 @@ function loadSortedPhotographerMedia(option) {
         //Si c'est une image //        
         } else if (media.image) {
             galleryContainer.innerHTML += `
-            <div class="element-gallery" data-media-id="${media.id}" data-index="${index}">
+            <div class="element-gallery" data-media-id="${media.id}">
                 <a href="#" class "box-image active" tabindex="${tabindex}" onclick="openModal(event);currentSlide(${index + 1})">
-                    <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-gallery" alt="${media.title}">
+                    <img src="../../assets/images/gallery-id/${photographerId}/${media.image}" class="img-gallery" alt="${media.title}" data-index="${index}">
                 </a>
                 <div class="title-img">
-                    <h4 class="txt">${media.title}</h4>
+                    <h4 class="txt" data-media-title="${media.title}">${media.title}</h4>
                     <span class="like like-count" data-likes="0">${media.likes}
                         <a href ="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}">
                             <i class="fa-regular fa-heart" aria-label="Vous pouvez ajouter un j'aime à la photographie"></i>
@@ -283,7 +211,7 @@ if (photographerId !== null) {
         .catch((error) => {
             console.error('Erreur au chargement des médias du photographe :', error);
         });
-} else {
+    } else {
     console.log('ID non trouvé ou invalide.');
 }
 
@@ -298,97 +226,4 @@ links.forEach((element) => {
         loadSortedPhotographerMedia(evt.currentTarget.textContent);
     });
 });
-
-/////////////////////////////////////////// LightBox /////////////////////////////////////////////////////////
-const arrowLeft = document.querySelector('.arrow-left');
-
-function openModal(event) {
-    const lightboxBg = document.getElementById('lightbox-bg');
-    const lightboxImage = document.getElementById('modale');
-    lightboxBg.style.display = 'block';
-    lightboxImage.innerHTML = event.target.outerHTML;
-    // Vérification si événement déclenché par un élément interactif (avec tabindex) //
-    const isInteractiveElement = event.target.getAttribute('tabindex') !== null;
-
-    if (isInteractiveElement) {
-        // Ouvrir la modal uniquement si l'événement provient d'un élément avec tabindex //
-        lightboxBg.style.display = 'block';
-        lightboxImage.innerHTML = event.target.outerHTML;
-
-        // Focus sur previous à l'ouverture de la modale //
-        setTimeout(function() {
-            arrowLeft.focus();
-            }, 100);
-            // Tabindex pour les éléments de la lightbox //
-            lightboxImage.querySelectorAll('[tabindex]').forEach((element, index) => {
-                element.setAttribute('tabindex', index + 1);
-        });
-    }
-}
-openModal;
-
-function closeModal() {
-    const lightboxBg = document.getElementById('lightbox-bg');
-    lightboxBg.style.display = 'none';
-}
-
-// Ajout gestionnaire d'événements pour la touche "Escape" pour fermer la lightbox //
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
-        closeModal();
-    }
-});
-
-// Affichage image spécifique dans la lightbox. L'argument n représente le numéro de l'image //
-// eslint-disable-next-line no-unused-vars
-function currentSlide(n) {
-    const lightboxImage = document.getElementById('modale');
-    const images = document.querySelectorAll('.element-gallery img, .element-gallery video');
-
-    if (n >= 1 && n <= images.length) {
-        lightboxImage.innerHTML = images[n - 1].outerHTML;
-        
-    }
-}
-
-// précédent et suivant //
-function prevNext(n) {
-    const lightboxImage = document.getElementById('modale');
-    const images = document.querySelectorAll('.element-gallery img, .element-gallery video ');
-    let currentImageIndex;
-
-
-     // Trouve l'index de l'image actuelle //
-        images.forEach((img, index) => {
-        if (img.outerHTML === lightboxImage.innerHTML) {
-            currentImageIndex = index;
-        }
-    });
-
-    // Calcul de l'index de l'image suivante //
-    let nextIndex = currentImageIndex + n;
-
-    // Si on atteint le dernier ou le premier, revenir au premier ou au dernier //
-    if (nextIndex >= images.length) {
-        nextIndex = 0;
-    } else if (nextIndex < 0) {
-        nextIndex = images.length - 1;
-    }
-
-
-    lightboxImage.innerHTML = images[nextIndex].outerHTML;
-}
-
-// Ajout du gestionnaire d'événements pour le bouton de fermeture //
-document.querySelector('.x-lightbox').addEventListener('click', closeModal);
-
-// Ajout du gestionnaire d'événements pour les flèches de navigation //
-document.querySelector('.arrow-left').addEventListener('click', () => prevNext(-1));
-document.querySelector('.arrow-right').addEventListener('click', () => prevNext(1));
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-
 

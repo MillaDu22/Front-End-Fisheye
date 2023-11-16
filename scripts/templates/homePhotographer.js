@@ -1,20 +1,6 @@
 const urlDatas = "../../data/photographers.json";
 const sectionPhotographers = document.getElementById("section-photographers");
 
-// Factory pour créer les objets Photographer //
-// eslint-disable-next-line no-unused-vars
-function createPhotographer(id, name, city, country, tagline, price, portrait) {
-    return {
-        id,
-        name,
-        city,
-        country,
-        tagline,
-        price,
-        portrait,
-    };
-}
-
 function photographerTemplate(data) {
     const { name, portrait, id, city, country, tagline, price } = data;
 
