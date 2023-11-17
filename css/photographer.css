@@ -513,6 +513,14 @@ label {
 	z-index:2;
 }
 
+.content-gallery {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
 .lightbox-image {
     min-width: 320px;
 	display:flex;
@@ -586,16 +594,16 @@ label {
 
 /*********************************** Compteur likes *************************************/
 .back-total {
-    max-width: 1440px;
     min-width: 320px;
     position:fixed;
     display:flex;
     flex-direction: row;
-    justify-content: flex-end;
-    width:100%;
+    justify-content: center;
+    align-items: center;
+    width:30%;
     height:89px;
     bottom:0;
-	left:0px;
+	left:65%;
     position:fixed;
 	overflow-x: hidden;
 	overflow-y:hidden;
@@ -606,7 +614,6 @@ label {
     margin:0;
     min-width: 320px;
     position:absolute;
-    margin-right:80px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -614,7 +621,7 @@ label {
     padding-left:20px;
     padding-right:20px;
     background-color: #DB8676;
-    width:27%;
+    width:100%;
     height:89px;
 }
 
@@ -693,11 +700,13 @@ label {
         margin-bottom:90px;
         margin-left:auto;
         margin-right:auto;
-
     }
     .gallery {
         flex-direction: column;
         margin:0 auto;
+    }
+    .content-gallery {
+        justify-content: center;
     }
     .element-gallery {
         width:95%;

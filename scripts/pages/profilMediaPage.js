@@ -2,7 +2,7 @@
 
 //////////////////////////////////////////////////////fetch pour gallery medias + select////////////////////////////////////////
 
-const galleryContainer = document.getElementById('gallery-photografer');
+/*const galleryContainer = document.getElementById('gallery-photografer');
 const dropdownWrapper = document.querySelector('#dropdown-wrapper');
 const links = document.querySelectorAll('.dropdown-list a');
 const span = document.querySelector('.selected');
@@ -226,4 +226,158 @@ links.forEach((element) => {
         loadSortedPhotographerMedia(evt.currentTarget.textContent);
     });
 });
+*/
+
+class Api {
+    constructor(url) {
+        this.url = url;
+    }
+    async getData() {
+        try {
+            const response = await fetch(this.url);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            throw new Error(error);
+        }
+    }
+}
+class DataPhotographer {
+    constructor(data) {
+        if (DataPhotographer.exists) {
+            return DataPhotographer.instance
+        } 
+        this._id = data.id
+        this._photographerId = data.photographerId;
+        this._name = data.name
+        this._city = data.city
+        this._country = data.country
+        this._tagline = data.tagline
+        this._portrait = data.portrait 
+        this._alt = data.alt
+        this._price = data.price       
+    }
+}
+
+class HeaderPhotographer {
+    constructor(photographer) {
+        this.photographer= photographer;
+    }
+
+    createHeaderPhotographer() {
+        const heroHeader = document.querySelector('.photograph-header');
+        const infos = `
+        <article class="article-id">
+            <h1 class="name-id">${this.photographer._name}</h1>
+            <h2 class="location-id">${this.photographer._city}, ${this.photographer._country}</h2>
+            <p class="title-photographer-id">${this.photographer._tagline}</p>
+        </article>
+        <button class="contact_button type="button" tabindex="0 " onclick="openModalForm()" name="Contact Me">Contactez-moi</button>
+        <span class="container-img-id">
+            <img src= "../../assets/images/photographers/${this.photographer._portrait}" class="photographer-photography-id" alt="Portrait de ${this.photographer.name}">
+        </span>`;
+        heroHeader.innerHTML = infos;
+        return infos;
+    }
+}
+class DataMedia {
+    constructor( data) {
+        if (DataMedia.exists) {
+            return DataMedia.instance
+        } 
+        this._id = data.id
+        this._photographerId = data.photographerId
+        this._title = data.title
+        this._image = data.image
+        this._video = data.video
+        this._likes = data.likes
+        this._date = data.date
+        this._price = data.price      
+    }
+}
+
+class MediasFactory {
+    constructor(data, type) {
+        if(type === 'Api') {
+            return new DataMedia(data)
+        } else  {
+            throw 'Unknown format type'
+        }
+    }
+}
+class PhotographerMedias {
+    constructor(photographer, medias) {
+        this.photographer = photographer;
+        this.medias = medias;
+    }
+
+    createPhotographerMedias() {
+        const galleryContainer = document.getElementById('gallery-photografer');
+        // Si c'est une video //
+        const gallery =`
+            <article class ="content-gallery">
+            ${this.medias.map((media, index) => {
+                const tabindex = 0;
+                const mediaIs = media._video
+                ? `<video class="video-gallery" id="myVideo" controls data-index="${index}" >
+                    <source src="../../assets/images/gallery-id/${this.photographer._id}/${media._video}" type="video/mp4">
+                        Votre navigateur ne supporte pas la lecture de la vidéo.
+                    </video>`
+                : `<img src="../../assets/images/gallery-id/${this.photographer._id}/${media._image}" class="img-gallery" alt="${media._title}" data-index="${index}">`
+                return`
+                <div class="element-gallery" data-media-id="${media._id}">
+                    <a href="#" class="box-video active"  aria-label="Video Player" tabindex="${tabindex}"  onclick="openModal(event);currentSlide(${index + 1})" >
+                        ${mediaIs}
+                    </a>
+                    <div class="title-img">
+                        <h3 class="txt-video">${media._title}</h3>
+                        <span role="group" aria-label="counter like" class="like like-count" data-likes="0">${media._likes}
+                            <a href="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}">
+                                <i class="fa-regular fa-heart" aria-label="Vous pouvez ajouter un j'aime à la video"></i>
+                            </a>
+                        </span>
+                    </div>
+                </div>`
+        }).join("")}
+        </article>`;
+        console.log("Medias:", this.medias); 
+        console.log("HTML généré:", gallery);
+        galleryContainer.innerHTML = gallery
+        return gallery;
+    }
+}
+
+const photographersApi = new Api("../../data/photographers.json");
+const photographerId  = new URLSearchParams(window.location.search).get("id");
+if (photographerId) {
+    const imagePath = "../../assets/images/gallery-id/${this.photographer._id}/${media.image}";
+    console.log(imagePath);
+} else {
+    console.error("photographerId is undefined");
+}
+
+export const getPhotographerById = async() => {
+    const {photographers, media} = await photographersApi.getData();
+    const photographer = photographers
+    .map(photographerData => new DataPhotographer (photographerData))
+    .find(photographerData => photographerData._id == photographerId);
+    const medias = media
+    .map(media => new MediasFactory(media, 'Api')) 
+    .filter(media => media._photographerId == photographerId)
+
+
+return { photographer, medias };
+
+
+    
+}
+const displayHeroHeader = async () => {
+    const {photographer, medias} = await getPhotographerById();
+    const heroHeader = new HeaderPhotographer(photographer);
+    heroHeader.createHeaderPhotographer();
+    const mediasTemplate = new PhotographerMedias(photographer, medias);
+    mediasTemplate.createPhotographerMedias();
+
+}
+displayHeroHeader();
 

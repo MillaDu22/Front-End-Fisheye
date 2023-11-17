@@ -1,7 +1,4 @@
-////////////////////////////////////////////////////////Formulaire de contact///////////////////////////////////////////////////
-
-/************************************Gestion clavier remplissage des champs***************************** */
-
+/*******************Gestion clavier remplissage des champs***************************** */
 // Récupération des champs du formulaire dans un tableau
 const formFields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="submit"], button[type="submit"');
 const textFields = Array.from(formFields).filter(field => field.type !== 'submit');

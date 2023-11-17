@@ -1,3 +1,5 @@
+/////// Version createElement /////
+
 const urlDatas = "../../data/photographers.json";
 const sectionPhotographers = document.getElementById("section-photographers");
 
@@ -68,4 +70,39 @@ function getPhotographers() {
 }
 
 getPhotographers();
+
+
+
+//// Version innerHTML /////
+export default class PhotographerCard {
+    constructor( photographer ) {
+        this.photographer = photographer;
+    }
+    createPhotographerCard() {
+    const sectionPhotographers = document.querySelector('.photographer-section');   
+    const photographerCard =`
+    <article class="photographer-container">
+        <a href="photogarpher.html?id=${this.photographer.id}" 
+        role ="link" 
+        aria-label="vers page de ${this.photographer.name}"  
+        class="link-focus">
+            <span class="container-img">
+                <img src="/assets/images/photographer/${this.photographer.name}" 
+                class="photographer-photography" 
+                alt="${this.photographer.alt}" >
+            </span>
+            <h2 class="name" id="titre>${this.photographer.name}</h2>
+        </a>
+        <h3 class="location">${this.photographer.city}, 
+        ${this.photographer.country}</h3>
+        <p class="title-photographer">${this.photographer.tagline}</p>
+        <p class="price">${this.photographer.price}€/jour</p>
+    </article>`;
+    sectionPhotographers.innerHTML = photographerCard;
+    return sectionPhotographers;
+    }
+}
+
+
+
 

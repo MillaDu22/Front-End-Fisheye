@@ -1,71 +1,82 @@
-import PhotographerFactory from '../factories/photographersFactory.js'
-import PhotographerCard from '../templates/homePhotographer.js'
-export default class App {
-    constructor() {
-        this.sectionPhotographers = document.getElementById('section-photographers');
-        this.photographerApi = new this.photographerApi('/data/photographers.json')
-    }
-    async main() {
-        const DataPhotographer = await this.photographerApi.getPhotographer()
-        const Photographer = DataPhotographer.map(photographer => new PhotographerFactory(photographer, 'photographerApi'))
 
-        DataPhotographer
-        // Ici, je transforme mon tableau de données en un tableau de class Photographer
-        .map(photographer => new  Photographer(photographer))
-        .forEach(photographer => {
-            const Template = new PhotographerCard(photographer)
-            this.sectionPhotographers.appendChild(
-                Template.createPhotographerCard()
-            )
-        })
+class Api {
+    constructor(url) {
+        this.url = url;
+    }
+    async getData() {
+        try {
+            const response = await fetch(this.url);
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            throw new Error(error);
+        }
     }
 }
-const app = new App()
-app.main()
 
+class Photographer{
+    constructor( data) {
+        if (Photographer.exists) {
+            return Photographer.instance
+        } 
+        this._id = data.id
+        this._name = data.name
+        this._city = data.city
+        this._country = data.country
+        this._tagline = data.tagline
+        this._portrait = data.portrait 
+        this._alt = data.alt
+        this._price = data.price       
+    }
+}
 
-
-/*
 //// Version innerHTML /////
+class PhotographerCard {
+    constructor( photographer ) {
+        this.photographer = photographer;
+    }
+    createPhotographerCard() {
+    const sectionPhotographers = document.querySelector('.photographer-section');   
 
-// Fetch datas photographers HomePage avec innerHTML //
-const urlDatas = ('../../data/photographers.json');
-const sectionPhotographers = document.getElementById('section-photographers');
+    const photographerCard =`
+    <article class="photographer-container">
+        <a href="photogarpher.html?id=${this.photographer._id}" 
+        role ="link" 
+        aria-label="vers page de ${this.photographer._name}"  
+        class="link-focus">
+            <span class="container-img">
+                <img src="/assets/images/photographers/${this.photographer._portrait}" 
+                class="photographer-photography" 
+                alt="${this.photographer._alt}" >
+            </span>
+            <h2 class="name" id="titre">${this.photographer._name}</h2>
+        </a>
+        <h3 class="location">${this.photographer._city}, ${this.photographer._country}</h3>
+        <p class="title-photographer">${this.photographer._tagline}</p>
+        <p class="price">${this.photographer._price}€/jour</p>
+    </article>`;
+    sectionPhotographers.innerHTML += photographerCard;
+    return sectionPhotographers;
+    }
+}
 
-const getPhotographers = () => {
-    fetch(urlDatas)
-        .then(function(response) {
-        return response.json();
-        })
-        .then(function(data) {
-        // console.log(data)
-        const photographers = data.photographers;
-        photographers.forEach(function(photographer) {
-            const imagePath =
-            `../../assets/images/photographers/${photographer.portrait}`;
-            const photographerPageLink =
-            `./photographer.html?id=${photographer.id}`;
-            sectionPhotographers.innerHTML += `
-            <article class="photographer-container">
-                <a href="${photographerPageLink}" 
-                class="link-focus" 
-                aria-roledescription="bouton de page photographers">
-                    <span class="container-img">
-                        <img src="${imagePath}" 
-                        class="photographer-photography" 
-                        alt="${photographer.alt}" >
-                    </span>
-                    <h2 class="name" id="titre>${photographer.name}</h2>
-                </a>
-                <h3 class="location">${photographer.city}, 
-                ${photographer.country}</h3>
-                <p class="title-photographer">${photographer.tagline}</p>
-                <p class="price">${photographer.price}€/jour</p>
-            </article>`;
-        });
+const sectionPhotographers = document.querySelector('.photographer-section');
+const PhotographerApi = new Api("/data/photographers.json");
+
+
+const displayCards = async() => {
+    const DataPhotographer = await PhotographerApi.getData();
+    const photographers = DataPhotographer.photographers;
+    photographers
+    // Ici, je transforme mon tableau de données en un tableau de class Photographer
+    .map(photographer => new  Photographer(photographer))
+    .forEach(photographer => {
+
+        const Template = new PhotographerCard(photographer);
+        const photographerCard = Template.createPhotographerCard();
+        sectionPhotographers.appendChild(photographerCard.firstChild);       
     });
 };
-getPhotographers();
-*/
+displayCards();
 
 

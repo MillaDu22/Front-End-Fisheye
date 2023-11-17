@@ -1,0 +1,19 @@
+{
+  "name": "fisheye",
+  "version": "1.0.0",
+  "description": "Photographers website.",
+  "main": "./index.html",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MillaDu22/Front-End-Fisheye.git"
+  },
+  "author": "Ludmilla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MillaDu22/Front-End-Fisheye/issues"
+  },
+  "homepage": "https://milladu22.github.io/Front-End-Fisheye/"
+}
