@@ -29,8 +29,7 @@ function openModal(event) {
 }
 openModal;
 
-function closeModal(e) {
-    e.preventDefault()
+function closeModal() {
     const lightboxBg = document.getElementById('lightbox-bg');
     lightboxBg.style.display = 'none';
 }

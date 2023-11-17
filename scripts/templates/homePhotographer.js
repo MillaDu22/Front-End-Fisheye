@@ -71,7 +71,7 @@ function getPhotographers() {
 
 getPhotographers();
 
-
+////////////////////////////////////////////////////////////////////////////////
 
 //// Version innerHTML /////
 export default class PhotographerCard {
