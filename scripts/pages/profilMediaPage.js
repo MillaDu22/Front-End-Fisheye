@@ -101,12 +101,12 @@ createPhotographerMedias() {
         <article class ="content-gallery">
         ${this.medias.map((media, index) => {
             const tabindex = 0;
-            const mediaIs = media._video
-            ? `<video class="video-gallery" id="myVideo" controls data-index="${index}" >
-                <source src="../../assets/images/gallery-id/${this.photographer._id}/${media._video}" type="video/mp4">
+            const mediaIs = media._image
+            ? `<img src="../../assets/images/gallery-id/${media._photographerId}/${media._image}" class="img-gallery" alt="${media._title}" data-index="${index}">`
+            : `<video class="video-gallery" id="myVideo" controls data-index="${index}" >
+                <source src="../../assets/images/gallery-id/${media._photographerId}/${media._video}" type="video/mp4">
                     Votre navigateur ne supporte pas la lecture de la vidéo.
                 </video>`
-            : `<img src="../../assets/images/gallery-id/${this.photographer._id}/${media._image}" class="img-gallery" alt="${media._title}" data-index="${index}">`
             return`
             <div class="element-gallery" data-media-id="${media._id}">
                 <a href="#" class="box-video active"  aria-label="Video Player" tabindex="${tabindex}"  onclick="openModal(event);currentSlide(${index + 1})" >
@@ -138,13 +138,17 @@ export const getPhotographerById = async() => {
     const {photographers, media} = await photographersApi.getData();
     const photographer = photographers
     .map(photographerData => new DataPhotographer (photographerData))
-    .find(photographerData => photographerData._id == photographerId);
+    .find(photographerData => photographerData._id == photographerId); 
     const medias = media
-    .map(media => new MediasFactory(media, 'Api')) 
+    .map(mediaData => new MediasFactory(mediaData, 'Api')) 
     .filter(media => media._photographerId == photographerId)
+    // Appel Calcul du total des likes pour le photographe //
+    calculateTotalLikesForPhotographer(photographerId, photographerMedia);
+    // Appel Affichage du tarif journalier
+    displayDailyRate(photographer);
     return { photographer, medias };
-}
 
+}
 
 ////////// Fonction Filtrage ////////////
 const galleryContainer = document.getElementById('gallery-photografer');
@@ -168,22 +172,25 @@ function loadSortedPhotographerMedia(option) {
         // Tri par ordre alphabétique avec la méthode localeCompare qui détermine la façon dont les caractères sont triés //
     }
 
-    // Mise à jour de la galerie avec les médias triés
+    // Mise à jour de la galerie avec les médias triés //
     updateGallery(sortedMedia);
 }
 
 
-// Fonction pour mettre à jour la galerie avec les médias triés
+// Calcul de la somme totale des likes pour chaque photographe //
+let totalLikesForPhotographer;
+
+
+// Fonction pour mettre à jour la galerie avec les médias triés //
 function updateGallery(sortedMedia) {
     const mediaTemplate = (media, index) => {
         const tabindex = 0;
-        const mediaIs = media._video
-            ? `<video class="video-gallery" id="myVideo" controls data-index="${index}" >
+        const mediaIs = media._image
+            ? `<img src="../../assets/images/gallery-id/${media._photographerId}/${media._image}" class="img-gallery" alt="${media._title}" data-index="${index}">`
+            : `<video class="video-gallery" id="myVideo" controls data-index="${index}" >
                 <source src="../../assets/images/gallery-id/${media._photographerId}/${media._video}" type="video/mp4">
                     Votre navigateur ne supporte pas la lecture de la vidéo.
                 </video>`
-            : `<img src="../../assets/images/gallery-id/${media._photographerId}/${media._image}" class="img-gallery" alt="${media._title}" data-index="${index}">`;
-
         return `
             <div class="element-gallery" data-media-id="${media._id}">
                 <a href="#" class="box-video active" aria-label="Video Player" tabindex="${tabindex}" onclick="openModal(event);currentSlide(${index + 1})" >
@@ -202,34 +209,24 @@ function updateGallery(sortedMedia) {
     }
     galleryContainer.innerHTML = sortedMedia.map(mediaTemplate).join("");
 }
-// Chargement des médias du photographe
+
+
+// Chargement des médias du photographe //
 const { medias } = await getPhotographerById();
 photographerMedia = medias;
 
-// Gestionnaire d'événements pour le changement d'option de tri //
-dropdownWrapper.addEventListener('click', function () {
-    this.classList.toggle('is-active');
-});
-
-links.forEach((element) => {
-    element.addEventListener('click', function (evt) {
-        span.innerHTML = evt.currentTarget.textContent;
-        loadSortedPhotographerMedia(evt.currentTarget.textContent);
-    });
-});
 
 
 ////////// Compteur likes //////////////
 // Calcul de la somme totale des likes pour chaque photographe //
-let totalLikesForPhotographer;
 function calculateTotalLikesForPhotographer(photographerId, mediaData) {
     const likesForPhotographer = mediaData
-        .filter((media) => media.photographerId === photographerId)
-        .reduce((total, media) => total + media.likes, 0);
-
-    // Met à jour le compteur total //
+        .filter(media => media._photographerId == photographerId)
+        .reduce((total, media) => {
+            return total + media._likes;
+        }, 0);
+   // Met à jour le compteur total //
     totalLikesForPhotographer = likesForPhotographer;
-
     // Affiche le total des likes dans son container //
     const totalLikesElement = document.getElementById('total-likes');
     if (totalLikesElement) {
@@ -239,36 +236,28 @@ function calculateTotalLikesForPhotographer(photographerId, mediaData) {
 
 
 galleryContainer.addEventListener('click', function (event) {
-    // closest méthode  pour rechercher élément ascendant (parent), vérifie si l'élément correspond au sélecteur et retourne l' élément. //
+    // closest méthode pour rechercher élément ascendant (parent), vérifie si l'élément correspond au sélecteur et retourne l' élément. //
     const likeIcon = event.target.closest('.link-heart');
-    // console.log('Like Icon Clicked:', likeIcon);
 
     if (likeIcon) {
         event.preventDefault();
-        event.stopPropagation();
         const mediaElement = likeIcon.closest('.element-gallery');
-        // console.log('Media Element:', mediaElement);
         if (mediaElement) {
             const mediaId = mediaElement.dataset.mediaId;
-            // console.log('Media ID:', mediaId);
             if (mediaId) {
                 // Met à jour le compteur individuel //
                 const likeCountElement = mediaElement.querySelector('.like-count');
                 const liked = true;
-
                 if (likeCountElement) {
                     const currentLikes = parseInt(likeCountElement.textContent, 10);
                     // Définition icone solid si liked //
                     const heartIconClass = liked ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
                     // Création chaîne avec nombre de likes et l'icône //
                     const likesWithIcon = `${currentLikes + 1} <i class="${heartIconClass}"></i>`;
-                    // Mise à jour le contenu de likeCountElement avec la chaîne //
+                    // Mise à jour du contenu de likeCountElement avec la chaîne //
                     likeCountElement.innerHTML = likesWithIcon;
                 }
-                // Met à jour le compteur total //
                 totalLikesForPhotographer += 1;
-                //console.log('Total Likes:', totalLikesForPhotographer);
-
                 // Affiche le compteur total dans son container //
                 const totalLikesElement = document.getElementById('total-likes');
                 if (totalLikesElement) {
@@ -280,15 +269,26 @@ galleryContainer.addEventListener('click', function (event) {
 }); 
 
 
-/*const photographers = data.photographers;
-const photographer = photographers.find((photographer) => photographer.id === parseInt(photographerId));
-photographerMedia = data.media.filter((media) => media.photographerId == photographer.id);
+function displayDailyRate(photographer) {
+    const dailyRateElement = document.querySelector('.box-of-price');
+    if (photographer) {
+        dailyRateElement.innerHTML = `${photographer._price} € / jour`;
+    }
+}
 
-// Calcul du total des likes pour le photographe
-// eslint-disable-next-line no-undef
-totalLikes = calculateTotalLikesForPhotographer(photographerId, photographerMedia);
-// Affichage du tarif journalier
-displayDailyRate(photographerId, photographers);*/
+
+// Gestionnaire d'événements pour le changement d'option de tri //
+dropdownWrapper.addEventListener('click', function () {
+    this.classList.toggle('is-active');
+});
+
+
+links.forEach((element) => {
+    element.addEventListener('click', function (evt) {
+        span.innerHTML = evt.currentTarget.textContent;
+        loadSortedPhotographerMedia(evt.currentTarget.textContent);
+    });
+});
 
 
 //// Hero Header Photographer ////
@@ -298,7 +298,6 @@ const displayHeroHeader = async () => {
     heroHeader.createHeaderPhotographer();
     const mediasTemplate = new PhotographerMedias(photographer, medias);
     mediasTemplate.createPhotographerMedias();
-
 }
 displayHeroHeader();
 

@@ -75,31 +75,31 @@ getPhotographers();
 
 //// Version innerHTML /////
 export default class PhotographerCard {
-    constructor( photographer ) {
+    constructor(photographer) {
         this.photographer = photographer;
     }
+
     createPhotographerCard() {
-    const sectionPhotographers = document.querySelector('.photographer-section');   
-    const photographerCard =`
-    <article class="photographer-container">
-        <a href="photogarpher.html?id=${this.photographer.id}" 
-        role ="link" 
-        aria-label="vers page de ${this.photographer.name}"  
-        class="link-focus">
-            <span class="container-img">
-                <img src="/assets/images/photographer/${this.photographer.name}" 
-                class="photographer-photography" 
-                alt="${this.photographer.alt}" >
-            </span>
-            <h2 class="name" id="titre>${this.photographer.name}</h2>
-        </a>
-        <h3 class="location">${this.photographer.city}, 
-        ${this.photographer.country}</h3>
-        <p class="title-photographer">${this.photographer.tagline}</p>
-        <p class="price">${this.photographer.price}€/jour</p>
-    </article>`;
-    sectionPhotographers.innerHTML = photographerCard;
-    return sectionPhotographers;
+        const article = document.createElement('article');
+        article.classList.add('photographer-container');
+
+        article.innerHTML = `
+            <a href="photographer.html?id=${this.photographer._id}" 
+                role="link" 
+                aria-label="vers page de ${this.photographer._name}"  
+                class="link-focus">
+                <span class="container-img">
+                    <img src="/assets/images/photographers/${this.photographer._portrait}" 
+                        class="photographer-photography" 
+                        alt="${this.photographer._alt}">
+                </span>
+                <h2 class="name" id="titre">${this.photographer._name}</h2>
+            </a>
+            <h3 class="location">${this.photographer._city}, ${this.photographer._country}</h3>
+            <p class="title-photographer">${this.photographer._tagline}</p>
+            <p class="price">${this.photographer._price}€/jour</p>
+        `;
+        return article;
     }
 }
 
