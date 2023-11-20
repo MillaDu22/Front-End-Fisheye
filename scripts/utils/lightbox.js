@@ -1,89 +1,68 @@
-const arrowLeft = document.querySelector('.arrow-left');
-//const boxTitle = document.getElementById('titles-img-lightbox');
-
-
-function openModal(event) {
-    console.log(event.target.dataset.index)
+export const displayLightboxMedias = medias => {
     const lightboxBg = document.getElementById('lightbox-bg');
-    const lightboxImage = document.getElementById('modale');
-    lightboxBg.style.display = 'block';
-    lightboxImage.innerHTML = event.target.outerHTML;
-    // Vérification si événement déclenché par un élément interactif (avec tabindex) //
-    const isInteractiveElement = event.target.getAttribute('tabindex') !== null;
+    const closeBtn = document.querySelector('.x-lightbox');
+    const prevBtn = document.querySelector ('.arrow-left');
+    const nextBtn =document.querySelector ('.arrow-right');
+    const boxMedia = document.querySelector ('.lightbox-image');
+    const mediasArray = Array.from(document.querySelectorAll('.element-gallery a'));
 
-    if (isInteractiveElement) {
-        // Ouvrir la modal uniquement si l'événement provient d'un élément avec tabindex //
-        lightboxBg.style.display = 'block';
-        lightboxImage.innerHTML = event.target.outerHTML;
-        //boxTitle.innerHTML = `<h4 class= "title-lightbox">${media.title}</h4>`
-
-        // Focus sur previous à l'ouverture de la modale //
-        setTimeout(function() {
-            arrowLeft.focus();
-            }, 100);
-            // Tabindex pour les éléments de la lightbox //
-            lightboxImage.querySelectorAll('[tabindex]').forEach((element, index) => {
-                element.setAttribute('tabindex', index + 1);
+    // Mappage des medias dans la lightbox //
+    const photographer = medias.photographer;
+    const listOfMedias =medias.medias;
+    let currentIndex = 0;
+    mediasArray.forEach(media => {
+        media.addEventListener('click', () => {
+            const mediaId = media.dataset.media;
+            const mediaIndex = listOfMedias.findIndex(media => media._id == mediaId);
+            currentIndex = mediaIndex;
+            lightboxBg.style.display = 'flex';
+            closeBtn.focus();
+            lightboxTemplate();
         });
-    }
-}
-openModal;
-
-function closeModal() {
-    const lightboxBg = document.getElementById('lightbox-bg');
-    lightboxBg.style.display = 'none';
-}
-
-// Ajout gestionnaire d'événements pour la touche "Escape" pour fermer la lightbox //
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
-        closeModal();
-    }
-});
-
-// Affichage image spécifique dans la lightbox. L'argument n représente le numéro de l'image //
-// eslint-disable-next-line no-unused-vars
-function currentSlide(n) {
-    const lightboxImage = document.getElementById('modale');
-    const images = document.querySelectorAll('.element-gallery img, .element-gallery video');
-
-    if (n >= 1 && n <= images.length) {
-        lightboxImage.innerHTML = images[n - 1].outerHTML;
-        
-    }
-}
-
-// précédent et suivant //
-function prevNext(n) {
-    const lightboxImage = document.getElementById('modale');
-    const images = document.querySelectorAll('.element-gallery img, .element-gallery video ');
-    let currentImageIndex;
-
-
-     // Trouve l'index de l'image actuelle //
-        images.forEach((img, index) => {
-        if (img.outerHTML === lightboxImage.innerHTML) {
-            currentImageIndex = index;
-        }
     });
 
-    // Calcul de l'index de l'image suivante //
-    let nextIndex = currentImageIndex + n;
+    // Template lightbox //
+    const lightboxTemplate = () => {
+        const currentSlide = listOfMedias[currentIndex];
+        boxMedia.innerHTML=`
+        ${currentSlide._image ? 
+            `<img class ="media-lightbox" src = "../../assets/images/gallery-id/${photographer._id}/${currentSlide._image}" 
+                alt= "${currentSlide._alt}">` :
+            `<video class="media-lightbox" controls  aria-label ="${currentSlide._title}">
+                <source src ="../../assets/images/gallery-id/${photographer._id}/${currentSlide._video}" type="video/mp4">
+            </video>`}
+            <p class ="title-slide">${currentSlide._title}</p>`;
+    };
 
-    // Si on atteint le dernier ou le premier, revenir au premier ou au dernier //
-    if (nextIndex >= images.length) {
-        nextIndex = 0;
-    } else if (nextIndex < 0) {
-        nextIndex = images.length - 1;
+    // Fermeture de la modale lightbox //
+    const closeLightbox =  () => {
+        lightboxBg.style.display="none";
+        boxMedia.innerHTML = '';
     }
 
+    // Si l'on est sur le dernier slide et que l'on clique sur next on repart sur le premier //
+    const nextSlide = () => {
+        currentIndex++;
+        if(currentIndex > listOfMedias.length -1) currentIndex = 0;
+        lightboxTemplate();
+        activeBtn(nextBtn);
+    }
 
-    lightboxImage.innerHTML = images[nextIndex].outerHTML;
+    // Si l'on est sur le premier slide et que l'on clique sur prev on repart sur le dernier //
+    const prevSlide = () => {
+        currentIndex--;
+        if(currentIndex < 0) currentIndex = listOfMedias.length -1;
+        lightboxTemplate();
+        activeBtn(prevBtn);
+    }
+    // Je redonne la classe active //
+    const activeBtn = btn  => {
+        btn.classList.add('active');
+        setTimeout(() =>btn.classList.remove('active'), 100);
+    }
+
+    // Les gestionnaires d'évenements //
+    prevBtn.addEventListener('click', () => prevSlide());
+    nextBtn.addEventListener('click', () => nextSlide());
+    closeBtn.addEventListener('click', () => closeLightbox());
 }
-
-// Ajout du gestionnaire d'événements pour le bouton de fermeture //
-document.querySelector('.x-lightbox').addEventListener('click', closeModal);
-
-// Ajout du gestionnaire d'événements pour les flèches de navigation //
-document.querySelector('.arrow-left').addEventListener('click', () => prevNext(-1));
-document.querySelector('.arrow-right').addEventListener('click', () => prevNext(1));
