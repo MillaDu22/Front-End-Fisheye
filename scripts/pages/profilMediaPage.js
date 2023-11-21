@@ -118,7 +118,7 @@ export const displayLightboxMedias = medias => {
     nextBtn.addEventListener('click', () => nextSlide());
     closeBtn.addEventListener('click', () => closeLightbox());
 
-    // Fonction pour gérer les événements clavier
+    // Fonction pour gérer les événements clavier //
     const handleKeyboardEvents = (event) => {
         switch (event.key) {
             case 'ArrowLeft':
@@ -138,7 +138,7 @@ export const displayLightboxMedias = medias => {
         }
     };
 
-    // Ajout des gestionnaires d'événements clavier
+    // Ajout des gestionnaires d'événements clavier //
     document.addEventListener('keydown', handleKeyboardEvents);
 }
 
@@ -333,7 +333,6 @@ links.forEach((element) => {
         loadSortedPhotographerMedia(evt.currentTarget.textContent);
     });
 });
-
 
 //// Hero Header Photographer ////
 const displayHeroHeader = async () => {
