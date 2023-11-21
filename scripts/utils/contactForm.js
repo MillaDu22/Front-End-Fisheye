@@ -1,6 +1,6 @@
 /*******************Gestion clavier remplissage des champs***************************** */
 // Récupération des champs du formulaire dans un tableau
-const formFields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="submit"], button[type="submit"');
+const formFields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="submit"]');
 const textFields = Array.from(formFields).filter(field => field.type !== 'submit');
 
 // Rajout d'un gestionnaire d'événement "keydown" à chaque champ du formulaire
@@ -9,12 +9,15 @@ textFields.forEach((field, index) => {
     if (event.key === 'Enter' || event.keyCode === 13   ) { 
         // Pour passer au champ suivant ou au premier champ si c'est le dernier
         const nextIndex = (index) % formFields.length;
+        // Focus sur le premier champs //
         formFields[nextIndex+1].focus();
         event.preventDefault();
         }
+        else if (event.key === 'Escape' || event.keyCode === 27 ) {
+            closeModal();
+        }
     });
 });
-
 
 function resetForm(){
     document.querySelector('form[name="formmsg"]').style.display = "block";
@@ -36,14 +39,13 @@ const firstInput = document.getElementById('first');
 function openModalForm() {
     resetForm()
     document.getElementById("form-bg").style.display = "flex";
-// Mise en place du focus sur le premier champs //
+    // Mise en place du focus sur le premier champs //
     setTimeout(function() {
         firstInput.focus();
         },
     100);
 }
 openModalForm
-
 
 // Close modal form with X
 function closeModal() {
@@ -71,7 +73,6 @@ function validateForm(event) {
     errorFirst.classList.add('error-msg');
     const messageErrorFirst = document.getElementById('error-first');
     messageErrorFirst.appendChild(errorFirst);
-
 
     const errorLast = document.createElement('p');
     errorLast.textContent = "Veuillez entrer 2 caractères ou plus pour le champ du nom.";
@@ -127,16 +128,19 @@ function validateForm(event) {
         console.log('Adresse electronique : ' + email);
         console.log('Message : ' + message);
     } 
+
     // Pour retourner sur le bouton de fermeture après validation du formulaire //
     const closeButton = document.getElementById('close-button');
     if (closeButton) {
         closeButton.focus();
+        closeModal();
     }
 }
 
 document.querySelector('form[name="formmsg"]').addEventListener('submit', function(event) {
     validateForm(event);
 });
+
 
 //Vérification si chaîne de caractères email correspond à un format valide avec une expression régulière regex
 function isValidEmail(email) {
@@ -145,6 +149,7 @@ function isValidEmail(email) {
     //méthode test() renvoie true si la correspondance est trouvée
     return emailRegex.test(email);
 }
+
 
 
 

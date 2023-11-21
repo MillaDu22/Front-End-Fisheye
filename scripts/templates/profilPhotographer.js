@@ -1,4 +1,4 @@
-export default class HeaderPhotogarpher {
+export class HeaderPhotographer {
     constructor(photographer) {
         this.photographer= photographer;
     }

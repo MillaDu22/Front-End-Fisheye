@@ -1,5 +1,5 @@
 import Media from '../models/datasMedia.js'
-export default class MediasFactory {
+export class MediasFactory {
     constructor(data, type) {
         if(type === 'Api') {
             return new Media(data)

@@ -215,6 +215,7 @@ h1 {
 
 .dropdown-list li:hover a {
     color: white;
+    background: #521616;
 }
 
 .dropdown-list li:last-of-type a {

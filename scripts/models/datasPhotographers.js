@@ -1,4 +1,4 @@
-export default class DataPhotographer {
+export class DataPhotographer {
     constructor( data) {
         if (DataPhotographer.exists) {
             return DataPhotographer.instance

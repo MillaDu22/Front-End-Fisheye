@@ -1,101 +1,8 @@
-/*Mettre le code JavaScript lié à la page photographer.html
+//Mettre le code JavaScript lié à la page photographer.html
 import {Api} from "../api/api.js";
 import {DataPhotographer} from "../models/datasPhotographers.js";
 import {HeaderPhotographer} from "../templates/profilPhotographer.js";
-import {DataMedia} from "../models/datasMedia.js";
 import {MediasFactory} from "../factories/mediasFactory.js";
-import {PhotographerMedias} from "../templates/galleryPhotographer.js";
-import {displayLightboxMedias} from "../utils/lightbox.js";*/
-
-
-///////////////// class, models, templates //////////////////
-
-class Api {
-    constructor(url) {
-        this.url = url;
-    }
-    async getData() {
-        try {
-            const response = await fetch(this.url);
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
-}
-
-
-//////// Models Photographers //////////
-class DataPhotographer {
-    constructor(data) {
-        if (DataPhotographer.exists) {
-            return DataPhotographer.instance
-        } 
-        this._id = data.id
-        this._photographerId = data.photographerId;
-        this._name = data.name
-        this._city = data.city
-        this._country = data.country
-        this._tagline = data.tagline
-        this._portrait = data.portrait 
-        this._alt = data.alt
-        this._price = data.price       
-    }
-}
-
-
-//////////Template Header Photographe /////////
-class HeaderPhotographer {
-    constructor(photographer) {
-        this.photographer= photographer;
-    }
-    createHeaderPhotographer() {
-        const heroHeader = document.querySelector('.photograph-header');
-        const infos = `
-        <article class="article-id">
-            <h1 class="name-id">${this.photographer._name}</h1>
-            <h2 class="location-id">${this.photographer._city}, ${this.photographer._country}</h2>
-            <p class="title-photographer-id">${this.photographer._tagline}</p>
-        </article>
-        <button class="contact_button type="button" tabindex="0 " onclick="openModalForm()" name="Contact Me">Contactez-moi</button>
-        <span class="container-img-id">
-            <img src= "../../assets/images/photographers/${this.photographer._portrait}" class="photographer-photography-id" alt="Portrait de ${this.photographer.name}">
-        </span>`;
-        heroHeader.innerHTML = infos;
-        return infos;
-    }
-}
-
-
-////////// Models medias /////////
-class DataMedia {
-    constructor( data) {
-        if (DataMedia.exists) {
-            return DataMedia.instance
-        } 
-        this._id = data.id
-        this._photographerId = data.photographerId
-        this._title = data.title
-        this._image = data.image
-        this._video = data.video
-        this._likes = data.likes
-        this._date = data.date
-        this._price = data.price      
-    }
-}
-
-
-/////////// Factory Media /////////////
-class MediasFactory {
-    constructor(data, type) {
-        if(type === 'Api') {
-            return new DataMedia(data)
-        } else  {
-            throw 'Unknown format type'
-        }
-    }
-}
 
 
 //////// Templates gallery ////////
@@ -118,8 +25,8 @@ createPhotographerMedias() {
                     Votre navigateur ne supporte pas la lecture de la vidéo.
                 </video>`
             return`
-            <div class="element-gallery" >
-                <a href="#" class="box-video active" aria-label="Video Player" tabindex="${tabindex}" data-media="${media._id}>
+            <div class="element-gallery" data-media-id="${media._id}">
+                <a href="#" class="box-video active" aria-label="media ${media._title} du photographe" tabindex="${tabindex}" data-media="${media._id}>
                     ${mediaIs}
                 </a>
                 <div class="title-img">
@@ -139,6 +46,7 @@ createPhotographerMedias() {
         return gallery;
     }
 }
+
 ///////////// Utils Lightbox /////////////
 export const displayLightboxMedias = medias => {
     const lightboxBg = document.getElementById('lightbox-bg');
@@ -146,19 +54,20 @@ export const displayLightboxMedias = medias => {
     const prevBtn = document.querySelector ('.arrow-left');
     const nextBtn =document.querySelector ('.arrow-right');
     const boxMedia = document.querySelector ('.lightbox-image');
-    const mediasArray = Array.from(document.querySelectorAll('.element-gallery a'));
+    const mediasArray = Array.from(document.querySelectorAll('.box-video'));
 
     // Mappage des medias dans la lightbox //
     const photographer = medias.photographer;
     const listOfMedias =medias.medias;
     let currentIndex = 0;
     mediasArray.forEach(media => {
-        media.addEventListener('click', () => {
+        media.addEventListener('click', (event) => {
+            event.preventDefault();
             const mediaId = media.dataset.media;
             const mediaIndex = listOfMedias.findIndex(media => media._id == mediaId);
             currentIndex = mediaIndex;
             lightboxBg.style.display = 'flex';
-            closeBtn.focus();
+            prevBtn.focus();
             lightboxTemplate();
         });
     });
@@ -168,13 +77,14 @@ export const displayLightboxMedias = medias => {
         const currentSlide = listOfMedias[currentIndex];
         boxMedia.innerHTML=`
         ${currentSlide._image ? 
-            `<img class ="media-lightbox" src = "../../assets/images/gallery-id/${photographer._id}/${currentSlide._image}" 
+            `<img class ="media-lightbox" src = "../../assets/images/gallery-id/${photographer._id}/${currentSlide._image}"
                 alt= "${currentSlide._alt}">` :
             `<video class="media-lightbox" controls  aria-label ="${currentSlide._title}">
                 <source src ="../../assets/images/gallery-id/${photographer._id}/${currentSlide._video}" type="video/mp4">
             </video>`}
             <p class ="title-slide">${currentSlide._title}</p>`;
     };
+
 
     // Fermeture de la modale lightbox //
     const closeLightbox =  () => {
@@ -207,7 +117,31 @@ export const displayLightboxMedias = medias => {
     prevBtn.addEventListener('click', () => prevSlide());
     nextBtn.addEventListener('click', () => nextSlide());
     closeBtn.addEventListener('click', () => closeLightbox());
+
+    // Fonction pour gérer les événements clavier
+    const handleKeyboardEvents = (event) => {
+        switch (event.key) {
+            case 'ArrowLeft':
+                prevSlide();
+                prevBtn.focus();
+                break;
+            case 'ArrowRight':
+                nextSlide();
+                nextBtn.focus();
+                break;
+            case 'Escape':
+                closeLightbox();
+                closeBtn.focus();
+                break;
+            default:
+                break;
+        }
+    };
+
+    // Ajout des gestionnaires d'événements clavier
+    document.addEventListener('keydown', handleKeyboardEvents);
 }
+
 
 ////////////// 
 
@@ -273,7 +207,7 @@ function updateGallery(sortedMedia) {
                 </video>`
         return `
             <div class="element-gallery" data-media-id="${media._id}">
-                <a href="#" class="box-video active" aria-label="Video Player" tabindex="${tabindex}"  data-media="${media._id}" >
+                <a href="#" class="box-video active" aria-label="media ${media._title} du photographe" tabindex="${tabindex}"  data-media="${media._id}" >
                     ${mediaIs}
                 </a>
                 <div class="title-img">
@@ -285,16 +219,45 @@ function updateGallery(sortedMedia) {
                     </span>
                 </div>
             </div>`;
-            
     }
     galleryContainer.innerHTML = sortedMedia.map(mediaTemplate).join("");
+
+    const dropdownWrapper = document.getElementById('dropdown-wrapper');
+    const links = document.querySelectorAll('.dropdown-list a');
+
+    // Evènements clavier à dropdownWrapper //
+    dropdownWrapper.addEventListener('keydown', function (event) {
+        const currentIndex = Array.from(links).findIndex(link => link === document.activeElement);
+    
+
+        // Fonction pour déplacer le focus vers le haut ou le bas en fonction de la touche pressée //
+        const moveFocus = (direction) => {
+        const newIndex = (currentIndex + direction + links.length) % links.length;
+        links[newIndex].focus();
+        
+    };
+
+
+    // Gestion des touches fléchées haut et bas + redonner le focus //
+    switch (event.key) {
+        case 'ArrowUp':
+            moveFocus(+1);
+            event.preventDefault();
+            break;
+        case 'ArrowDown':
+            moveFocus(-1);
+            event.preventDefault();
+            break;
+        default:
+            break;
+        }
+    });
 }
 
 
 // Chargement des médias du photographe //
 const { medias } = await getPhotographerById();
 photographerMedia = medias;
-
 
 
 ////////// Compteur likes //////////////
@@ -314,13 +277,14 @@ function calculateTotalLikesForPhotographer(photographerId, mediaData) {
     }
 }
 
-
 galleryContainer.addEventListener('click', function (event) {
     // closest méthode pour rechercher élément ascendant (parent), vérifie si l'élément correspond au sélecteur et retourne l' élément. //
     const likeIcon = event.target.closest('.link-heart');
-
+    const lightboxBg = document.getElementById('lightbox-bg');
     if (likeIcon) {
+        lightboxBg.style.display="none";
         event.preventDefault();
+        event.stopPropagation(); 
         const mediaElement = likeIcon.closest('.element-gallery');
         if (mediaElement) {
             const mediaId = mediaElement.dataset.mediaId;
@@ -346,7 +310,7 @@ galleryContainer.addEventListener('click', function (event) {
             }
         }
     }
-}); 
+})
 
 
 function displayDailyRate(photographer) {

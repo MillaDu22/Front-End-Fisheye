@@ -66,3 +66,4 @@ export const displayLightboxMedias = medias => {
     nextBtn.addEventListener('click', () => nextSlide());
     closeBtn.addEventListener('click', () => closeLightbox());
 }
+
