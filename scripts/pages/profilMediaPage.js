@@ -56,8 +56,9 @@ export const displayLightboxMedias = medias => {
     const boxMedia = document.querySelector ('.lightbox-image');
     const mediasArray = Array.from(document.querySelectorAll('.box-video'));
 
+
     // Mappage des medias dans la lightbox //
-    const photographer = medias.photographer;
+    //const photographer = medias.photographer;
     const listOfMedias =medias.medias;
     let currentIndex = 0;
     mediasArray.forEach(media => {
@@ -77,10 +78,10 @@ export const displayLightboxMedias = medias => {
         const currentSlide = listOfMedias[currentIndex];
         boxMedia.innerHTML=`
         ${currentSlide._image ? 
-            `<img class ="media-lightbox" src = "../../assets/images/gallery-id/${photographer._id}/${currentSlide._image}"
+            `<img class ="media-lightbox" src = "../../assets/images/gallery-id/${photographerId}/${currentSlide._image}"
                 alt= "${currentSlide._alt}">` :
             `<video class="media-lightbox" controls  aria-label ="${currentSlide._title}">
-                <source src ="../../assets/images/gallery-id/${photographer._id}/${currentSlide._video}" type="video/mp4">
+                <source src ="../../assets/images/gallery-id/${photographerId}/${currentSlide._video}" type="video/mp4">
             </video>`}
             <p class ="title-slide">${currentSlide._title}</p>`;
     };
@@ -147,7 +148,6 @@ export const displayLightboxMedias = medias => {
 
 const photographersApi = new Api("../../data/photographers.json");
 const photographerId  = new URLSearchParams(window.location.search).get("id");
-
 export const getPhotographerById = async() => {
     const {photographers, media} = await photographersApi.getData();
     const photographer = photographers
@@ -160,6 +160,8 @@ export const getPhotographerById = async() => {
     calculateTotalLikesForPhotographer(photographerId, photographerMedia);
     // Appel Affichage du tarif journalier
     displayDailyRate(photographer);
+    displayLightboxMedias({ photographer, medias });
+
     return { photographer, medias };
 
 }
@@ -188,6 +190,8 @@ function loadSortedPhotographerMedia(option) {
 
     // Mise à jour de la galerie avec les médias triés //
     updateGallery(sortedMedia);
+    displayLightboxMedias({ photographer: photographerMedia, medias: sortedMedia });
+
 }
 
 
