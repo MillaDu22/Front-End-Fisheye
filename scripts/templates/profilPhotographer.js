@@ -1,10 +1,12 @@
 export class HeaderPhotographer {
     constructor(photographer) {
+        // Initialise la propriété photographer avec l'objet photographer passé en paramètre //
         this.photographer= photographer;
     }
 
     createHeaderPhotographer() {
         const heroHeader = document.querySelector('.photograph-header');
+        //// Structure HTML contenant les infos du photographe //
         const infos = `
         <article class="article-id">
             <h1 class="name-id">${this.photographer._name}</h1>

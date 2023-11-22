@@ -5,12 +5,16 @@ import {HeaderPhotographer} from "../templates/profilPhotographer.js";
 import {MediasFactory} from "../factories/mediasFactory.js";
 
 
+
 //////// Templates gallery ////////
+//// déclare une nouvelle classe nommée PhotographerMedias //
 class PhotographerMedias {
+    ////  photographers et medias enfant de photographer et media //
     constructor(photographer, medias) {
         this.photographer = photographer;
         this.medias = medias;
 }
+/// création  medias //
 createPhotographerMedias() {
     const galleryContainer = document.getElementById('gallery-photografer');
     // Si c'est une video //
@@ -58,21 +62,32 @@ export const displayLightboxMedias = medias => {
 
 
     // Mappage des medias dans la lightbox //
+    //// extrait la liste des médias de l'objet medias //
     const listOfMedias =medias.medias;
+    //// initialise la variable currentIndex à 0 //
     let currentIndex = 0;
+    //// utilise une boucle forEach pour itérer sur chaque élément de mediasArray //
     mediasArray.forEach(media => {
+        //// pour chaque élément media dans mediasArray, écouteur d'événements ajouté pour le clic //
         media.addEventListener('click', (event) => {
+            //// empêche le comportement par défaut du clic //
             event.preventDefault();
+            //// extrait l'ID du média à partir de l'attribut data-media de l'élément HTML du média //
             const mediaId = media.dataset.media;
+            //// recherche l'index du média dans la liste des médias en utilisant son ID //
             const mediaIndex = listOfMedias.findIndex(media => media._id == mediaId);
+            //// variable currentIndexest mise à jour avec l'index du média actuel //
             currentIndex = mediaIndex;
+            //// affiche la modale lightbox //
             lightboxBg.style.display = 'flex';
+            //// met le focus sur bouton précédent //
             prevBtn.focus();
+            //// appel de la fonction lightboxTemplate pour la création du contenu //
             lightboxTemplate();
         });
     });
 
-    // Template lightbox //
+    // Template lightbox (contenu) //
     const lightboxTemplate = () => {
         const currentSlide = listOfMedias[currentIndex];
         boxMedia.innerHTML=`
@@ -113,7 +128,7 @@ export const displayLightboxMedias = medias => {
         setTimeout(() =>btn.classList.remove('active'), 100);
     }
 
-    // Les gestionnaires d'évenements //
+    // Les gestionnaires d'évenements de la lightbox//
     prevBtn.addEventListener('click', () => prevSlide());
     nextBtn.addEventListener('click', () => nextSlide());
     closeBtn.addEventListener('click', () => closeLightbox());
@@ -143,22 +158,28 @@ export const displayLightboxMedias = medias => {
 }
 
 
-////////////// 
-
+////////////// récupération des medias à partir du json /////////
+///// crée une nouvelle instance de la classe Apien utilisant le fichier JSON //
 const photographersApi = new Api("../../data/photographers.json");
+//// utilise l'objet URLSearchParamspour obtenir la valeur du paramètre "id" de l'URL  qui identifie un photographe spécifique //
 const photographerId  = new URLSearchParams(window.location.search).get("id");
+//// exporte une fonction asynchrone appelée getPhotographerById. Cette fonction récupére les données d'un photographe spécifique en utilisant l'ID extrait de l'URL //
 export const getPhotographerById = async() => {
+    //// utilise l'instance de l'API pour obtenir les données des photographies et des médias //
     const {photographers, media} = await photographersApi.getData();
     const photographer = photographers
+    //// crée un objet DataPhotographerà partir des données des photographes, et recherche le photographe spécifique dont l'ID correspond //
     .map(photographerData => new DataPhotographer (photographerData))
     .find(photographerData => photographerData._id == photographerId); 
     const medias = media
+    //// crée un tableau d'objets MediasFactory à partir des données des médias, et filtre ces médias pour inclure uniquement ceux du photographe spécifique //
     .map(mediaData => new MediasFactory(mediaData, 'Api')) 
     .filter(media => media._photographerId == photographerId)
     // Appel Calcul du total des likes pour le photographe //
     calculateTotalLikesForPhotographer(photographerId, photographerMedia);
-    // Appel Affichage du tarif journalier
+    // Appel Affichage du tarif journalier //
     displayDailyRate(photographer);
+     // Appel Affichage lightbox //
     displayLightboxMedias({ photographer, medias });
 
     return { photographer, medias };
@@ -190,7 +211,9 @@ function loadSortedPhotographerMedia(option) {
     updateGallery(sortedMedia);
     displayLightboxMedias({ photographer: photographerMedia, medias: sortedMedia });
 }
-// Ajout écouteur d'événement pour preventDefault() //
+
+
+// Ajout écouteur d'événement pour preventDefault() sur le filtrage //
 const options = document.querySelectorAll('.option');
 options.forEach(option => {
     option.addEventListener('click', (event) => {
@@ -233,7 +256,7 @@ function updateGallery(sortedMedia) {
     const dropdownWrapper = document.getElementById('dropdown-wrapper');
     const links = document.querySelectorAll('.option');
 
-    // Evènements clavier à dropdownWrapper //
+    // Evènements clavier à dropdownWrapper (filtrage) //
     dropdownWrapper.addEventListener('keydown', function (event) {
         const currentIndex = Array.from(links).findIndex(link => link === document.activeElement);
     
@@ -262,6 +285,19 @@ function updateGallery(sortedMedia) {
 }
 
 
+//// pour chargement des médias triés selon un critère spécifique //
+///// la méthode forEachpour itérer sur chaque élément de la liste links //
+links.forEach((element) => {
+    //// Ajout d'un gestionnaire d'événements de clic à chaque élément de la liste 
+    element.addEventListener('click', function (evt) {
+        //// Met à jour le contenu HTML de l'élément //
+        span.innerHTML = evt.currentTarget.textContent;
+        //// Appel de la fonction de tri en passant le texte de l'élément //
+        loadSortedPhotographerMedia(evt.currentTarget.textContent);
+    });
+});
+
+
 
 // Chargement des médias du photographe //
 const { medias } = await getPhotographerById();
@@ -270,8 +306,10 @@ photographerMedia = medias;
 
 ////////// Compteur likes //////////////
 // Calcul de la somme totale des likes pour chaque photographe //
+//// prend deux paramètres l'identifiant du photographe et les données des médias //
 function calculateTotalLikesForPhotographer(photographerId, mediaData) {
     const likesForPhotographer = mediaData
+    //// filtre les médias qui appartiennent au photographe donné, et reduce ajoute les likes aux medias.
         .filter(media => media._photographerId == photographerId)
         .reduce((total, media) => {
             return total + media._likes;
@@ -286,13 +324,14 @@ function calculateTotalLikesForPhotographer(photographerId, mediaData) {
 }
 
 galleryContainer.addEventListener('click', function (event) {
-    // closest méthode pour rechercher élément ascendant (parent), vérifie si l'élément correspond au sélecteur et retourne l' élément. //
+    // closest méthode pour rechercher élément ascendant (parent) //
+    //// utilise la méthode closest pour déterminer si l'élément cliqué est un bouton de like //
     const likeIcon = event.target.closest('.link-heart');
-    const lightboxBg = document.getElementById('lightbox-bg');
     if (likeIcon) {
-        lightboxBg.style.display="none";
+        /// retrait des comportements par default //
         event.preventDefault();
         event.stopPropagation(); 
+        //// trouve l'élément parent de la classe .element-gallery pour obtenir les info sur le média, et met à jour le compteur de likes individuel //
         const mediaElement = likeIcon.closest('.element-gallery');
         if (mediaElement) {
             const mediaId = mediaElement.dataset.mediaId;
@@ -309,6 +348,7 @@ galleryContainer.addEventListener('click', function (event) {
                     // Mise à jour du contenu de likeCountElement avec la chaîne //
                     likeCountElement.innerHTML = likesWithIcon;
                 }
+                //// met à jour le compteur total de likes pour le photographe //
                 totalLikesForPhotographer += 1;
                 // Affiche le compteur total dans son container //
                 const totalLikesElement = document.getElementById('total-likes');
@@ -323,6 +363,7 @@ galleryContainer.addEventListener('click', function (event) {
 
 function displayDailyRate(photographer) {
     const dailyRateElement = document.querySelector('.box-of-price');
+    //// Vérifie si l'objet photographer est fourni en tant que paramètre et met à jour le HTML en chaîne de texte //
     if (photographer) {
         dailyRateElement.innerHTML = `${photographer._price} € / jour`;
     }
@@ -335,22 +376,22 @@ dropdownWrapper.addEventListener('click', function () {
 });
 
 
-links.forEach((element) => {
-    element.addEventListener('click', function (evt) {
-        span.innerHTML = evt.currentTarget.textContent;
-        loadSortedPhotographerMedia(evt.currentTarget.textContent);
-    });
-});
-
 //// Hero Header Photographer ////
+//// fonction fléchée asynchrone //
 const displayHeroHeader = async () => {
+    /// Utilise await pour attendre la résolution de la promesse retournée par la fonction asynchrone //
     const {photographer, medias} = await getPhotographerById();
+    //// nouvelle instance de la classe HeaderPhotographer avec les données du photographe //
     const heroHeader = new HeaderPhotographer(photographer);
+    //// affiche l'en-tête du photographe //
     heroHeader.createHeaderPhotographer();
+    //// Appel méthode createPhotographerMedias()de l'objet mediasTemplate, crée et affiche les médias du photographe //
     const mediasTemplate = new PhotographerMedias(photographer, medias);
     mediasTemplate.createPhotographerMedias();
+    ////Appel fonction displayLightboxMedias()avec objet mediasTemplate en argument pour afficher les médias du photographe dans une lightbox //
     displayLightboxMedias(mediasTemplate)
 }
+//// Appel fonction displayHeroHeader //
 displayHeroHeader();
 
 
