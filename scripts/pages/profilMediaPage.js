@@ -58,7 +58,6 @@ export const displayLightboxMedias = medias => {
 
 
     // Mappage des medias dans la lightbox //
-    //const photographer = medias.photographer;
     const listOfMedias =medias.medias;
     let currentIndex = 0;
     mediasArray.forEach(media => {
@@ -187,13 +186,19 @@ function loadSortedPhotographerMedia(option) {
         sortedMedia.sort((a, b) => a._title.localeCompare(b._title));
         // Tri par ordre alphabétique avec la méthode localeCompare qui détermine la façon dont les caractères sont triés //
     }
-
     // Mise à jour de la galerie avec les médias triés //
     updateGallery(sortedMedia);
     displayLightboxMedias({ photographer: photographerMedia, medias: sortedMedia });
-
 }
-
+// Ajout écouteur d'événement pour preventDefault() //
+const options = document.querySelectorAll('.option');
+options.forEach(option => {
+    option.addEventListener('click', (event) => {
+        event.preventDefault();
+const selectedOption = event.currentTarget.dataset.option; 
+loadSortedPhotographerMedia(selectedOption, event);
+    });
+});
 
 // Calcul de la somme totale des likes pour chaque photographe //
 let totalLikesForPhotographer;
@@ -225,9 +230,8 @@ function updateGallery(sortedMedia) {
             </div>`;
     }
     galleryContainer.innerHTML = sortedMedia.map(mediaTemplate).join("");
-
     const dropdownWrapper = document.getElementById('dropdown-wrapper');
-    const links = document.querySelectorAll('.dropdown-list a');
+    const links = document.querySelectorAll('.option');
 
     // Evènements clavier à dropdownWrapper //
     dropdownWrapper.addEventListener('keydown', function (event) {
@@ -241,15 +245,14 @@ function updateGallery(sortedMedia) {
         
     };
 
-
     // Gestion des touches fléchées haut et bas + redonner le focus //
     switch (event.key) {
         case 'ArrowUp':
-            moveFocus(+1);
+            moveFocus(-1);
             event.preventDefault();
             break;
         case 'ArrowDown':
-            moveFocus(-1);
+            moveFocus(+1);
             event.preventDefault();
             break;
         default:
@@ -257,6 +260,7 @@ function updateGallery(sortedMedia) {
         }
     });
 }
+
 
 
 // Chargement des médias du photographe //
