@@ -3,6 +3,7 @@ import {Api} from "../api/api.js";
 import {DataPhotographer} from "../models/datasPhotographers.js";
 import {HeaderPhotographer} from "../templates/profilPhotographer.js";
 import {MediasFactory} from "../factories/mediasFactory.js";
+import DataMedia from '../models/datasMedia.js';
 
 
 
@@ -14,42 +15,55 @@ class PhotographerMedias {
         this.photographer = photographer;
         this.medias = medias;
 }
-/// création  medias //
-createPhotographerMedias() {
-    const galleryContainer = document.getElementById('gallery-photografer');
-    // Si c'est une video //
-    const gallery =`
-        <article class ="content-gallery">
-        ${this.medias.map((media, index) => {
+/// création gallery medias //
+    createPhotographerMedias() {
+        const galleryContainer = document.getElementById('gallery-photografer');
+        const gallery = document.createDocumentFragment(); 
+        //// Utilise un DocumentFragment pour éviter les reflows coûteux //
+    
+        this.medias.forEach((media) => {
+            const dataMedia = new DataMedia(media);
+            const element = document.createElement('div');
+            const anchor = document.createElement('a');
             const tabindex = 0;
-            const mediaIs = media._image
-            ? `<img src="../../assets/images/gallery-id/${media._photographerId}/${media._image}" class="img-gallery" alt="${media._title}" data-index="${index}">`
-            : `<video class="video-gallery" id="myVideo" controls data-index="${index}" >
-                <source src="../../assets/images/gallery-id/${media._photographerId}/${media._video}" type="video/mp4">
-                    Votre navigateur ne supporte pas la lecture de la vidéo.
-                </video>`
-            return`
-            <div class="element-gallery" data-media-id="${media._id}">
-                <a href="#" class="box-video active" aria-label="media ${media._title} du photographe" tabindex="${tabindex}" data-media="${media._id}>
-                    ${mediaIs}
-                </a>
-                <div class="title-img">
-                    <h3 class="txt-video">${media._title}</h3>
-                    <span role="group" aria-label="counter like" class="like like-count" data-likes="0">${media._likes}
-                        <a href="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}">
-                            <i class="fa-regular fa-heart" aria-label="Vous pouvez ajouter un j'aime à la video"></i>
-                        </a>
-                    </span>
-                </div>
-            </div>`
-        }).join("")}
-        </article>`;
-        galleryContainer.innerHTML = gallery
-        // Chargement des médias triés par popularité par défaut //
+    
+            anchor.href = "#";
+            anchor.className = "box-video active";
+            anchor.setAttribute("aria-label", `media ${media._title} du photographe`);
+            anchor.setAttribute("tabindex", tabindex);
+            anchor.setAttribute("data-media", media._id);
+            anchor.appendChild(dataMedia.renderMedia());
+    
+            element.className = "element-gallery";
+            element.setAttribute("data-media-id", media._id);
+            element.appendChild(anchor);
+    
+            const titleImg = document.createElement('div');
+            titleImg.className = "title-img";
+            titleImg.innerHTML = `
+                <h3 class="txt-video">${media._title}</h3>
+                <span role="group" aria-label="counter like" class="like like-count" data-likes="0">${media._likes}
+                    <a href="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}">
+                        <i class="fa-regular fa-heart" aria-label="Vous pouvez ajouter un j'aime à la video"></i>
+                    </a>
+                </span>
+            `;
+            element.appendChild(titleImg);
+            gallery.appendChild(element);
+        });
+    
+        galleryContainer.innerHTML = ""; 
+        //// Efface le contenu existant //
+        galleryContainer.appendChild(gallery); 
+        //// Ajoute le fragment au DOM //
+    
+        //// Chargement des médias triés par popularité par défaut //
         loadSortedPhotographerMedia('Popularité');
-        return gallery;
     }
+    
 }
+
+
 
 ///////////// Utils Lightbox /////////////
 export const displayLightboxMedias = medias => {
