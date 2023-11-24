@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Photographers website.",
   "main": "./index.html",
-  "homepage": "https://milladu22.github.io/Front-End-Fisheye/",
+  "homepage": "https://milladu22.github.io/Front-End-Fisheye/index.html",
   "scripts": {
     "build": "npm run build", 
     "predeploy": "npm run build",
