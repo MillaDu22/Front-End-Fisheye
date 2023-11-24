@@ -1,175 +1,10 @@
 //Mettre le code JavaScript lié à la page photographer.html
-import {Api} from "../api/api.js";
-import {DataPhotographer} from "../models/datasPhotographers.js";
-import {HeaderPhotographer} from "../templates/profilPhotographer.js";
-import {MediasFactory} from "../factories/mediasFactory.js";
-import DataMedia from '../models/datasMedia.js';
-
-
-
-//////// Templates gallery ////////
-//// déclare une nouvelle classe nommée PhotographerMedias //
-class PhotographerMedias {
-    ////  photographers et medias enfant de photographer et media //
-    constructor(photographer, medias) {
-        this.photographer = photographer;
-        this.medias = medias;
-}
-/// création gallery medias //
-    createPhotographerMedias() {
-        const galleryContainer = document.getElementById('gallery-photografer');
-        const gallery = document.createDocumentFragment(); 
-        //// Utilise un DocumentFragment pour éviter les reflows coûteux //
-    
-        this.medias.forEach((media) => {
-            const dataMedia = new DataMedia(media);
-            const element = document.createElement('div');
-            const anchor = document.createElement('a');
-            const tabindex = 0;
-    
-            anchor.href = "#";
-            anchor.className = "box-video active";
-            anchor.setAttribute("aria-label", `media ${media._title} du photographe`);
-            anchor.setAttribute("tabindex", tabindex);
-            anchor.setAttribute("data-media", media._id);
-            anchor.appendChild(dataMedia.renderMedia());
-    
-            element.className = "element-gallery";
-            element.setAttribute("data-media-id", media._id);
-            element.appendChild(anchor);
-    
-            const titleImg = document.createElement('div');
-            titleImg.className = "title-img";
-            titleImg.innerHTML = `
-                <h3 class="txt-video">${media._title}</h3>
-                <span role="group" aria-label="counter like" class="like like-count" data-likes="0">${media._likes}
-                    <a href="#" aria-label="Ajouter aux favoris" class="link-heart" tabindex="${tabindex}">
-                        <i class="fa-regular fa-heart" aria-label="Vous pouvez ajouter un j'aime à la video"></i>
-                    </a>
-                </span>
-            `;
-            element.appendChild(titleImg);
-            gallery.appendChild(element);
-        });
-    
-        galleryContainer.innerHTML = ""; 
-        //// Efface le contenu existant //
-        galleryContainer.appendChild(gallery); 
-        //// Ajoute le fragment au DOM //
-    
-        //// Chargement des médias triés par popularité par défaut //
-        loadSortedPhotographerMedia('Popularité');
-    }
-    
-}
-
-
-
-///////////// Utils Lightbox /////////////
-export const displayLightboxMedias = medias => {
-    const lightboxBg = document.getElementById('lightbox-bg');
-    const closeBtn = document.querySelector('.x-lightbox');
-    const prevBtn = document.querySelector ('.arrow-left');
-    const nextBtn =document.querySelector ('.arrow-right');
-    const boxMedia = document.querySelector ('.lightbox-image');
-    const mediasArray = Array.from(document.querySelectorAll('.box-video'));
-
-
-    // Mappage des medias dans la lightbox //
-    //// extrait la liste des médias de l'objet medias //
-    const listOfMedias =medias.medias;
-    //// initialise la variable currentIndex à 0 //
-    let currentIndex = 0;
-    //// utilise une boucle forEach pour itérer sur chaque élément de mediasArray //
-    mediasArray.forEach(media => {
-        //// pour chaque élément media dans mediasArray, écouteur d'événements ajouté pour le clic //
-        media.addEventListener('click', (event) => {
-            //// empêche le comportement par défaut du clic //
-            event.preventDefault();
-            //// extrait l'ID du média à partir de l'attribut data-media de l'élément HTML du média //
-            const mediaId = media.dataset.media;
-            //// recherche l'index du média dans la liste des médias en utilisant son ID //
-            const mediaIndex = listOfMedias.findIndex(media => media._id == mediaId);
-            //// variable currentIndexest mise à jour avec l'index du média actuel //
-            currentIndex = mediaIndex;
-            //// affiche la modale lightbox //
-            lightboxBg.style.display = 'flex';
-            //// met le focus sur bouton précédent //
-            prevBtn.focus();
-            //// appel de la fonction lightboxTemplate pour la création du contenu //
-            lightboxTemplate();
-        });
-    });
-
-    // Template lightbox (contenu) //
-    const lightboxTemplate = () => {
-        const currentSlide = listOfMedias[currentIndex];
-        boxMedia.innerHTML=`
-        ${currentSlide._image ? 
-            `<img class ="media-lightbox" src = "../../assets/images/gallery-id/${photographerId}/${currentSlide._image}"
-                alt= "${currentSlide._alt}">` :
-            `<video class="media-lightbox" controls  aria-label ="${currentSlide._title}">
-                <source src ="../../assets/images/gallery-id/${photographerId}/${currentSlide._video}" type="video/mp4">
-            </video>`}
-            <p class ="title-slide">${currentSlide._title}</p>`;
-    };
-
-
-    // Fermeture de la modale lightbox //
-    const closeLightbox =  () => {
-        lightboxBg.style.display="none";
-        boxMedia.innerHTML = '';
-    }
-
-    // Si l'on est sur le dernier slide et que l'on clique sur next on repart sur le premier //
-    const nextSlide = () => {
-        currentIndex++;
-        if(currentIndex > listOfMedias.length -1) currentIndex = 0;
-        lightboxTemplate();
-        activeBtn(nextBtn);
-    }
-
-    // Si l'on est sur le premier slide et que l'on clique sur prev on repart sur le dernier //
-    const prevSlide = () => {
-        currentIndex--;
-        if(currentIndex < 0) currentIndex = listOfMedias.length -1;
-        lightboxTemplate();
-        activeBtn(prevBtn);
-    }
-    // Je redonne la classe active //
-    const activeBtn = btn  => {
-        btn.classList.add('active');
-        setTimeout(() =>btn.classList.remove('active'), 100);
-    }
-
-    // Les gestionnaires d'évenements de la lightbox//
-    prevBtn.addEventListener('click', () => prevSlide());
-    nextBtn.addEventListener('click', () => nextSlide());
-    closeBtn.addEventListener('click', () => closeLightbox());
-
-    // Fonction pour gérer les événements clavier //
-    const handleKeyboardEvents = (event) => {
-        switch (event.key) {
-            case 'ArrowLeft':
-                prevSlide();
-                prevBtn.focus();
-                break;
-            case 'ArrowRight':
-                nextSlide();
-                nextBtn.focus();
-                break;
-            case 'Escape':
-                closeLightbox();
-                closeBtn.focus();
-                break;
-            default:
-                break;
-        }
-    };
-
-    // Ajout des gestionnaires d'événements clavier //
-    document.addEventListener('keydown', handleKeyboardEvents);
-}
+import { Api } from "../api/api.js";
+import { DataPhotographer } from "../models/datasPhotographers.js";
+import { HeaderPhotographer } from "../templates/profilPhotographer.js";
+import { MediasFactory } from "../factories/mediasFactory.js";
+import { displayLightboxMedias } from '../utils/lightbox.js';
+import {PhotographerMedias} from "../templates/gallery.js";
 
 
 ////////////// récupération des medias à partir du json /////////
@@ -404,6 +239,8 @@ const displayHeroHeader = async () => {
     mediasTemplate.createPhotographerMedias();
     ////Appel fonction displayLightboxMedias()avec objet mediasTemplate en argument pour afficher les médias du photographe dans une lightbox //
     displayLightboxMedias(mediasTemplate)
+    //// Chargement des médias triés par popularité par défaut //
+    loadSortedPhotographerMedia('Popularité');
 }
 //// Appel fonction displayHeroHeader //
 displayHeroHeader();

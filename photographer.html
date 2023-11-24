@@ -29,8 +29,8 @@
           <span class="selected option">Popularité</span>
           <ul class="dropdown-list" >
               <li><a href="#" class="option"  aria-label="Option popularité du sélecteur" tabindex="0">Popularité</a></li>
-              <li><a href="#" class="option"  aria-label="Option date du sélecteur ">Date</a></li>
-              <li><a href="#" class="option"  aria-label="Option Titre du sélecteur">Titre</a></li>
+              <li><a href="#" class="option"  aria-label="Option date du sélecteur " tabinedx="0">Date</a></li>
+              <li><a href="#" class="option"  aria-label="Option Titre du sélecteur" tabindex ="0">Titre</a></li>
           </ul>
         </div>
       </div>
@@ -98,7 +98,13 @@
           <h4 class ="box-of-price" aria-label="Tarif journalier du photographe"></h4>
         </div>
       </div>
-    <script src="./scripts/pages/profilmediapage.js" type = "module"></script>
-    <script src ="./scripts/utils/contactform.js" defer></script>
+      <script type="module" src="./scripts/api/api.js"></script>
+      <script type="module" src="./scripts/models/datasPhotographers.js"></script>
+      <script type="module" src="./scripts/templates/profilPhotographer.js"></script>
+      <script type="module" src="./scripts/factories/mediasFactory.js"></script>
+      <script type="module" src="./scripts/templates/gallery.js"></script>
+      <script type="module" src="./scripts/utils/lightbox.js"></script>
+      <script src ="./scripts/utils/contactform.js" defer></script>
+      <script type="module" src="./scripts/pages/profilmediapage.js" type = "module"></script>
   </body>
 </html>
