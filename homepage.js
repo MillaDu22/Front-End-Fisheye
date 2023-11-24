@@ -72,7 +72,7 @@ class PhotographerCard {
 
 const sectionPhotographers = document.querySelector('.photographer-section');
 //// Crée une instance de la classe Api //
-const PhotographerApi = new Api("/data/photographers.json");
+const PhotographerApi = new Api("./data/photographers.json");
 //// fonction asynchrone qui affiche les cartes de photographes //
 const displayCards = async () => {
     try {
