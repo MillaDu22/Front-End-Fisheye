@@ -29,7 +29,7 @@
           <span class="selected option">Popularité</span>
           <ul class="dropdown-list" >
               <li><a href="#" class="option"  aria-label="Option popularité du sélecteur" tabindex="0">Popularité</a></li>
-              <li><a href="#" class="option"  aria-label="Option date du sélecteur " tabinedx="0">Date</a></li>
+              <li><a href="#" class="option"  aria-label="Option date du sélecteur " tabindex="0">Date</a></li>
               <li><a href="#" class="option"  aria-label="Option Titre du sélecteur" tabindex ="0">Titre</a></li>
           </ul>
         </div>
@@ -48,34 +48,33 @@
                 <img src="assets/icons/close.svg" alt="bouton de fermeture de la modale formulaire" class ="Xform">
               </a>
             </span>
-    
 <!--Structure des inputs-->  
-        <form class="form-contact" name="formmsg" action="index.html" method="get" novalidate>          
-          <div class="formData">
-            <label for ="first">Prénom</label><br>
-            <input class="text-control" type="text" aria-label=" Champs 1 .Veuillez saisir votre prénom" id="first" name="first" minlength="2" required><br>
-            <div id="error-first"></div>
+            <form class="form-contact" name="formmsg" action="index.html" method="get" novalidate>          
+              <div class="formData">
+                <label for ="first">Prénom</label><br>
+                <input class="text-control" type="text" aria-label=" Champs 1 .Veuillez saisir votre prénom" id="first" name="first" minlength="2" required><br>
+                <div id="error-first"></div>
+              </div>
+              <div class="formData">
+                <label for="last">Nom</label><br>
+                <input class="text-control" type="text" aria-label="Champs 2. Veuillez saisir votre nom" id="last" name="last" minlength="2" required><br>
+                <div id="error-last"></div>
+              </div>
+              <div class="formData">
+                <label for="email">E-mail</label><br>
+                <input class="text-control" autocomplete="off" type="email" aria-label="Champs 3. Veuillez saisir votre email" id="email" name="email" required><br>
+                <div id="error-email"></div>
+              </div>
+              <div class="formData">
+                <label for="msg">Votre message</label><br>
+                <input class="text-control-msg" type="text" aria-label="Champs 4. Veuillez saisir votre message" id="msg" name="commentaires" minlength="2" required><br>
+                <div id="error-msg"></div>
+              </div>         
+              <input class="btn-submit" type="submit" aria-label="Bouton. Veuillez valider votre formulaire" value="Envoyer">
+            </form>
           </div>
-          <div class="formData">
-            <label for="last">Nom</label><br>
-            <input class="text-control" type="text" aria-label="Champs 2. Veuillez saisir votre nom" id="last" name="last" minlength="2" required><br>
-            <div id="error-last"></div>
-          </div>
-          <div class="formData">
-            <label for="email">E-mail</label><br>
-            <input class="text-control" autocomplete="off" type="email" aria-label="Champs 3. Veuillez saisir votre email" id="email" name="email" required><br>
-            <div id="error-email"></div>
-          </div>
-          <div class="formData">
-            <label for="msg">Votre message</label><br>
-            <input class="text-control-msg" type="text" aria-label="Champs 4. Veuillez saisir votre message" id="msg" name="commentaires" minlength="2" required><br>
-            <div id="error-msg"></div>
-          </div>         
-          <input class="btn-submit" type="submit" aria-label="Bouton. Veuillez valider votre formulaire" value="Envoyer">
-        </form>
+        </div>
       </div>
-    </div>
-    </div>
 <!--Structure modale lightbox-->
       <div class="lightbox" id="lightbox-bg" aria-hidden="true">
         <div class="body-lightbox" role ="dialog"  aria-label="image closeup view">
@@ -105,6 +104,6 @@
       <script type="module" src="./scripts/templates/gallery.js"></script>
       <script type="module" src="./scripts/utils/lightbox.js"></script>
       <script src ="./scripts/utils/contactform.js" defer></script>
-      <script type="module" src="./scripts/pages/profilmediapage.js" type = "module"></script>
+      <script type="module" src="./scripts/pages/profilmediapage.js"></script>
   </body>
 </html>
