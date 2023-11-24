@@ -94,9 +94,9 @@ const displayCards = async () => {
             sectionPhotographers.appendChild(photographerCard);
         }
     } catch (error) {
-        console.error("Erreur lors du chargement des données:", error);
+        console.error("Erreur lors du chargement des données:", error)
     }
 };
 
 // Appel displayCards qui affiche toutes les cards des photographes //
-displayCards();
+displayCards()
