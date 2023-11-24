@@ -12,24 +12,24 @@ export class PhotographerMedias {
         const galleryContainer = document.getElementById('gallery-photografer');
         const gallery = document.createDocumentFragment(); 
         //// Utilise un DocumentFragment pour éviter les reflows coûteux //
-    
+
         this.medias.forEach((media) => {
             const dataMedia = new DataMedia(media);
             const element = document.createElement('div');
             const anchor = document.createElement('a');
             const tabindex = 0;
-    
+
             anchor.href = "#";
             anchor.className = "box-video active";
             anchor.setAttribute("aria-label", `media ${media._title} du photographe`);
             anchor.setAttribute("tabindex", tabindex);
             anchor.setAttribute("data-media", media._id);
             anchor.appendChild(dataMedia.renderMedia());
-    
+
             element.className = "element-gallery";
             element.setAttribute("data-media-id", media._id);
             element.appendChild(anchor);
-    
+
             const titleImg = document.createElement('div');
             titleImg.className = "title-img";
             titleImg.innerHTML = `
@@ -43,11 +43,9 @@ export class PhotographerMedias {
             element.appendChild(titleImg);
             gallery.appendChild(element);
         });
-    
         galleryContainer.innerHTML = ""; 
         //// Efface le contenu existant //
         galleryContainer.appendChild(gallery); 
         //// Ajoute le fragment au DOM //
     }
-    
 }

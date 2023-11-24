@@ -46,7 +46,6 @@ export const displayLightboxMedias = medias => {
             <p class ="title-slide">${currentSlide._title}</p>`;
     };
 
-
     // Fermeture de la modale lightbox //
     const closeLightbox =  () => {
         lightboxBg.style.display="none";
