@@ -15,7 +15,7 @@ export class PhotographerCard {
                 aria-roledescription ="bouton de page photographers"
                 class="link-focus">
                 <span class="container-img">
-                    <img src="./assets/images/photographers/${this.photographer._portrait}" 
+                    <img src="assets/images/photographers/${this.photographer._portrait}" 
                         class="photographer-photography" 
                         alt="${this.photographer._alt}">
                 </span>

@@ -1,10 +1,10 @@
 //Mettre le code JavaScript lié à la page photographer.html
-import { Api } from "../api/api.js";
-import { DataPhotographer } from "../models/datasPhotographers.js";
-import { HeaderPhotographer } from "../templates/profilPhotographer.js";
-import { MediasFactory } from "../factories/mediasFactory.js";
-import { displayLightboxMedias } from '../utils/lightbox.js';
-import {PhotographerMedias} from "../templates/gallery.js";
+import { Api } from "/scripts/api/api.js";
+import { DataPhotographer } from "/scripts/models/datasPhotographers.js";
+import { HeaderPhotographer } from "/scripts/templates/profilPhotographer.js";
+import { MediasFactory } from "/scripts/factories/mediasFactory.js";
+import { displayLightboxMedias } from '/scripts/utils/lightbox.js';
+import {PhotographerMedias} from "/scripts/templates/gallery.js";
 
 
 ////////////// récupération des medias à partir du json /////////

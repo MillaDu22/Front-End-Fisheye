@@ -15,7 +15,7 @@ export class HeaderPhotographer {
         </article>
         <button class="contact_button type="button" tabindex="0 " onclick="openModalForm()" name="Contact Me">Contactez-moi</button>
         <span class="container-img-id">
-            <img src= "../../assets/images/photographers/${this.photographer._portrait}" class="photographer-photography-id" alt="Portrait de ${this.photographer.name}">
+            <img src= "assets/images/photographers/${this.photographer._portrait}" class="photographer-photography-id" alt="Portrait de ${this.photographer.name}">
         </span>`;
         heroHeader.innerHTML = infos;
         return infos

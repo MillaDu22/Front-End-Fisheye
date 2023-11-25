@@ -41,7 +41,7 @@ export const displayLightboxMedias = medias => {
             `<img class ="media-lightbox" src = "./assets/images/gallery-id/${currentSlide._photographerId}/${currentSlide._image}"
                 alt= "${currentSlide._alt}">` :
             `<video class="media-lightbox" controls  aria-label ="${currentSlide._title}">
-                <source src ="./assets/images/gallery-id/${currentSlide._photographerId}/${currentSlide._video}" type="video/mp4">
+                <source src ="assets/images/gallery-id/${currentSlide._photographerId}/${currentSlide._video}" type="video/mp4">
             </video>`}
             <p class ="title-slide">${currentSlide._title}</p>`;
     };
