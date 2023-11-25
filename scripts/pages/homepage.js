@@ -1,7 +1,7 @@
 
-import { Api } from "/scripts/api/api.js";
-import { Photographer } from "/scripts/models/photgrapher.js";
-import { PhotographerCard } from "/scripts/templates/photographerCard.js";
+import { Api } from "../api/api.js";
+import { Photographer } from "..//models/photgrapher.js";
+import { PhotographerCard } from "../templates/photographerCard.js";
 
 const sectionPhotographers = document.querySelector('.photographer-section');
 //// Crée une instance de la classe Api //

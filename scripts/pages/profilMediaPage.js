@@ -1,10 +1,10 @@
 //Mettre le code JavaScript lié à la page photographer.html
-import { Api } from "/scripts/api/api.js";
-import { DataPhotographer } from "/scripts/models/datasPhotographers.js";
-import { HeaderPhotographer } from "/scripts/templates/profilPhotographer.js";
-import { MediasFactory } from "/scripts/factories/mediasFactory.js";
-import {PhotographerMedias} from "/scripts/templates/gallery.js";
-import { displayLightboxMedias } from '/scripts/utils/lightbox.js';
+import { Api } from "../api/api.js";
+import { DataPhotographer } from "../models/datasPhotographers.js";
+import { HeaderPhotographer } from "../templates/profilPhotographer.js";
+import { MediasFactory } from "../factories/mediasFactory.js";
+import {PhotographerMedias} from "../templates/gallery.js";
+import { displayLightboxMedias } from '../utils/lightbox.js';
 
 
 
@@ -82,9 +82,9 @@ function updateGallery(sortedMedia) {
     const mediaTemplate = (media, index) => {
         const tabindex = 0;
         const mediaIs = media._image
-            ? `<img src="./assets/images/gallery-id/${media._photographerId}/${media._image}" class="img-gallery" alt="${media._title}" data-index="${index}">`
+            ? `<img src="../../assets/images/gallery-id/${media._photographerId}/${media._image}" class="img-gallery" alt="${media._title}" data-index="${index}">`
             : `<video class="video-gallery" id="myVideo" controls data-index="${index}" >
-                <source src="./assets/images/gallery-id/${media._photographerId}/${media._video}" type="video/mp4">
+                <source src="../../assets/images/gallery-id/${media._photographerId}/${media._video}" type="video/mp4">
                     Votre navigateur ne supporte pas la lecture de la vidéo.
                 </video>`
         return `
