@@ -1,6 +1,6 @@
 
 import { Api } from "../api/api.js";
-import { Photographer } from "..//models/photgrapher.js";
+import { Photographer } from "../models/photgrapher.js";
 import { PhotographerCard } from "../templates/photographerCard.js";
 
 const sectionPhotographers = document.querySelector('.photographer-section');

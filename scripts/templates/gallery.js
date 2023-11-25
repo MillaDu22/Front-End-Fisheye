@@ -1,4 +1,4 @@
-import  DataMedia  from "/scripts/models/datasMedia.js";
+import DataMedia  from "../models/datasMedia.js";
 
 //// déclare une nouvelle classe nommée PhotographerMedias //
 export class PhotographerMedias {
