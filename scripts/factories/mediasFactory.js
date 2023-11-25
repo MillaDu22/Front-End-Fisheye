@@ -1,5 +1,5 @@
 //// Importe la classe Media depuis le fichier datasMedia.js //
-import  Media from '/scripts/models/datasMedia.js'
+import  Media from "../models/datasMedia.js"
 //// Définition et exportation de la classe MediasFactory //
 export class MediasFactory {
     //// Constructeur prenant des données et un type en paramètres //

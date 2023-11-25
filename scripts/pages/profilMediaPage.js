@@ -3,8 +3,9 @@ import { Api } from "/scripts/api/api.js";
 import { DataPhotographer } from "/scripts/models/datasPhotographers.js";
 import { HeaderPhotographer } from "/scripts/templates/profilPhotographer.js";
 import { MediasFactory } from "/scripts/factories/mediasFactory.js";
-import { displayLightboxMedias } from '/scripts/utils/lightbox.js';
 import {PhotographerMedias} from "/scripts/templates/gallery.js";
+import { displayLightboxMedias } from '/scripts/utils/lightbox.js';
+
 
 
 ////////////// récupération des medias à partir du json /////////
