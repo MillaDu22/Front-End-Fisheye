@@ -10,7 +10,7 @@ import { displayLightboxMedias } from '../utils/lightbox.js';
 
 ////////////// récupération des medias à partir du json /////////
 ///// crée une nouvelle instance de la classe Apien utilisant le fichier JSON //
-const photographersApi = new Api("../../data/photographers.json");
+const photographersApi = new Api("./data/photographers.json");
 //// utilise l'objet URLSearchParamspour obtenir la valeur du paramètre "id" de l'URL  qui identifie un photographe spécifique //
 const photographerId  = new URLSearchParams(window.location.search).get("id");
 //// exporte une fonction asynchrone appelée getPhotographerById. Cette fonction récupére les données d'un photographe spécifique en utilisant l'ID extrait de l'URL //
