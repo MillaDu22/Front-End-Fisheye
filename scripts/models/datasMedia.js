@@ -23,7 +23,7 @@ export default class DataMedia {
         const fragment = document.createDocumentFragment(); 
         if (this.media._image) {
         const img = document.createElement('img');
-                    img.src = `./assets/images/gallery-id/${this.media._photographerId}/${this.media._image}`;
+                    img.src = `/assets/images/gallery-id/${this.media._photographerId}/${this.media._image}`;
                     img.alt = this.media._title;
                     img.classList.add('img-gallery');
                     img.dataset.index = this.media._id;
@@ -31,14 +31,14 @@ export default class DataMedia {
                 } 
                 else if (this.media._video) {
                     const video = document.createElement('video');
-                    video.src = `./assets/images/gallery-id/${this.media._photographerId}/${this.media._video}`;
+                    video.src = `/assets/images/gallery-id/${this.media._photographerId}/${this.media._video}`;
                     video.type = 'video/mp4';
                     video.classList.add('video-gallery');
                     video.id = 'myVideo';
                     video.controls = true;
                     video.dataset.index = this.media._id;
                     const source = document.createElement('source');
-                    source.src = `./assets/images/gallery-id/${this.media._photographerId}/${this.media._video}`;
+                    source.src = `/assets/images/gallery-id/${this.media._photographerId}/${this.media._video}`;
                     source.type = 'video/mp4';
                     video.appendChild(source);
                     fragment.appendChild(video);
