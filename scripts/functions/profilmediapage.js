@@ -231,10 +231,12 @@ galleryContainer.addEventListener('click', function (event) {
 })
 
 function displayDailyRate(photographer) {
-    const dailyRateElement = document.querySelector('.box-of-price');
+    //const dailyRateElement = document.querySelector('.box-of-price');
     //// Vérifie si l'objet photographer est fourni en tant que paramètre et met à jour le HTML en chaîne de texte //
     if (photographer) {
-        dailyRateElement.innerHTML = `${photographer._price} € / jour`;
+        //dailyRateElement.innerHTML = `${photographer._price} € / jour`;
+        boxOfPriceH4.textContent = `${photographer._price} € / jour`;
+
     }
 }
 
