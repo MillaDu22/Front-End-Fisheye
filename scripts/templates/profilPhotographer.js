@@ -8,7 +8,7 @@ export class HeaderPhotographer {
         const heroHeader = document.querySelector('.photograph-header');
         //// chargement du nom dans le formulaire //
         const contactDiv = document.querySelector('.p-contact');
-        const contactName = document.createElement('h3');
+        const contactName = document.createElement('h4');
         contactName.classList.add('contact-name');
         contactDiv.appendChild(contactName);
 
