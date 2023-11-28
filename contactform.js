@@ -35,6 +35,10 @@ function resetErrors() {
 // Fonction open modal
 const firstInput = document.getElementById('first');
 function openModalForm() {
+        if (window.innerWidth > 769) {
+            const label = document.querySelector('.label-collapse');
+            label.style.display="none";
+        }
     resetForm()
     document.getElementById("form-bg").style.display = "flex";
     // Mise en place du focus sur le premier champs //
@@ -53,6 +57,10 @@ function closeModal() {
     const closeX = document.querySelector(".x-close-modal-form");
     closeX.addEventListener('click', function() {
         modalbg.style.display = "none";
+        if (window.innerWidth > 769) {
+            const label = document.querySelector('.label-collapse');
+            label.style.display="block";
+        }
         resetForm();
     });
 }

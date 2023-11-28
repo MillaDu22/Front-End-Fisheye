@@ -71,10 +71,6 @@ options.forEach(option => {
         event.preventDefault();
         const selectedOption = event.currentTarget.dataset.option; 
         loadSortedPhotographerMedia(selectedOption, event);
-        if (window.innerWidth > 769) {
-        const label = document.querySelector('.label-collapse');
-        label.style.display="none";
-        }
     });
 });
 
@@ -234,9 +230,7 @@ function displayDailyRate(photographer) {
     //const dailyRateElement = document.querySelector('.box-of-price');
     //// Vérifie si l'objet photographer est fourni en tant que paramètre et met à jour le HTML en chaîne de texte //
     if (photographer) {
-        //dailyRateElement.innerHTML = `${photographer._price} € / jour`;
         boxOfPriceH4.textContent = `${photographer._price} € / jour`;
-
     }
 }
 
