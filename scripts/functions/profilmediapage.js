@@ -7,8 +7,8 @@ import {PhotographerMedias} from "../templates/gallery.js";
 import { displayLightboxMedias } from '../utils/lightbox.js';
 
 
-
 ////////////// récupération des medias à partir du json /////////
+
 ///// crée une nouvelle instance de la classe Apien utilisant le fichier JSON //
 const photographersApi = new Api("./data/photographers.json");
 //// utilise l'objet URLSearchParamspour obtenir la valeur du paramètre "id" de l'URL  qui identifie un photographe spécifique //
@@ -33,14 +33,15 @@ export const getPhotographerById = async() => {
     displayLightboxMedias({ photographer, medias });
 
     return { photographer, medias };
-
 }
 
+//////////////////////////////////////////////////////////////////////////////
 ////////// Fonction Filtrage ////////////
+
 const galleryContainer = document.getElementById('gallery-photografer');
 const dropdownWrapper = document.querySelector('#dropdown-wrapper');
 const links = document.querySelectorAll('.dropdown-list a');
-const span = document.querySelector('.selected');
+const selected = document.querySelector('.selected');
 
 let photographerMedia = [];
 
@@ -68,8 +69,12 @@ const options = document.querySelectorAll('.option');
 options.forEach(option => {
     option.addEventListener('click', (event) => {
         event.preventDefault();
-const selectedOption = event.currentTarget.dataset.option; 
-loadSortedPhotographerMedia(selectedOption, event);
+        const selectedOption = event.currentTarget.dataset.option; 
+        loadSortedPhotographerMedia(selectedOption, event);
+        if (window.innerWidth > 769) {
+        const label = document.querySelector('.label-collapse');
+        label.style.display="none";
+        }
     });
 });
 
@@ -103,50 +108,66 @@ function updateGallery(sortedMedia) {
             </div>`;
     }
     galleryContainer.innerHTML = sortedMedia.map(mediaTemplate).join("");
-    const dropdownWrapper = document.getElementById('dropdown-wrapper');
-    const links = document.querySelectorAll('.option');
-
-    // Evènements clavier à dropdownWrapper (filtrage) //
-    dropdownWrapper.addEventListener('keydown', function (event) {
-        const currentIndex = Array.from(links).findIndex(link => link === document.activeElement);
-    
-
-        // Fonction pour déplacer le focus vers le haut ou le bas en fonction de la touche pressée //
-        const moveFocus = (direction) => {
-        const newIndex = (currentIndex + direction + links.length) % links.length;
-        links[newIndex].focus();
-        
-    };
-
-    // Gestion des touches fléchées haut et bas + redonner le focus //
-    switch (event.key) {
-        case 'ArrowUp':
-            moveFocus(-1);
-            event.preventDefault();
-            break;
-        case 'ArrowDown':
-            moveFocus(+1);
-            event.preventDefault();
-            break;
-        default:
-            break;
-        }
-    });
 }
-
 
 //// pour chargement des médias triés selon un critère spécifique //
 ///// la méthode forEachpour itérer sur chaque élément de la liste links //
 links.forEach((element) => {
-    //// Ajout d'un gestionnaire d'événements de clic à chaque élément de la liste 
-    element.addEventListener('click', function (evt) {
+    //// Ajout d'un gestionnaire d'événements de clic à chaque élément de la liste // 
+    element.addEventListener('click', function (event) {
         //// Met à jour le contenu HTML de l'élément //
-        span.innerHTML = evt.currentTarget.textContent;
+        selected.innerHTML = event.currentTarget.textContent;
         //// Appel de la fonction de tri en passant le texte de l'élément //
-        loadSortedPhotographerMedia(evt.currentTarget.textContent);
+        loadSortedPhotographerMedia(event.currentTarget.textContent);
     });
 });
+// Gestionnaire d'événements pour le changement d'option de tri //
+dropdownWrapper.addEventListener('click', function () {
+    this.classList.toggle('is-active');
+});
 
+/////////////////////////////////////////////////////////////////////////////
+////////// Compteur likes //////////////
+
+//// Creation des élements du DOM //
+//// Création de l'élément div avec la classe "back-total" //
+const backTotalDiv = document.createElement('div');
+backTotalDiv.classList.add('back-total');
+
+//// Création de l'élément div avec la classe "all-likes-price" //
+const allLikesPriceDiv = document.createElement('div');
+allLikesPriceDiv.classList.add('all-likes-price');
+
+//// Création de l'élément div avec la classe "total-icon" //
+const totalIconDiv = document.createElement('div');
+totalIconDiv.classList.add('total-icon');
+
+//// Création de l'élément h4 avec l'ID "total-likes" //
+const totalLikesH4 = document.createElement('h4');
+totalLikesH4.id = 'total-likes';
+
+//// Création de l'élément icone avec les classes "fa-solid fa-heart all-likes" et l'ID "all-likes" //
+const allLikesStrong = document.createElement('strong');
+allLikesStrong.classList.add('fa-solid', 'fa-heart', 'all-likes');
+allLikesStrong.id = 'all-likes';
+allLikesStrong.setAttribute('aria-hidden', 'true');
+
+//// Ajout de l'élément h4 avec la classe "box-of-price" et l'attribut aria-label //
+const boxOfPriceH4 = document.createElement('h4');
+boxOfPriceH4.classList.add('box-of-price');
+boxOfPriceH4.setAttribute('aria-label', 'Tarif journalier du photographe');
+
+//// Ajout des éléments créés les uns à l'intérieur des autres pour reproduire la structure souhaitée //
+totalIconDiv.appendChild(totalLikesH4);
+totalIconDiv.appendChild(allLikesStrong);
+
+allLikesPriceDiv.appendChild(totalIconDiv);
+allLikesPriceDiv.appendChild(boxOfPriceH4);
+
+backTotalDiv.appendChild(allLikesPriceDiv);
+
+//// Ajout de l'élément créé au body du document //
+document.body.appendChild(backTotalDiv);
 
 
 // Chargement des médias du photographe //
@@ -154,12 +175,11 @@ const { medias } = await getPhotographerById();
 photographerMedia = medias;
 
 
-////////// Compteur likes //////////////
 // Calcul de la somme totale des likes pour chaque photographe //
 //// prend deux paramètres l'identifiant du photographe et les données des médias //
 function calculateTotalLikesForPhotographer(photographerId, mediaData) {
     const likesForPhotographer = mediaData
-    //// filtre les médias qui appartiennent au photographe donné, et reduce ajoute les likes aux medias.
+    //// filtre les médias qui appartiennent au photographe donné, et reduce ajoute les likes aux medias //
         .filter(media => media._photographerId == photographerId)
         .reduce((total, media) => {
             return total + media._likes;
@@ -210,7 +230,6 @@ galleryContainer.addEventListener('click', function (event) {
     }
 })
 
-
 function displayDailyRate(photographer) {
     const dailyRateElement = document.querySelector('.box-of-price');
     //// Vérifie si l'objet photographer est fourni en tant que paramètre et met à jour le HTML en chaîne de texte //
@@ -219,14 +238,9 @@ function displayDailyRate(photographer) {
     }
 }
 
-
-// Gestionnaire d'événements pour le changement d'option de tri //
-dropdownWrapper.addEventListener('click', function () {
-    this.classList.toggle('is-active');
-});
-
-
+///////////////////////////////////////////////////////////////////////////////////
 //// Hero Header Photographer ////
+
 //// fonction fléchée asynchrone //
 const displayHeroHeader = async () => {
     /// Utilise await pour attendre la résolution de la promesse retournée par la fonction asynchrone //

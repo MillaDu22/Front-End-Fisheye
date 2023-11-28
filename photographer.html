@@ -26,11 +26,11 @@
       <div class="select-filter">
         <p class ="label-collapse">Trier par</p>
         <div id="dropdown-wrapper" class="dropdown-wrapper" tabindex="0">
-          <span class="selected option">Popularité</span>
-          <ul class="dropdown-list" >
+          <span class="selected" id ="selected">Popularité</span>
+          <ul class="dropdown-list" id="dropdown-list">
               <li><a href="#" class="option"  aria-label="Option popularité du sélecteur" tabindex="0">Popularité</a></li>
-              <li><a href="#" class="option"  aria-label="Option date du sélecteur " tabindex="0">Date</a></li>
-              <li><a href="#" class="option"  aria-label="Option Titre du sélecteur" tabindex ="0">Titre</a></li>
+              <li><a href="#" class="option"  aria-label="Option date du sélecteur" tabindex="0">Date</a></li>
+              <li><a href="#" class="option"  aria-label="Option Titre du sélecteur" tabindex="0">Titre</a></li>
           </ul>
         </div>
       </div>
@@ -43,7 +43,9 @@
       <div class="content">
         <div class="modal-body">
           <span class="contact-me-close">
-            <span class ="p-contact"></span>
+            <span class ="p-contact">Contactez-moi</br>
+              <p class = "contact-name"></p>
+            </span>    
               <a href="#" class="x-close-modal-form" id="close-button" aria-label="Fermeture du formulaire" tabindex="0">
                 <img src="./assets/icons/close.svg" alt="bouton de fermeture de la modale formulaire" class ="Xform">
               </a>
@@ -86,15 +88,6 @@
             <a href="#" aria-label="Aller au slide suivant" class="arrow-right" tabindex="0"><strong class ="fa-solid fa-chevron-right"></strong></a>
           </div>
           <div class="lightbox-image" id="modale" role="document"></div>
-        </div>
-      </div>
-      <div class ="back-total">
-        <div class = "all-likes-price">
-          <div class = "total-icon"> 
-            <h4 id = "total-likes"></h4>
-            <strong class="fa-solid fa-heart all-likes" id="all-likes" aria-hidden="true"></strong>
-          </div>
-          <h4 class ="box-of-price" aria-label="Tarif journalier du photographe"></h4>
         </div>
       </div>
       <script type="module" src="./scripts/api/api.js"></script>

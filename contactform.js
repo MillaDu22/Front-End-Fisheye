@@ -3,6 +3,7 @@
 const formFields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="submit"]');
 const textFields = Array.from(formFields).filter(field => field.type !== 'submit');
 
+
 // Rajout d'un gestionnaire d'événement "keydown" à chaque champ du formulaire
 textFields.forEach((field, index) => {
     field.addEventListener('keydown', (event) => {
@@ -12,9 +13,6 @@ textFields.forEach((field, index) => {
         // Focus sur le premier champs //
         formFields[nextIndex+1].focus();
         event.preventDefault();
-        }
-        else if (event.key === 'Escape' || event.keyCode === 27 ) {
-            closeModal();
         }
     });
 });
@@ -46,6 +44,8 @@ function openModalForm() {
     100);
 }
 openModalForm
+
+
 
 // Close modal form with X
 function closeModal() {

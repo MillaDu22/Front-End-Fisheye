@@ -6,6 +6,9 @@ export class HeaderPhotographer {
 
     createHeaderPhotographer() {
         const heroHeader = document.querySelector('.photograph-header');
+        //// chargement du nom dans le formulaire //
+        const contactName = document.querySelector ('.contact-name');
+        contactName.textContent = this.photographer._name;
         //// Structure HTML contenant les infos du photographe //
         const infos = `
         <article class="article-id">
