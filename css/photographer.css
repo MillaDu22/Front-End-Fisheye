@@ -738,8 +738,8 @@ label {
 
     .select-filter {
         position: relative;
-        margin-top: 20;
-        margin-bottom:90px;
+        margin-top: 20px;
+        margin-bottom:30px;
         margin-left:auto;
         margin-right:auto;
     }

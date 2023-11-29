@@ -36,6 +36,8 @@ export default class DataMedia {
                     video.classList.add('video-gallery');
                     video.id = 'myVideo';
                     video.controls = true;
+                    video.muted =true;
+                    video.alt = this.media._title;
                     video.dataset.index = this.media._id;
                     const source = document.createElement('source');
                     source.src = './assets/images/gallery-id/' + this.media._photographerId + '/' + this.media._video;
