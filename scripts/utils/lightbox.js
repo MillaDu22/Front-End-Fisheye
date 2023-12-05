@@ -1,3 +1,4 @@
+"use strict";
 export const displayLightboxMedias = medias => {
     const lightboxBg = document.getElementById('lightbox-bg');
     const closeBtn = document.querySelector('.x-lightbox');
@@ -8,27 +9,27 @@ export const displayLightboxMedias = medias => {
 
 
     // Mappage des medias dans la lightbox //
-    //// extrait la liste des médias de l'objet medias //
+    // extrait la liste des médias de l'objet medias //
     const listOfMedias =medias.medias;
-    //// initialise la variable currentIndex à 0 //
+    // initialise la variable currentIndex à 0 //
     let currentIndex = 0;
-    //// utilise une boucle forEach pour itérer sur chaque élément de mediasArray //
+    // utilise une boucle forEach pour itérer sur chaque élément de mediasArray //
     mediasArray.forEach(media => {
-        //// pour chaque élément media dans mediasArray, écouteur d'événements ajouté pour le clic //
+        // pour chaque élément media dans mediasArray, écouteur d'événements ajouté pour le clic //
         media.addEventListener('click', (event) => {
-            //// empêche le comportement par défaut du clic //
+            // empêche le comportement par défaut du clic //
             event.preventDefault();
-            //// extrait l'ID du média à partir de l'attribut data-media de l'élément HTML du média //
+            // extrait l'ID du média à partir de l'attribut data-media de l'élément HTML du média //
             const mediaId = media.dataset.media;
-            //// recherche l'index du média dans la liste des médias en utilisant son ID //
+            // recherche l'index du média dans la liste des médias en utilisant son ID //
             const mediaIndex = listOfMedias.findIndex(media => media._id == mediaId);
-            //// variable currentIndexest mise à jour avec l'index du média actuel //
+            // variable currentIndexest mise à jour avec l'index du média actuel //
             currentIndex = mediaIndex;
-            //// affiche la modale lightbox //
+            // affiche la modale lightbox //
             lightboxBg.style.display = 'flex';
-            //// met le focus sur bouton précédent //
+            // met le focus sur bouton précédent //
             prevBtn.focus();
-            //// appel de la fonction lightboxTemplate pour la création du contenu //
+            // appel de la fonction lightboxTemplate pour la création du contenu //
             lightboxTemplate();
         });
     });

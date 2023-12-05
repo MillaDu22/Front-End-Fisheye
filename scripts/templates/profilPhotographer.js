@@ -1,3 +1,4 @@
+"use strict";
 export class HeaderPhotographer {
     constructor(photographer) {
         // Initialise la propriété photographer avec l'objet photographer passé en paramètre //
@@ -6,15 +7,15 @@ export class HeaderPhotographer {
 
     createHeaderPhotographer() {
         const heroHeader = document.querySelector('.photograph-header');
-        //// chargement du nom dans le formulaire //
+        // chargement du nom dans le formulaire //
         const contactDiv = document.querySelector('.p-contact');
         const contactName = document.createElement('h4');
         contactName.classList.add('contact-name');
         contactDiv.appendChild(contactName);
 
-        //const contactName = document.querySelector ('.contact-name');
+        // const contactName = document.querySelector ('.contact-name');
         contactName.textContent = this.photographer._name;
-        //// Structure HTML contenant les infos du photographe //
+        // Structure HTML contenant les infos du photographe //
         const infos = `
         <article class="article-id">
             <h1 class="name-id">${this.photographer._name}</h1>

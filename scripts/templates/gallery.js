@@ -1,21 +1,22 @@
+"use strict";
 import DataMedia  from "../models/datasMedia.js";
 
-//// déclare une nouvelle classe nommée PhotographerMedias //
+// déclare une nouvelle classe nommée PhotographerMedias //
 export class PhotographerMedias {
-    ////  photographers et medias enfant de photographer et media //
+    //  photographers et medias enfant de photographer et media //
     constructor(photographer, medias) {
         this.photographer = photographer;
         this.medias = medias;
 }
-/// création gallery medias //
+// création gallery medias //
     createPhotographerMedias() {
         const galleryContainer = document.getElementById('gallery-photografer');
         const gallery = document.createDocumentFragment(); 
-        //// Utilise un DocumentFragment pour éviter les reflows coûteux //
+        // Utilise un DocumentFragment pour éviter les reflows coûteux //
 
         this.medias.forEach((media) => {
             const dataMedia = new DataMedia(media);
-            const element = document.createElement('div');
+            const element = document.createElement('li');
             const anchor = document.createElement('a');
             const tabindex = 0;
 
@@ -30,7 +31,7 @@ export class PhotographerMedias {
             element.setAttribute("data-media-id", media._id);
             element.appendChild(anchor);
 
-            const titleImg = document.createElement('div');
+            const titleImg = document.createElement('p');
             titleImg.className = "title-img";
             titleImg.innerHTML = `
                 <h3 class="txt-video">${media._title}</h3>
@@ -44,8 +45,8 @@ export class PhotographerMedias {
             gallery.appendChild(element);
         });
         galleryContainer.innerHTML = ""; 
-        //// Efface le contenu existant //
+        // Efface le contenu existant //
         galleryContainer.appendChild(gallery); 
-        //// Ajoute le fragment au DOM //
+        // Ajoute le fragment au DOM //
     }
 }

@@ -1,9 +1,10 @@
+"use strict";
 export class PhotographerCard {
-    //// le constructeur stocke l'objet photographer de l'instance //
+    // le constructeur stocke l'objet photographer de l'instance //
     constructor(photographer) {
         this.photographer = photographer;
     }
-    //// crée le contenu HTML pour représenter un photographe //
+    // crée le contenu HTML pour représenter un photographe //
     createPhotographerCard() {
         const article = document.createElement('article');
         article.classList.add('photographer-container');

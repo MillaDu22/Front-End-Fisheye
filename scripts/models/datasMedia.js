@@ -1,10 +1,11 @@
+"use strict";
 export default class DataMedia {
     constructor(data) {
         if (DataMedia.exists) {
-            //// Vérifie si une instance existe déjà //
+            // Vérifie si une instance existe déjà //
             return DataMedia.instance;
         } 
-        //// Si aucune instance n'existe, initialise les propriétés de l'instance avec les données spécifiées //
+        // Si aucune instance n'existe, initialise les propriétés de l'instance avec les données spécifiées //
         this._id = data.id;
         this._photographerId = data.photographerId;
         this._title = data.title;
@@ -14,7 +15,7 @@ export default class DataMedia {
         this._date = data.date;
         DataMedia.instance = this;
         this.media = data; 
-        //// Stocke l'objet media dans la propriété de classe media //
+        // Stocke l'objet media dans la propriété de classe media //
 
     }
 

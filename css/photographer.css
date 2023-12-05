@@ -14,6 +14,7 @@ button:focus,
 .selected:focus, 
 img:focus, video:focus, 
 .fa-regular:focus, input:focus, 
+textarea:focus,
 .x-lightbox:focus, 
 .arrow-left:focus, 
 .arrow-right:focus {
@@ -132,7 +133,7 @@ h1 {
     display: none;
 }
 
-/***************************************************Selecteur filtre**************************************************/
+/*************************************************** Selecteur filtre **************************************************/
 .select-filter {
     background-color:white;
     display:flex;
@@ -252,7 +253,7 @@ h1 {
 /******************************** Gallery **************************************/
 .gallery {
     margin-top: 90px;
-    margin-left:100px;
+    margin-left:55px;
     margin-right:100px;
     margin-bottom: 100px;
     display:flex;
@@ -437,7 +438,9 @@ h1 {
 .formData {
     width:90%;
     margin:0 auto;
+    border-style: none;
 }
+
 
 label {
     width:100%;
@@ -508,7 +511,7 @@ label {
 .box-X {
     min-width: 320px;
     position: relative;
-    top:-42%;
+    top:55px;
     display:flex;
     flex-direction:row;
     justify-content: flex-end;
@@ -521,7 +524,7 @@ label {
     color:black;
     text-align: right;
     font-size:35px;
-    margin-right: 14px;
+    margin-right: 1.65%;
     color: #901C1C;
     z-index:45;
     text-decoration: none;
@@ -532,16 +535,16 @@ label {
     min-width: 320px;
     background-color: white;
     overflow: hidden;
-    height:85%;
+    height:600px;
 	display:flex;
 	justify-content: space-between;
+    flex-direction: column;
 	border-radius:3px;
 	align-items: center;
-    padding-top: 2%;
-    padding-bottom: 2%;
+    padding-top: 0%;
+    padding-bottom: 0%;
     margin-left:auto;
     margin-right:auto;
-    overflow: scroll;
 	z-index:2;
 }
 
@@ -559,21 +562,21 @@ label {
     flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	width:65%;
-    height: 90%;
-	position:absolute;
+	width:100%;
+    height: 580px;
+    top:0px;
+	position:relative;
 	z-index:3;
 }
 
 .media-lightbox {
     position:relative;
-    margin-top: 5%;
+    margin-top: 0;
     margin-left: auto;
     margin-right: auto;
     width:88%;
     min-width:320px;
-	max-width:1050px;
-	height:83%;
+	height:490px;
 	object-fit:cover;
 	display:block;
 }
@@ -585,10 +588,11 @@ label {
     align-items: center;
 	justify-content: space-between;
 	width:65%;
+    height:100%;
     padding-left:0%;
     padding-right:0%;
 	z-index: 5;
-    margin: 0;
+    top:0px;
 }
 
 .arrow-left, .arrow-right{
@@ -604,24 +608,23 @@ label {
 
 .arrow-left {
 	text-align:left;
-    margin-left: 14px;
+    margin-left: 2%;
 }
 
 .arrow-right {
 	text-align:right;
-    margin-right: 14px;
+    margin-right: 2%;
 }
 
 .title-slide {
     width:88%;
-    max-width:1050px;
     position: relative;
     font-size:1.5em;
     color:#901C1C;
     font-weight:400;
     line-height:31px;
     text-align: left;
-    margin-top: 0px;
+    top:-25px;
 }
 
 /*********************************** Compteur likes *************************************/
@@ -745,9 +748,10 @@ label {
     }
 
     .gallery {
-        flex-direction: column;
-        margin:0 auto;
+        flex-direction: column;   
+        margin-left: -40px;
         padding-bottom:50px;
+        width:100%;
     }
 
     .content-gallery {
@@ -778,14 +782,20 @@ label {
         width:100%;
     }
 
+    .body-lightbox {
+        padding-bottom: 0%;
+    }
+
     .box-X {
+        position:absolute;
+        min-width:320px;
         width:100%;
-        top: -41%;
+        top: 80px;
     }
 
     .x-lightbox {
         font-size: 30px;
-        margin-right: 1px;
+        margin-right: 1.6%;
     }
 
     .arrows {
@@ -797,11 +807,11 @@ label {
     }
 
     .arrow-left {
-        margin-left: 4px;
+        margin-left: 2%;
     }
 
     .arrow-right {
-        margin-right: 4px;
+        margin-right: 2%;
     }
 
     .lightbox-image {
@@ -814,13 +824,28 @@ label {
     .body-lightbox {
         min-width: 320px;
         width:100%;
-        height:85%;
+        height:80%;
         padding-top:5%;
-        padding-bottom: 5%;
+        padding-bottom: 0%;
     }
     
     .media-lightbox {
         object-fit:cover;
-        height:75%;
+        height:85%;
     }
+
+    .lightbox-image {
+        min-width: 320px;
+        display:flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        width:100%;
+        height: 100%;
+        top:0px;
+        position:relative;
+        z-index:3;
+    }
+    
+
 }

@@ -14,9 +14,7 @@
   <body>
     <header>
       <a href="./index.html" class="logo-link" tabindex="0" aria-label="Lien retour vers page d'accueil">
-        <div>
           <img src="./assets/logos/logo.png" class="logo" alt="fisheye Home page">
-        </div>
       </a>
     </header>
     <main id="main" >
@@ -25,18 +23,17 @@
 <!--Structure du filtre select-->
       <div class="select-filter">
         <p class ="label-collapse">Trier par</p>
-        <div id="dropdown-wrapper" class="dropdown-wrapper" tabindex="0">
+        <nav id="dropdown-wrapper" class="dropdown-wrapper" tabindex="0">
           <span class="selected" id ="selected">Popularité</span>
           <ul class="dropdown-list" id="dropdown-list">
               <li><a href="#" class="option"  aria-label="Option popularité du sélecteur" tabindex="0">Popularité</a></li>
               <li><a href="#" class="option"  aria-label="Option date du sélecteur" tabindex="0">Date</a></li>
               <li><a href="#" class="option"  aria-label="Option Titre du sélecteur" tabindex="0">Titre</a></li>
           </ul>
-        </div>
+        </nav>
       </div>
 <!--Structures gallery cards-->
-      <div class="gallery" id="gallery-photografer">
-      </div>
+      <ul class="gallery" id="gallery-photografer"></ul>
     </main >
 <!--Structure modale formulaire contact-->
     <div class="bg-form" id="form-bg" role ="dialog" aria-hidden="true" aria-label="formulaire de contact">
@@ -53,22 +50,22 @@
               <div class="formData">
                 <label for ="first">Prénom</label><br>
                 <input class="text-control" type="text" aria-label=" Champs 1 .Veuillez saisir votre prénom" id="first" name="first" minlength="2" required><br>
-                <div id="error-first"></div>
+                <output role="alert" aria-live="assertive" id="error-first"></output>
               </div>
               <div class="formData">
                 <label for="last">Nom</label><br>
                 <input class="text-control" type="text" aria-label="Champs 2. Veuillez saisir votre nom" id="last" name="last" minlength="2" required><br>
-                <div id="error-last"></div>
+                <output role="alert" aria-live="assertive" id="error-last"></output>
               </div>
               <div class="formData">
                 <label for="email">E-mail</label><br>
                 <input class="text-control" autocomplete="off" type="email" aria-label="Champs 3. Veuillez saisir votre email" id="email" name="email" required><br>
-                <div id="error-email"></div>
+                <output role="alert" aria-live="assertive" id="error-email"></output>
               </div>
               <div class="formData">
                 <label for="msg">Votre message</label><br>
-                <input class="text-control-msg" type="text" aria-label="Champs 4. Veuillez saisir votre message" id="msg" name="commentaires" minlength="2" required><br>
-                <div id="error-msg"></div>
+                <textarea class="text-control-msg" aria-label="Champs 4. Veuillez saisir votre message" id="msg" name="commentaires" minlength="2" required></textarea><br>
+                <output role="alert" aria-live="assertive" id="error-msg"></output>
               </div>         
               <input class="btn-submit" type="submit" aria-label="Bouton. Veuillez valider votre formulaire" value="Envoyer">
             </form>
@@ -85,7 +82,7 @@
             <a href="#" aria-label="Aller au slide précédent" class="arrow-left" tabindex="0"><strong class ="fa-solid fa-chevron-left"></strong></a>
             <a href="#" aria-label="Aller au slide suivant" class="arrow-right" tabindex="0"><strong class ="fa-solid fa-chevron-right"></strong></a>
           </div>
-          <div class="lightbox-image" id="modale" role="document"></div>
+          <figure class="lightbox-image" id="modale" role="document"></figure>
         </div>
       </div>
       <script type="module" src="./scripts/api/api.js"></script>

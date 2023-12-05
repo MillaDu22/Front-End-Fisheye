@@ -1,14 +1,15 @@
+"use strict";
 /*******************Gestion clavier remplissage des champs***************************** */
-// Récupération des champs du formulaire dans un tableau
-const formFields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="submit"]');
+// Récupération des champs du formulaire dans un tableau //
+const formFields = document.querySelectorAll('input[type="text"], input[type="email"], input[type="submit"], textarea');
 const textFields = Array.from(formFields).filter(field => field.type !== 'submit');
 
 
-// Rajout d'un gestionnaire d'événement "keydown" à chaque champ du formulaire
+// Rajout d'un gestionnaire d'événement "keydown" à chaque champ du formulaire //
 textFields.forEach((field, index) => {
     field.addEventListener('keydown', (event) => {
     if (event.key === 'Enter' || event.keyCode === 13   ) { 
-        // Pour passer au champ suivant ou au premier champ si c'est le dernier
+        // Pour passer au champ suivant ou au premier champ si c'est le dernier //
         const nextIndex = (index) % formFields.length;
         // Focus sur le premier champs //
         formFields[nextIndex+1].focus();
@@ -19,20 +20,20 @@ textFields.forEach((field, index) => {
 
 function resetForm(){
     document.querySelector('form[name="formmsg"]').style.display = "block";
-    // Réinitialisation des champs du formulaire après fermeture de la modale
+    // Réinitialisation des champs du formulaire après fermeture de la modale //
     document.getElementById("first").value = "";
     document.getElementById("last").value = "";
     document.getElementById("email").value = "";
     document.getElementById("msg").value = "";
     resetErrors();
 }
-// Réinitialisation des messages d'erreurs
+// Réinitialisation des messages d'erreurs //
 function resetErrors() {
     const errorMessages = document.querySelectorAll('.error-msg');
     errorMessages.forEach(message => message.style.display = 'none');
 }
 
-// Fonction open modal
+// Fonction open modal //
 const firstInput = document.getElementById('first');
 function openModalForm() {
         if (window.innerWidth > 769) {
@@ -51,7 +52,7 @@ openModalForm
 
 
 
-// Close modal form with X
+// Close modal form with X //
 function closeModal() {
     const modalbg = document.querySelector(".bg-form");
     const closeX = document.querySelector(".x-close-modal-form");
@@ -66,16 +67,16 @@ function closeModal() {
 }
 closeModal();
 
-//Validation du formulaire
+// Validation du formulaire //
 function validateForm(event) {
-    // Empêche la soumission du formulaire pour éviter la fermeture de la modale
+    // Empêche la soumission du formulaire pour éviter la fermeture de la modale //
     event.preventDefault(); 
     resetErrors();
     const firstName = document.getElementById('first').value;
     const lastName = document.getElementById('last').value;
     const email = document.getElementById('email').value;
     const message = document.getElementById('msg').value;
-    // Creation des messages d'erreurs
+    // Creation des messages d'erreurs //
     const errorFirst = document.createElement('p');
     errorFirst.textContent = "Veuillez entrer 2 caractères ou plus pour le champ du prénom.";
     errorFirst.classList.add('error-msg');
@@ -100,30 +101,30 @@ function validateForm(event) {
     const messageErrormsg = document.getElementById('error-msg');
     messageErrormsg.appendChild(errorMsg);
 
-    // Validation = true
+    // Validation = true //
     let valid = true;
-    //Si le prénom a moins de 2 caractères, formulaire non valide
+    // Si le prénom a moins de 2 caractères, formulaire non valide //
     if (firstName.length < 2 || firstName.trim() === "") {
         messageErrorFirst.style.display="flex";
         valid = false;
     } else {
         messageErrorFirst.style.display="none";
     }
-    //Si le nom a moins de 2 caractères, formulaire non valide
+    // Si le nom a moins de 2 caractères, formulaire non valide //
     if (lastName.length < 2 || lastName.trim() === "") {
         messageErrorLast.style.display="flex";
         valid = false;
     } else {
         messageErrorLast.style.display="none";
     }
-    //Si l'adresse électronique n'est pas valide (function isValidEmail), formulaire non valide
+    // Si l'adresse électronique n'est pas valide (function isValidEmail), formulaire non valide //
     if (!isValidEmail(email)) {
         messageErrorEmail.style.display="flex";
         valid = false;
     } else {
         messageErrorEmail.style.display="none";
     }
-    // Si le message comporte moins de 2 caractère ou plus de 300, formulaire non valide
+    // Si le message comporte moins de 2 caractère ou plus de 300, formulaire non valide //
     if ((message.length < 2 || message.length > 300)) {
         messageErrormsg.style.display="flex";
         valid = false;
@@ -150,11 +151,11 @@ document.querySelector('form[name="formmsg"]').addEventListener('submit', functi
 });
 
 
-//Vérification si chaîne de caractères email correspond à un format valide avec une expression régulière regex
+// Vérification si chaîne de caractères email correspond à un format valide avec une expression régulière regex //
 function isValidEmail(email) {
-    //Correspondance caractères alphanumériques
+    // Correspondance caractères alphanumériques //
     var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    //méthode test() renvoie true si la correspondance est trouvée
+    // méthode test() renvoie true si la correspondance est trouvée //
     return emailRegex.test(email);
 }
 

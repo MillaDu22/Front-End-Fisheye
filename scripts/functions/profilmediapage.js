@@ -1,4 +1,4 @@
-//Mettre le code JavaScript lié à la page photographer.html
+"use strict";
 import { Api } from "../api/api.js";
 import { DataPhotographer } from "../models/datasPhotographers.js";
 import { HeaderPhotographer } from "../templates/profilPhotographer.js";
@@ -7,36 +7,33 @@ import {PhotographerMedias} from "../templates/gallery.js";
 import { displayLightboxMedias } from '../utils/lightbox.js';
 
 
-////////////// récupération des medias à partir du json /////////
-
-///// crée une nouvelle instance de la classe Apien utilisant le fichier JSON //
+// crée une nouvelle instance de la classe Api en utilisant le fichier JSON //
 const photographersApi = new Api("./data/photographers.json");
-//// utilise l'objet URLSearchParamspour obtenir la valeur du paramètre "id" de l'URL  qui identifie un photographe spécifique //
+// utilise l'objet URLSearchParamspour obtenir la valeur du paramètre "id" de l'URL  qui identifie un photographe spécifique //
 const photographerId  = new URLSearchParams(window.location.search).get("id");
-//// exporte une fonction asynchrone appelée getPhotographerById. Cette fonction récupére les données d'un photographe spécifique en utilisant l'ID extrait de l'URL //
+
+
+/**
+ * Fonction asynchrone qui récupère les données d'un photographe spécifique en utilisant l'ID extrait de l'URL.
+ * @returns {Promise<{photographer: DataPhotographer, medias: Array<MediasFactory>}>}
+ */
+
 export const getPhotographerById = async() => {
-    //// utilise l'instance de l'API pour obtenir les données des photographies et des médias //
     const {photographers, media} = await photographersApi.getData();
     const photographer = photographers
-    //// crée un objet DataPhotographerà partir des données des photographes, et recherche le photographe spécifique dont l'ID correspond //
     .map(photographerData => new DataPhotographer (photographerData))
     .find(photographerData => photographerData._id == photographerId); 
     const medias = media
-    //// crée un tableau d'objets MediasFactory à partir des données des médias, et filtre ces médias pour inclure uniquement ceux du photographe spécifique //
     .map(mediaData => new MediasFactory(mediaData, 'Api')) 
     .filter(media => media._photographerId == photographerId)
-    // Appel Calcul du total des likes pour le photographe //
     calculateTotalLikesForPhotographer(photographerId, photographerMedia);
-    // Appel Affichage du tarif journalier //
     displayDailyRate(photographer);
-     // Appel Affichage lightbox //
     displayLightboxMedias({ photographer, medias });
-
     return { photographer, medias };
 }
 
-//////////////////////////////////////////////////////////////////////////////
-////////// Fonction Filtrage ////////////
+/*********************************************************************************************************/
+// Fonction Filtrage //
 
 const galleryContainer = document.getElementById('gallery-photografer');
 const dropdownWrapper = document.querySelector('#dropdown-wrapper');
@@ -45,20 +42,20 @@ const selected = document.querySelector('.selected');
 
 let photographerMedia = [];
 
-// Tri avec méthode sort //
+/**
+ * Charge et met à jour la galerie avec les médias triés.
+ * @param {string} option - L'option de tri choisie ('Popularité', 'Date', 'Titre').
+ */
+
 function loadSortedPhotographerMedia(option) {
     let sortedMedia = [...photographerMedia];
     if (option === 'Popularité') {
         sortedMedia.sort((a, b) => b._likes - a._likes);
-        // Tri du plus populaire au moins populaire //
     } else if (option === 'Date') {
         sortedMedia.sort((a, b) => new Date(b._date) - new Date(a._date));
-        // Tri du plus récent au plus ancien //
     } else if (option === 'Titre') {
         sortedMedia.sort((a, b) => a._title.localeCompare(b._title));
-        // Tri par ordre alphabétique avec la méthode localeCompare qui détermine la façon dont les caractères sont triés //
     }
-    // Mise à jour de la galerie avec les médias triés //
     updateGallery(sortedMedia);
     displayLightboxMedias({ photographer: photographerMedia, medias: sortedMedia });
 }
@@ -78,7 +75,11 @@ options.forEach(option => {
 let totalLikesForPhotographer;
 
 
-// Fonction pour mettre à jour la galerie avec les médias triés //
+/**
+ * Met à jour la galerie avec les médias triés.
+ * @param {Array} sortedMedia - Tableau des médias triés.
+ */
+
 function updateGallery(sortedMedia) {
     const mediaTemplate = (media, index) => {
         const tabindex = 0;
@@ -89,7 +90,7 @@ function updateGallery(sortedMedia) {
                     Votre navigateur ne supporte pas la lecture de la vidéo.
                 </video>`
         return `
-            <div class="element-gallery" data-media-id="${media._id}">
+            <li class="element-gallery" data-media-id="${media._id}">
                 <a href="#" class="box-video active" aria-label="media ${media._title} du photographe" tabindex="${tabindex}"  data-media="${media._id}" >
                     ${mediaIs}
                 </a>
@@ -101,19 +102,19 @@ function updateGallery(sortedMedia) {
                         </a>
                     </span>
                 </div>
-            </div>`;
+            </li>`;
     }
     galleryContainer.innerHTML = sortedMedia.map(mediaTemplate).join("");
 }
 
-//// pour chargement des médias triés selon un critère spécifique //
-///// la méthode forEachpour itérer sur chaque élément de la liste links //
+// pour chargement des médias triés selon un critère spécifique //
+// la méthode forEach pour itérer sur chaque élément de la liste links //
 links.forEach((element) => {
-    //// Ajout d'un gestionnaire d'événements de clic à chaque élément de la liste // 
+    // Ajout d'un gestionnaire d'événements de clic à chaque élément de la liste // 
     element.addEventListener('click', function (event) {
-        //// Met à jour le contenu HTML de l'élément //
+        // Met à jour le contenu HTML de l'élément //
         selected.innerHTML = event.currentTarget.textContent;
-        //// Appel de la fonction de tri en passant le texte de l'élément //
+        // Appel de la fonction de tri en passant le texte de l'élément //
         loadSortedPhotographerMedia(event.currentTarget.textContent);
     });
 });
@@ -122,38 +123,38 @@ dropdownWrapper.addEventListener('click', function () {
     this.classList.toggle('is-active');
 });
 
-/////////////////////////////////////////////////////////////////////////////
-////////// Compteur likes //////////////
+/****************************************************************************************************/
+// Compteur likes //
 
-//// Creation des élements du DOM //
-//// Création de l'élément div avec la classe "back-total" //
+// Creation des élements du DOM //
+// Création de l'élément div avec la classe "back-total" //
 const backTotalDiv = document.createElement('div');
 backTotalDiv.classList.add('back-total');
 
-//// Création de l'élément div avec la classe "all-likes-price" //
+// Création de l'élément div avec la classe "all-likes-price" //
 const allLikesPriceDiv = document.createElement('div');
 allLikesPriceDiv.classList.add('all-likes-price');
 
-//// Création de l'élément div avec la classe "total-icon" //
+// Création de l'élément div avec la classe "total-icon" //
 const totalIconDiv = document.createElement('div');
 totalIconDiv.classList.add('total-icon');
 
-//// Création de l'élément h4 avec l'ID "total-likes" //
+// Création de l'élément h4 avec l'ID "total-likes" //
 const totalLikesH4 = document.createElement('h4');
 totalLikesH4.id = 'total-likes';
 
-//// Création de l'élément icone avec les classes "fa-solid fa-heart all-likes" et l'ID "all-likes" //
+// Création de l'élément icone avec les classes "fa-solid fa-heart all-likes" et l'ID "all-likes" //
 const allLikesStrong = document.createElement('strong');
 allLikesStrong.classList.add('fa-solid', 'fa-heart', 'all-likes');
 allLikesStrong.id = 'all-likes';
 allLikesStrong.setAttribute('aria-hidden', 'true');
 
-//// Ajout de l'élément h4 avec la classe "box-of-price" et l'attribut aria-label //
+// Ajout de l'élément h4 avec la classe "box-of-price" et l'attribut aria-label //
 const boxOfPriceH4 = document.createElement('h4');
 boxOfPriceH4.classList.add('box-of-price');
 boxOfPriceH4.setAttribute('aria-label', 'Tarif journalier du photographe');
 
-//// Ajout des éléments créés les uns à l'intérieur des autres pour reproduire la structure souhaitée //
+// Ajout des éléments créés les uns à l'intérieur des autres pour reproduire la structure souhaitée //
 totalIconDiv.appendChild(totalLikesH4);
 totalIconDiv.appendChild(allLikesStrong);
 
@@ -162,7 +163,7 @@ allLikesPriceDiv.appendChild(boxOfPriceH4);
 
 backTotalDiv.appendChild(allLikesPriceDiv);
 
-//// Ajout de l'élément créé au body du document //
+// Ajout de l'élément créé au body du document //
 document.body.appendChild(backTotalDiv);
 
 
@@ -171,52 +172,50 @@ const { medias } = await getPhotographerById();
 photographerMedia = medias;
 
 
-// Calcul de la somme totale des likes pour chaque photographe //
-//// prend deux paramètres l'identifiant du photographe et les données des médias //
+/**
+ * Calcul de la somme totale des likes pour chaque photographe.
+ * @param {number} photographerId - L'identifiant du photographe.
+ * @param {Array} mediaData - Les données des médias.
+ */
+
 function calculateTotalLikesForPhotographer(photographerId, mediaData) {
     const likesForPhotographer = mediaData
-    //// filtre les médias qui appartiennent au photographe donné, et reduce ajoute les likes aux medias //
         .filter(media => media._photographerId == photographerId)
         .reduce((total, media) => {
             return total + media._likes;
         }, 0);
-   // Met à jour le compteur total //
     totalLikesForPhotographer = likesForPhotographer;
-    // Affiche le total des likes dans son container //
     const totalLikesElement = document.getElementById('total-likes');
     if (totalLikesElement) {
         totalLikesElement.textContent = totalLikesForPhotographer;
     }
 }
 
+
+/**
+ * Gestionnaire d'événement pour le clic sur la galerie.
+ * Vérifie si l'élément cliqué est un bouton de like et met à jour les compteurs de likes.
+ * @param {Event} event - L'événement de clic.
+ */
+
 galleryContainer.addEventListener('click', function (event) {
-    // closest méthode pour rechercher élément ascendant (parent) //
-    //// utilise la méthode closest pour déterminer si l'élément cliqué est un bouton de like //
     const likeIcon = event.target.closest('.link-heart');
     if (likeIcon) {
-        /// retrait des comportements par default //
         event.preventDefault();
         event.stopPropagation(); 
-        //// trouve l'élément parent de la classe .element-gallery pour obtenir les info sur le média, et met à jour le compteur de likes individuel //
         const mediaElement = likeIcon.closest('.element-gallery');
         if (mediaElement) {
             const mediaId = mediaElement.dataset.mediaId;
             if (mediaId) {
-                // Met à jour le compteur individuel //
                 const likeCountElement = mediaElement.querySelector('.like-count');
                 const liked = true;
                 if (likeCountElement) {
                     const currentLikes = parseInt(likeCountElement.textContent, 10);
-                    // Définition icone solid si liked //
                     const heartIconClass = liked ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
-                    // Création chaîne avec nombre de likes et l'icône //
                     const likesWithIcon = `${currentLikes + 1} <i class="${heartIconClass}"></i>`;
-                    // Mise à jour du contenu de likeCountElement avec la chaîne //
                     likeCountElement.innerHTML = likesWithIcon;
                 }
-                //// met à jour le compteur total de likes pour le photographe //
                 totalLikesForPhotographer += 1;
-                // Affiche le compteur total dans son container //
                 const totalLikesElement = document.getElementById('total-likes');
                 if (totalLikesElement) {
                     totalLikesElement.textContent = totalLikesForPhotographer;
@@ -226,34 +225,36 @@ galleryContainer.addEventListener('click', function (event) {
     }
 })
 
+
+/**
+ * Affiche le tarif quotidien du photographe.
+ * @param {Object} photographer - Les données du photographe.
+ */
+
 function displayDailyRate(photographer) {
-    //const dailyRateElement = document.querySelector('.box-of-price');
-    //// Vérifie si l'objet photographer est fourni en tant que paramètre et met à jour le HTML en chaîne de texte //
     if (photographer) {
         boxOfPriceH4.textContent = `${photographer._price} € / jour`;
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////////
-//// Hero Header Photographer ////
+/****************************************************************************************************/
 
-//// fonction fléchée asynchrone //
+
+/**
+ * Affiche l'en-tête du héros du photographe, y compris les médias triés par popularité.
+ * Utilise des fonctions asynchrones pour récupérer les données du photographe et ses médias.
+ * @returns {Promise<void>} - Une promesse qui se résout lorsque l'affichage est terminé.
+ */
+
 const displayHeroHeader = async () => {
-    /// Utilise await pour attendre la résolution de la promesse retournée par la fonction asynchrone //
     const {photographer, medias} = await getPhotographerById();
-    //// nouvelle instance de la classe HeaderPhotographer avec les données du photographe //
     const heroHeader = new HeaderPhotographer(photographer);
-    //// affiche l'en-tête du photographe //
     heroHeader.createHeaderPhotographer();
-    //// Appel méthode createPhotographerMedias()de l'objet mediasTemplate, crée et affiche les médias du photographe //
     const mediasTemplate = new PhotographerMedias(photographer, medias);
     mediasTemplate.createPhotographerMedias();
-    ////Appel fonction displayLightboxMedias()avec objet mediasTemplate en argument pour afficher les médias du photographe dans une lightbox //
     displayLightboxMedias(mediasTemplate)
-    //// Chargement des médias triés par popularité par défaut //
     loadSortedPhotographerMedia('Popularité');
 }
-//// Appel fonction displayHeroHeader //
 displayHeroHeader();
 
 
